@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Dashboard from "../Components/Dashboard/Dashboard";
+import { Dashboard } from "../Components/Dashboard/Dashboard.jsx";
 import { Login } from "../Components/Login/Login";
 
 const AllRoutes = () => {

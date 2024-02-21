@@ -17,6 +17,7 @@ const theme = extendTheme({
       stock: "#40A711",
       outofstok: "#40A711",
       textColor: "#424242",
+      buttonbg: "#DCDCDC",
     },
   },
   components: {
