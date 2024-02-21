@@ -6,7 +6,6 @@ import { Login } from "../Components/Login/Login";
 const AllRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
       <Route path="/login" element={<Login />} />
     </Routes>
   );
