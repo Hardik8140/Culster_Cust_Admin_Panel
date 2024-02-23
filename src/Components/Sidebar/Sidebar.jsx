@@ -1,5 +1,5 @@
 import { Box, Icon } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import {
   Sidebar,
   Menu,
@@ -31,13 +31,14 @@ import {
 // import customerReviewIcon from "@iconify-icons/fluent/comment-multiple-24-filled";
 
 const SidebarMenu = () => {
+  const [isPizzaActive, setIsPizzaActive] = useState(false);
+
   return (
     // <Box border="1px solid red">
     <>
       <Box
         style={{
           height: "114px",
-          // float: "right",
           boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
           position: "relative",
         }}
@@ -52,7 +53,6 @@ const SidebarMenu = () => {
             backgroundColor: "white",
             padding: "10px",
             height: "auto",
-            // border: "1px solid red",
             width: "240px",
             boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
           },
@@ -74,30 +74,36 @@ const SidebarMenu = () => {
         </div>
         <Menu
           menuItemStyles={{
-            button: ({ active }) => ({
+            button: ({ active, isHovered }) => ({
               borderRadius: "10px",
-              color: active ? "white" : "#424242",
-              backgroundColor: active ? "#D60024" : "white",
-              ":hover": {
-                backgroundColor: active ? "#D60024" : "white",
-                // color: active ? "white" : "#424242",
-              },
+              color: active ? "white" : isHovered ? "#D60024" : "#424242",
+              backgroundColor: active
+                ? "#D60024"
+                : isHovered
+                ? "#D60024"
+                : "white",
             }),
-            icon: ({ active }) => ({
-              color: active ? "white" : undefined,
+            icon: ({ active, isHovered }) => ({
+              color: active || isHovered ? "white" : "#D60024",
             }),
           }}
         >
           <MenuItem
             icon={<MdOutlineDashboard />}
             component={<Link to="/" />}
-            active
+            // active
+            active={isPizzaActive}
           >
             Dashboard
           </MenuItem>
-          <SubMenu icon={<Utensils />} label="Menu Items">
-            <MenuItem>Dashboard</MenuItem>
-            <MenuItem> Line charts </MenuItem>
+          <SubMenu
+            onOpenChange={(open) => setIsPizzaActive(open)}
+            icon={<Utensils />}
+            label="Menu Items"
+            active={isPizzaActive}
+          >
+            <MenuItem component={<Link to="/pizza" />}>Pizza</MenuItem>
+            <MenuItem>Line charts</MenuItem>
           </SubMenu>
           <SubMenu icon={<Utensils />} label="Extra Items">
             <MenuItem>Dashboard</MenuItem>
