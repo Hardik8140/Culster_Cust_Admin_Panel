@@ -18,7 +18,15 @@ const theme = extendTheme({
       outofstok: "#40A711",
       textColor: "#424242",
       buttonbg: "#DCDCDC",
+      white: "#FFFFFF",
+      black: "#000000",
+      grey: "#919191",
+      grey100: "#F0F0F0",
     },
+  },
+  fonts: {
+    body: "Inter, sans-serif",
+    heading: "Inter, sans-serif",
   },
   components: {
     Button: {

@@ -7,4 +7,5 @@ import userTick from "./user-tick.svg";
 import dollor from "./dollar-circle.svg";
 import ep_sell from "./ep_sell.svg";
 import updown from "./updown.svg";
-export { dash, logo, menu, bill, circlewhite, userTick, dollor, ep_sell, updown };
+import dollar from "./dollar.svg";
+export { dash, logo, menu, bill, circlewhite, userTick, dollor, ep_sell, updown, dollar };
