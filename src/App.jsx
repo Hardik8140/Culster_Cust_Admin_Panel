@@ -4,7 +4,7 @@ import AllRoutes from "./Routes/AllRoutes";
 function App() {
   return (
     <>
-      <SidebarMenu />
+      {/* <SidebarMenu /> */}
       <AllRoutes />
     </>
   );
