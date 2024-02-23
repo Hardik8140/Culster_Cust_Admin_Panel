@@ -1,0 +1,66 @@
+/* checkbox */
+
+.customCheckbox {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  font-size: 16px;
+  color: #d60024;
+  transition: color 0.3s;
+}
+
+.customCheckbox input[type="checkbox"] {
+  display: none;
+}
+
+.customCheckbox .checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #919191;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+  transform-style: preserve-3d;
+}
+
+.customCheckbox .checkmark::before {
+  content: "\2713";
+  font-size: 14px;
+  color: transparent;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.customCheckbox input[type="checkbox"]:checked + .checkmark {
+  background-color: #d60024;
+  border-color: #d60024;
+  transform: scale(1.1) rotateZ(360deg) rotateY(360deg);
+}
+
+.customCheckbox input[type="checkbox"]:checked + .checkmark::before {
+  color: #fff;
+}
+
+.customCheckbox:hover {
+  color: #d60024;
+}
+
+.customCheckbox:hover .checkmark {
+  border-color: #d60024;
+  background-color: #f0f0f0;
+  transform: scale(1.05);
+}
+
+.customCheckbox input[type="checkbox"]:focus + .checkmark {
+  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.2);
+  outline: none;
+}
+
+.customCheckbox .checkmark,
+.customCheckbox input[type="checkbox"]:checked + .checkmark {
+  transition: background-color 1.3s, border-color 1.3s, color 1.3s,
+    transform 0.3s;
+}
