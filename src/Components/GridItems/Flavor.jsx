@@ -15,7 +15,10 @@ const Drizzled = [
     title: "Spicy Tandori",
   },
 ];
-export const Flavor = () => {
+export const Flavor = ({
+  // eslint-disable-next-line react/prop-types
+  title = "FLAVOR (BASE SAUCE AND TOP SEASONINGS)",
+}) => {
   const [checked, handleChange] = useCheckbox(false);
 
   return (
@@ -27,7 +30,7 @@ export const Flavor = () => {
     >
       <Stack>
         <Flex justifyContent={"space-between"}>
-          <Text fontWeight={"500"}>FLAVOR (BASE SAUCE AND TOP SEASONINGS)</Text>
+          <Text fontWeight={"500"}>{title}</Text>
           <div className="container">
             <input
               type="checkbox"
