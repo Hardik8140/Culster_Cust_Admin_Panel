@@ -33,14 +33,12 @@ const SidebarMenu = () => {
   };
 
   return (
-    // <Box border="1px solid red">
     <>
       <Box
         style={{
           height: "114px",
           boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
           position: "relative",
-          // border: "1px solid red",
         }}
       ></Box>
       <Sidebar
@@ -88,6 +86,7 @@ const SidebarMenu = () => {
             icon={<MdOutlineDashboard />}
             active={activeMenu === "dashboard"}
             onClick={() => handleMenuClick("dashboard")}
+            component={<Link to="/" />}
           >
             Dashboard
           </MenuItem>
@@ -110,19 +109,31 @@ const SidebarMenu = () => {
           </SubMenu>
           <SubMenu icon={<Utensils />} label="Extra Items">
             <MenuItem>Dashboard</MenuItem>
-            <MenuItem> Line charts </MenuItem>
+            <MenuItem>Line charts</MenuItem>
           </SubMenu>
           <MenuItem icon={<TicketPercent />}>Offers</MenuItem>
           <MenuItem icon={<BellDot />}>Notifications</MenuItem>
-          <MenuItem icon={<Users />}>Delivery Boy</MenuItem>
-          <MenuItem icon={<Pizza />}>Orders</MenuItem>
-          <MenuItem icon={<Clock2 />}>Time Manage</MenuItem>
-          <MenuItem icon={<MdTableBar />}>Table Reservation</MenuItem>
-          <MenuItem icon={<MdOutlineReviews />}>Customer Review</MenuItem>
+          <MenuItem icon={<Users />} component={<Link to="/boy" />}>
+            Delivery Boy
+          </MenuItem>
+          <MenuItem icon={<Pizza />} component={<Link to="/orders" />}>
+            Orders
+          </MenuItem>
+          <MenuItem icon={<Clock2 />} component={<Link to="/time" />}>
+            Time Manage
+          </MenuItem>
+          <MenuItem icon={<MdTableBar />} component={<Link to="/table" />}>
+            Table Reservation
+          </MenuItem>
+          <MenuItem
+            icon={<MdOutlineReviews />}
+            component={<Link to="/customer" />}
+          >
+            Customer Review
+          </MenuItem>
         </Menu>
       </Sidebar>
     </>
-    // </Box>
   );
 };
 
