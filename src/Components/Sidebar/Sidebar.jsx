@@ -22,19 +22,17 @@ import {
   Pizza,
   Clock2,
 } from "lucide-react";
-// import foodIcon from "@iconify-icons/fluent/food-16-regular";
-// import discountIcon from "@iconify-icons/bi/discount";
-// import deliveryBoyIcon from "@iconify-icons/tabler-icons/delivery-truck";
-// import pizzaIcon from "@iconify-icons/fluent/pizza-24-regular";
-// import timeManageIcon from "@iconify-icons/bi/clock";
-// import tableReservationIcon from "@iconify-icons/bi/table";
-// import customerReviewIcon from "@iconify-icons/fluent/comment-multiple-24-filled";
 
 const SidebarMenu = () => {
-  const [isPizzaActive, setIsPizzaActive] = useState(false);
+  const [activeMenu, setActiveMenu] = useState("dashboard"); // State to track active menu item
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleMenuClick = (menuName) => {
+    setActiveMenu(menuName);
+    // setIsSidebarOpen(true); // Ensure sidebar remains open when a menu item is clicked
+  };
 
   return (
-    // <Box border="1px solid red">
     <>
       <Sidebar
         rootStyles={{
@@ -69,50 +67,66 @@ const SidebarMenu = () => {
           menuItemStyles={{
             button: ({ active, isHovered }) => ({
               borderRadius: "10px",
-              color: active ? "white" : isHovered ? "#D60024" : "#424242",
-              backgroundColor: active
-                ? "#D60024"
-                : isHovered
-                ? "#D60024"
-                : "white",
+              color: active ? "white" : "#424242",
+              backgroundColor: active || isHovered ? "#D60024" : "white",
             }),
-            icon: ({ active, isHovered }) => ({
-              color: active || isHovered ? "white" : "#D60024",
+            icon: ({ active }) => ({
+              color: active ? "white" : "#D60024",
             }),
           }}
         >
           <MenuItem
             icon={<MdOutlineDashboard />}
+            active={activeMenu === "dashboard"}
+            onClick={() => handleMenuClick("dashboard")}
             component={<Link to="/" />}
-            // active
-            active={isPizzaActive}
           >
             Dashboard
           </MenuItem>
           <SubMenu
-            onOpenChange={(open) => setIsPizzaActive(open)}
+            defaultOpen={false}
+            onOpenChange={(open) => {
+              if (open) setActiveMenu("pizza");
+            }}
             icon={<Utensils />}
             label="Menu Items"
-            active={isPizzaActive}
           >
-            <MenuItem component={<Link to="/pizza" />}>Pizza</MenuItem>
+            <MenuItem
+              active={activeMenu === "pizza"}
+              onClick={() => handleMenuClick("pizza")}
+              component={<Link to="/pizza" />}
+            >
+              Pizza
+            </MenuItem>
             <MenuItem>Line charts</MenuItem>
           </SubMenu>
           <SubMenu icon={<Utensils />} label="Extra Items">
             <MenuItem>Dashboard</MenuItem>
-            <MenuItem> Line charts </MenuItem>
+            <MenuItem>Line charts</MenuItem>
           </SubMenu>
           <MenuItem icon={<TicketPercent />}>Offers</MenuItem>
           <MenuItem icon={<BellDot />}>Notifications</MenuItem>
-          <MenuItem icon={<Users />}>Delivery Boy</MenuItem>
-          <MenuItem icon={<Pizza />}>Orders</MenuItem>
-          <MenuItem icon={<Clock2 />}>Time Manage</MenuItem>
-          <MenuItem icon={<MdTableBar />}>Table Reservation</MenuItem>
-          <MenuItem icon={<MdOutlineReviews />}>Customer Review</MenuItem>
+          <MenuItem icon={<Users />} component={<Link to="/boy" />}>
+            Delivery Boy
+          </MenuItem>
+          <MenuItem icon={<Pizza />} component={<Link to="/orders" />}>
+            Orders
+          </MenuItem>
+          <MenuItem icon={<Clock2 />} component={<Link to="/time" />}>
+            Time Manage
+          </MenuItem>
+          <MenuItem icon={<MdTableBar />} component={<Link to="/table" />}>
+            Table Reservation
+          </MenuItem>
+          <MenuItem
+            icon={<MdOutlineReviews />}
+            component={<Link to="/customer" />}
+          >
+            Customer Review
+          </MenuItem>
         </Menu>
       </Sidebar>
     </>
-    // </Box>
   );
 };
 

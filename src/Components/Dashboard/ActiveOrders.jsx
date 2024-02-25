@@ -12,6 +12,7 @@ import { SearchIcon } from "lucide-react";
 import styled from "styled-components";
 import { updown } from "../../assets";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export const ActiveOrders = () => {
   const [search, setSearch] = useState("");
@@ -88,14 +89,16 @@ export const ActiveOrders = () => {
               </td>
               <td>12/01/2024</td>
               <td>
-                <Button
-                  py={6}
-                  px={12}
-                  borderRadius={16}
-                  bgColor={"brand.buttonbg"}
-                >
-                  View Details
-                </Button>
+                <Link to="/orders">
+                  <Button
+                    py={6}
+                    px={12}
+                    borderRadius={16}
+                    bgColor={"brand.buttonbg"}
+                  >
+                    View Details
+                  </Button>
+                </Link>
               </td>
             </tr>
             <tr>
@@ -145,14 +148,16 @@ export const ActiveOrders = () => {
               </td>
               <td>12/01/2024</td>
               <td>
-                <Button
-                  py={6}
-                  px={12}
-                  borderRadius={16}
-                  bgColor={"brand.buttonbg"}
-                >
-                  View Details
-                </Button>
+                <Link to="/orders">
+                  <Button
+                    py={6}
+                    px={12}
+                    borderRadius={16}
+                    bgColor={"brand.buttonbg"}
+                  >
+                    View Details
+                  </Button>
+                </Link>
               </td>
             </tr>
           </tbody>
@@ -161,6 +166,7 @@ export const ActiveOrders = () => {
     </Stack>
   );
 };
+
 const DIV = styled.div`
   table {
     border-collapse: separate;
