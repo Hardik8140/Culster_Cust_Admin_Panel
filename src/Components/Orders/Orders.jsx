@@ -15,6 +15,7 @@ import {
 import { SearchIcon } from "@chakra-ui/icons";
 import styled from "styled-components";
 import { updown } from "../../assets";
+import { Link } from "react-router-dom";
 
 const Orders = () => {
   const [search, setSearch] = useState("");
@@ -97,14 +98,16 @@ const Orders = () => {
                 </td>
                 <td>12/01/2024</td>
                 <td>
-                  <Button
-                    py={6}
-                    px={12}
-                    borderRadius={16}
-                    bgColor={"brand.buttonbg"}
-                  >
-                    View Details
-                  </Button>
+                  <Link to="/orders/:id">
+                    <Button
+                      py={6}
+                      px={12}
+                      borderRadius={16}
+                      bgColor={"brand.buttonbg"}
+                    >
+                      View Details
+                    </Button>
+                  </Link>
                 </td>
               </tr>
               <tr>
@@ -125,14 +128,16 @@ const Orders = () => {
                 </td>
                 <td>12/01/2024</td>
                 <td>
-                  <Button
-                    py={6}
-                    px={12}
-                    borderRadius={16}
-                    bgColor={"brand.buttonbg"}
-                  >
-                    View Details
-                  </Button>
+                  <Link to="/orders/:id">
+                    <Button
+                      py={6}
+                      px={12}
+                      borderRadius={16}
+                      bgColor={"brand.buttonbg"}
+                    >
+                      View Details
+                    </Button>
+                  </Link>
                 </td>
               </tr>
 
