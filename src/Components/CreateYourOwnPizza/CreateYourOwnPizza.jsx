@@ -1,7 +1,5 @@
-import { Box, Grid, Flex, Button } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, GridItem } from "@chakra-ui/react";
 import Layout from "../Layout/Layout";
-import styled from "styled-components";
-import { SelectType } from "../GridItems/SelectType";
 import { Name } from "../GridItems/Name";
 import { Description } from "../GridItems/Description";
 import { Image } from "../GridItems/Image";
@@ -13,6 +11,9 @@ import { Toppings } from "../GridItems/Toppings";
 import { Drizzle } from "../GridItems/Drizzle";
 import { MeatToppings } from "../GridItems/MeatToppings";
 import { Flavor } from "../GridItems/Flavor";
+import styled from "styled-components";
+import { Seasonings } from "../GridItems/Seasonings";
+import { Dippings } from "../GridItems/Dippings";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 
 const links = [
@@ -22,7 +23,7 @@ const links = [
     isCurrent: false,
   },
   {
-    title: "Pizza",
+    title: "Create your own pizza",
     link: "#",
     isCurrent: false,
   },
@@ -32,11 +33,10 @@ const links = [
     isCurrent: true,
   },
 ];
-export const AddNewPizza = () => {
+export const CreateYourOwnPizza = () => {
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
-    const type = form.querySelector("#type");
     const name = form.querySelector("#name");
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
@@ -56,6 +56,11 @@ export const AddNewPizza = () => {
     const finalMeatToppings = [];
     const flavor = form.querySelector("#checkbox_flavor");
     const finalFlavor = [];
+    const seasonings = form.querySelector("#checkbox_seasonings");
+    const finalSeasonings = [];
+    const dippings = form.querySelector("#checkbox_dippings");
+    const finalDippings = [];
+
     if (size.checked) {
       // get all values of size
       const sizeCheckbox = form.querySelectorAll(".checkbox_size");
@@ -149,8 +154,27 @@ export const AddNewPizza = () => {
         }
       }
     }
+
+    if (seasonings.checked) {
+      // get all values of seasonings
+      const seasoningsCheckbox = form.querySelectorAll(".checkbox_seasonings");
+      for (let i = 0; i < seasoningsCheckbox.length; i++) {
+        if (seasoningsCheckbox[i].checked) {
+          finalSeasonings.push(seasoningsCheckbox[i].name);
+        }
+      }
+    }
+
+    if (dippings.checked) {
+      // get all values of dippings
+      const dippingsCheckbox = form.querySelectorAll(".checkbox_dippings");
+      for (let i = 0; i < dippingsCheckbox.length; i++) {
+        if (dippingsCheckbox[i].checked) {
+          finalDippings.push(dippingsCheckbox[i].name);
+        }
+      }
+    }
     const data = {
-      type: type.value,
       name: name.value,
       description: description.value,
       image: image ? image.src : "",
@@ -162,6 +186,8 @@ export const AddNewPizza = () => {
       drizzle: finalDrizzle,
       meatToppings: finalMeatToppings,
       flavor: finalFlavor,
+      seasonings: finalSeasonings,
+      dippings: finalDippings,
     };
 
     console.log(data);
@@ -175,8 +201,9 @@ export const AddNewPizza = () => {
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <SelectType />
-              <Name />
+              <GridItem colSpan={2}>
+                <Name />
+              </GridItem>
               <Description />
               <Image />
               <Size />
@@ -187,6 +214,8 @@ export const AddNewPizza = () => {
               <Drizzle />
               <MeatToppings />
               <Flavor />
+              <Seasonings />
+              <Dippings />
             </Grid>
 
             <Flex gap={"20px"}>

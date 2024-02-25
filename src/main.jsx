@@ -22,6 +22,7 @@ const theme = extendTheme({
       black: "#000000",
       grey: "#919191",
       grey100: "#F0F0F0",
+      grey200: "#d8d8d8",
     },
   },
   fonts: {

@@ -1,18 +1,11 @@
-import { Box, Grid, Flex, Button } from "@chakra-ui/react";
+import { Box, Grid, Flex, Button, GridItem } from "@chakra-ui/react";
 import Layout from "../Layout/Layout";
 import styled from "styled-components";
-import { SelectType } from "../GridItems/SelectType";
-import { Name } from "../GridItems/Name";
-import { Description } from "../GridItems/Description";
 import { Image } from "../GridItems/Image";
-import { Size } from "../GridItems/Size";
-import { Crust } from "../GridItems/Crust";
-import { PaneerChicken } from "../GridItems/PaneerChicken";
-import { ExtraCheese } from "../GridItems/ExtraCheese";
-import { Toppings } from "../GridItems/Toppings";
-import { Drizzle } from "../GridItems/Drizzle";
-import { MeatToppings } from "../GridItems/MeatToppings";
 import { Flavor } from "../GridItems/Flavor";
+import { Detail } from "../GridItems/Detail";
+import { ExtraCheese } from "../GridItems/ExtraCheese";
+import { ExtraPatty } from "../GridItems/ExtraPatty";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 
 const links = [
@@ -22,77 +15,28 @@ const links = [
     isCurrent: false,
   },
   {
-    title: "Pizza",
+    title: "Burger",
     link: "#",
     isCurrent: false,
   },
   {
-    title: "Add New Pizza",
+    title: "Add New Burger",
     link: "#",
     isCurrent: true,
   },
 ];
-export const AddNewPizza = () => {
+export const AddNewBurger = () => {
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
-    const type = form.querySelector("#type");
     const name = form.querySelector("#name");
+    const price = form.querySelector("#price");
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
-    const size = form.querySelector("#checkbox_size");
-    const finalSize = [];
-    const crust = form.querySelector("#checkbox_crust");
-    const finalCrust = [];
-    const paneer = form.querySelector("#checkbox_paneer");
-    const finalPaneer = [];
     const cheese = form.querySelector("#checkbox_cheese");
     const finalCheese = [];
-    const toppings = form.querySelector("#checkbox_toppings");
-    const finalToppings = [];
-    const drizzle = form.querySelector("#checkbox_drizzle");
-    const finalDrizzle = [];
-    const meatToppings = form.querySelector("#checkbox_extrameat");
-    const finalMeatToppings = [];
     const flavor = form.querySelector("#checkbox_flavor");
     const finalFlavor = [];
-    if (size.checked) {
-      // get all values of size
-      const sizeCheckbox = form.querySelectorAll(".checkbox_size");
-      const sizePrice = form.querySelectorAll(".price_size");
-      for (let i = 0; i < sizeCheckbox.length; i++) {
-        if (sizeCheckbox[i].checked) {
-          finalSize.push({
-            title: sizeCheckbox[i].name,
-            price: +sizePrice[i].value,
-          });
-        }
-      }
-    }
-
-    if (crust.checked) {
-      // get all values of crust
-      const curstCheckbox = form.querySelectorAll(".checkbox_crust");
-      for (let i = 0; i < curstCheckbox.length; i++) {
-        if (curstCheckbox[i].checked) {
-          finalCrust.push(curstCheckbox[i].name);
-        }
-      }
-    }
-
-    if (paneer.checked) {
-      // get all values of paneer
-      const paneerCheckbox = form.querySelectorAll(".checkbox_paneer");
-      const paneerPrice = form.querySelectorAll(".price_paneer");
-      for (let i = 0; i < paneerCheckbox.length; i++) {
-        if (paneerCheckbox[i].checked) {
-          finalPaneer.push({
-            title: paneerCheckbox[i].name,
-            price: +paneerPrice[i].value,
-          });
-        }
-      }
-    }
 
     if (cheese.checked) {
       // get all values of cheese
@@ -108,38 +52,6 @@ export const AddNewPizza = () => {
       }
     }
 
-    if (toppings.checked) {
-      // get all values of toppings
-      const toppingsCheckbox = form.querySelectorAll(".checkbox_toppings");
-      for (let i = 0; i < toppingsCheckbox.length; i++) {
-        if (toppingsCheckbox[i].checked) {
-          finalToppings.push(toppingsCheckbox[i].name);
-        }
-      }
-    }
-
-    if (drizzle.checked) {
-      // get all values of drizzle
-      const drizzleCheckbox = form.querySelectorAll(".checkbox_drizzle");
-      for (let i = 0; i < drizzleCheckbox.length; i++) {
-        if (drizzleCheckbox[i].checked) {
-          finalDrizzle.push(drizzleCheckbox[i].name);
-        }
-      }
-    }
-
-    if (meatToppings.checked) {
-      // get all values of meatToppings
-      const meatToppingsCheckbox = form.querySelectorAll(
-        ".checkbox_meatToppings"
-      );
-      for (let i = 0; i < meatToppingsCheckbox.length; i++) {
-        if (meatToppingsCheckbox[i].checked) {
-          finalMeatToppings.push(meatToppingsCheckbox[i].name);
-        }
-      }
-    }
-
     if (flavor.checked) {
       // get all values of flavor
       const flavorCheckbox = form.querySelectorAll(".checkbox_flavor");
@@ -150,17 +62,11 @@ export const AddNewPizza = () => {
       }
     }
     const data = {
-      type: type.value,
       name: name.value,
+      price: +price.value,
       description: description.value,
       image: image ? image.src : "",
-      size: finalSize,
-      crust: finalCrust,
-      paneer: finalPaneer,
       extracheese: finalCheese,
-      toppings: finalToppings,
-      drizzle: finalDrizzle,
-      meatToppings: finalMeatToppings,
       flavor: finalFlavor,
     };
 
@@ -175,18 +81,13 @@ export const AddNewPizza = () => {
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <SelectType />
-              <Name />
-              <Description />
+              <Detail />
               <Image />
-              <Size />
-              <Crust />
-              <PaneerChicken />
-              <ExtraCheese />
-              <Toppings />
-              <Drizzle />
-              <MeatToppings />
-              <Flavor />
+              <Flavor title="BURGER FLAVOR" />
+              <ExtraPatty />
+              <GridItem colSpan={2}>
+                <ExtraCheese />
+              </GridItem>
             </Grid>
 
             <Flex gap={"20px"}>

@@ -1,4 +1,4 @@
-import { Box, Icon } from "@chakra-ui/react";
+import { Box, Icon, Stack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import {
   Sidebar,
@@ -34,13 +34,6 @@ const SidebarMenu = () => {
 
   return (
     <>
-      <Box
-        style={{
-          height: "114px",
-          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-          position: "relative",
-        }}
-      ></Box>
       <Sidebar
         rootStyles={{
           [`.${sidebarClasses.container}`]: {
