@@ -9,6 +9,7 @@ import Orders from "../Components/Orders/Orders.jsx";
 import TImeManage from "../Components/Time Manage/TImeManage.jsx";
 import TableReservation from "../Components/Table Reservation/TableReservation.jsx";
 import CustomerReview from "../Components/Coustomer Review/CustomerReview.jsx";
+import OrderDetails from "../Components/Orders/OrderDetails.jsx";
 
 const AllRoutes = () => {
   return (
@@ -19,6 +20,7 @@ const AllRoutes = () => {
       <Route path="/addpizza" element={<AddNewPizza />} />
       <Route path="/boy" element={<DeliveryBoy />} />
       <Route path="/orders" element={<Orders />} />
+      <Route path="/orders/:id" element={<OrderDetails />} />
       <Route path="/time" element={<TImeManage />} />
       <Route path="/table" element={<TableReservation />} />
       <Route path="/customer" element={<CustomerReview />} />
