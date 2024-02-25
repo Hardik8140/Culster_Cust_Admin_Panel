@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
   return (
     <Flex>
       <SidebarMenu />
-      <Box>{children}</Box>
+      <Box backgroundColor="brand.background">{children}</Box>
     </Flex>
   );
 };
