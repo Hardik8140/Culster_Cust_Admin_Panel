@@ -1,15 +1,5 @@
-import {
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Button,
-  Flex,
-  Grid,
-  GridItem,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, GridItem } from "@chakra-ui/react";
 import Layout from "../Layout/Layout";
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Name } from "../GridItems/Name";
 import { Description } from "../GridItems/Description";
 import { Image } from "../GridItems/Image";
@@ -24,7 +14,25 @@ import { Flavor } from "../GridItems/Flavor";
 import styled from "styled-components";
 import { Seasonings } from "../GridItems/Seasonings";
 import { Dippings } from "../GridItems/Dippings";
+import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 
+const links = [
+  {
+    title: "Menu Items",
+    link: "#",
+    isCurrent: false,
+  },
+  {
+    title: "Create your own pizza",
+    link: "#",
+    isCurrent: false,
+  },
+  {
+    title: "Add New Pizza",
+    link: "#",
+    isCurrent: true,
+  },
+];
 export const CreateYourOwnPizza = () => {
   const handleForm = (e) => {
     e.preventDefault();
@@ -188,29 +196,7 @@ export const CreateYourOwnPizza = () => {
     <Layout>
       <Box bgColor={"brand.dashboard"} px={"10px"} py={8} width={"82vw"}>
         <Box>
-          <Breadcrumb
-            spacing="8px"
-            color={"#D60024"}
-            fontSize={"20px"}
-            fontWeight={"500"}
-            separator={<ChevronRightIcon color="#D60024" />}
-          >
-            <BreadcrumbItem>
-              <BreadcrumbLink fontWeight={"700"} href="#">
-                Menu Items
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-
-            <BreadcrumbItem>
-              <BreadcrumbLink fontWeight={"700"} href="#">
-                Create your own pizza
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-
-            <BreadcrumbItem isCurrentPage color={"black"}>
-              <BreadcrumbLink href="#">Add New Pizza</BreadcrumbLink>
-            </BreadcrumbItem>
-          </Breadcrumb>
+          <Breadcrumber links={links} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
