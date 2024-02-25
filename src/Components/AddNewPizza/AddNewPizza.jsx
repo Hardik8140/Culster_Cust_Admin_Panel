@@ -26,73 +26,13 @@ import style from "./AddNewPIzza.module.css";
 import { dollar } from "../../assets";
 import { Size } from "../GridItems/Size";
 import { Crust } from "../GridItems/Crust";
+import { PaneerChicken } from "../GridItems/PaneerChicken";
+import { ExtraCheese } from "../GridItems/ExtraCheese";
+import { Toppings } from "../GridItems/Toppings";
+import { Drizzle } from "../GridItems/Drizzle";
+import { MeatToppings } from "../GridItems/MeatToppings";
+import { Flavor } from "../GridItems/Flavor";
 
-const paneer = [
-  {
-    title: "Paneer",
-  },
-  {
-    title: "Chiken",
-  },
-];
-
-const cheese = [
-  {
-    title: "Double Cheese",
-  },
-  {
-    title: "Trippel Cheese",
-  },
-];
-const toppings = [
-  {
-    title: "Baby Conrs",
-  },
-  {
-    title: "Fresh Mushroom",
-  },
-  {
-    title: "Pineapples",
-  },
-  {
-    title: "Red Paprika",
-  },
-  {
-    title: "Pineapples",
-  },
-  {
-    title: "Red Paprika",
-  },
-];
-const extraMeat = [
-  {
-    title: "Pepperoni",
-  },
-  {
-    title: "Bacon Crumble",
-  },
-  {
-    title: "Bacon Strips",
-  },
-  {
-    title: "Chicken",
-  },
-];
-
-const Drizzle = [
-  {
-    title: "Creamy Garlic",
-  },
-  {
-    title: "BBQ",
-  },
-  {
-    title: "Chilli Coriander",
-  },
-  {
-    title: "Spicy Tandori",
-  },
-];
 export const AddNewPizza = () => {
   const handleForm = (e) => {
     e.preventDefault();
@@ -101,30 +41,128 @@ export const AddNewPizza = () => {
     const name = form.querySelector("#name");
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
-    let size = form.querySelector("#checkbox_size");
-    const final = [];
-
+    const size = form.querySelector("#checkbox_size");
+    const finalSize = [];
+    const crust = form.querySelector("#checkbox_crust");
+    const finalCrust = [];
+    const paneer = form.querySelector("#checkbox_paneer");
+    const finalPaneer = [];
+    const cheese = form.querySelector("#checkbox_cheese");
+    const finalCheese = [];
+    const toppings = form.querySelector("#checkbox_toppings");
+    const finalToppings = [];
+    const drizzle = form.querySelector("#checkbox_drizzle");
+    const finalDrizzle = [];
+    const meatToppings = form.querySelector("#checkbox_extrameat");
+    const finalMeatToppings = [];
+    const flavor = form.querySelector("#checkbox_flavor");
+    const finalFlavor = [];
     if (size.checked) {
       // get all values of size
       const sizeCheckbox = form.querySelectorAll(".checkbox_size");
       const sizePrice = form.querySelectorAll(".price_size");
       for (let i = 0; i < sizeCheckbox.length; i++) {
         if (sizeCheckbox[i].checked) {
-          final.push({
+          finalSize.push({
             title: sizeCheckbox[i].name,
             price: +sizePrice[i].value,
           });
         }
       }
     }
-    size = final;
 
+    if (crust.checked) {
+      // get all values of crust
+      const curstCheckbox = form.querySelectorAll(".checkbox_crust");
+      for (let i = 0; i < curstCheckbox.length; i++) {
+        if (curstCheckbox[i].checked) {
+          finalCrust.push(curstCheckbox[i].name);
+        }
+      }
+    }
+
+    if (paneer.checked) {
+      // get all values of paneer
+      const paneerCheckbox = form.querySelectorAll(".checkbox_paneer");
+      const paneerPrice = form.querySelectorAll(".price_paneer");
+      for (let i = 0; i < paneerCheckbox.length; i++) {
+        if (paneerCheckbox[i].checked) {
+          finalPaneer.push({
+            title: paneerCheckbox[i].name,
+            price: +paneerPrice[i].value,
+          });
+        }
+      }
+    }
+
+    if (cheese.checked) {
+      // get all values of cheese
+      const cheeseCheckbox = form.querySelectorAll(".checkbox_cheese");
+      const cheesePrice = form.querySelectorAll(".price_cheese");
+      for (let i = 0; i < cheeseCheckbox.length; i++) {
+        if (cheeseCheckbox[i].checked) {
+          finalCheese.push({
+            title: cheeseCheckbox[i].name,
+            price: +cheesePrice[i].value,
+          });
+        }
+      }
+    }
+
+    if (toppings.checked) {
+      // get all values of toppings
+      const toppingsCheckbox = form.querySelectorAll(".checkbox_toppings");
+      for (let i = 0; i < toppingsCheckbox.length; i++) {
+        if (toppingsCheckbox[i].checked) {
+          finalToppings.push(toppingsCheckbox[i].name);
+        }
+      }
+    }
+
+    if (drizzle.checked) {
+      // get all values of drizzle
+      const drizzleCheckbox = form.querySelectorAll(".checkbox_drizzle");
+      for (let i = 0; i < drizzleCheckbox.length; i++) {
+        if (drizzleCheckbox[i].checked) {
+          finalDrizzle.push(drizzleCheckbox[i].name);
+        }
+      }
+    }
+
+    if (meatToppings.checked) {
+      // get all values of meatToppings
+      const meatToppingsCheckbox = form.querySelectorAll(
+        ".checkbox_meatToppings"
+      );
+      for (let i = 0; i < meatToppingsCheckbox.length; i++) {
+        if (meatToppingsCheckbox[i].checked) {
+          finalMeatToppings.push(meatToppingsCheckbox[i].name);
+        }
+      }
+    }
+
+    if (flavor.checked) {
+      // get all values of flavor
+      const flavorCheckbox = form.querySelectorAll(".checkbox_flavor");
+      for (let i = 0; i < flavorCheckbox.length; i++) {
+        if (flavorCheckbox[i].checked) {
+          finalFlavor.push(flavorCheckbox[i].name);
+        }
+      }
+    }
     const data = {
       type: type.value,
       name: name.value,
       description: description.value,
       image: image ? image.src : "",
-      size: size,
+      size: finalSize,
+      crust: finalCrust,
+      paneer: finalPaneer,
+      extracheese: finalCheese,
+      toppings: finalToppings,
+      drizzle: finalDrizzle,
+      meatToppings: finalMeatToppings,
+      flavor: finalFlavor,
     };
 
     console.log(data);
@@ -142,18 +180,18 @@ export const AddNewPizza = () => {
           >
             <BreadcrumbItem>
               <BreadcrumbLink fontWeight={"700"} href="#">
-                Home
+                Menu Items
               </BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbItem>
               <BreadcrumbLink fontWeight={"700"} href="#">
-                About
+                Pizza
               </BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbItem isCurrentPage color={"black"}>
-              <BreadcrumbLink href="#">Contact</BreadcrumbLink>
+              <BreadcrumbLink href="#">Add New Pizza</BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
         </Box>
@@ -166,367 +204,12 @@ export const AddNewPizza = () => {
               <Image />
               <Size />
               <Crust />
-              <GridItem
-                boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
-                px={"20px"}
-                py={"16px"}
-                bgColor={"brand.white"}
-              >
-                <Stack>
-                  <Flex justifyContent={"space-between"}>
-                    <Text fontWeight={"500"}>PANEER/CHICKEN</Text>
-                    <div className="container">
-                      <input
-                        type="checkbox"
-                        className="checkbox"
-                        id="checkbox_paneer"
-                      />
-                      <label className="switch" htmlFor="checkbox_paneer">
-                        <span className="slider"></span>
-                      </label>
-                    </div>
-                  </Flex>
-                  <hr />
-                  <Box>
-                    <Flex my={2} justifyContent={"space-between"}>
-                      <Text color={"brand.grey"}>Select Size</Text>
-                      <Text color={"brand.grey"} textAlign={"end"}>
-                        Add Price
-                      </Text>
-                    </Flex>
-                    {paneer.map(({ title }, ind) => (
-                      <Flex
-                        key={ind}
-                        justifyContent={"space-between"}
-                        gap={2}
-                        width={"100%"}
-                        my={4}
-                      >
-                        <Flex minW={"50%"}>
-                          <Box>
-                            <label className={style.customCheckbox}>
-                              <input name="dummy" type="checkbox" />
-                              <span className={style.checkmark}></span>
-                            </label>
-                          </Box>
-                          <Text>{title}</Text>
-                        </Flex>
-                        <Box justifySelf={"flex-end"}>
-                          <InputGroup size={"sm"}>
-                            <InputLeftAddon
-                              borderRadius={"10px 0 0 10px"}
-                              bgColor={"brand.black"}
-                            >
-                              <img src={dollar} />
-                            </InputLeftAddon>
-                            <Input
-                              borderRadius={"0px 10px 10px 0px"}
-                              type="number"
-                              w={"auto"}
-                              placeholder="price"
-                            />
-                          </InputGroup>
-                        </Box>
-                      </Flex>
-                    ))}
-                  </Box>
-                </Stack>
-              </GridItem>
-
-              <GridItem
-                boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
-                px={"20px"}
-                py={"16px"}
-                bgColor={"brand.white"}
-              >
-                <Stack>
-                  <Flex justifyContent={"space-between"}>
-                    <Text fontWeight={"500"}>EXTRA CHEESE</Text>
-                    <div className="container">
-                      <input
-                        type="checkbox"
-                        className="checkbox"
-                        id="checkbox_cheese"
-                      />
-                      <label className="switch" htmlFor="checkbox_cheese">
-                        <span className="slider"></span>
-                      </label>
-                    </div>
-                  </Flex>
-                  <hr />
-                  <Box>
-                    <Flex my={2} justifyContent={"space-between"}>
-                      <Text color={"brand.grey"}>Select Size</Text>
-                      <Text color={"brand.grey"} textAlign={"end"}>
-                        Add Price
-                      </Text>
-                    </Flex>
-                    {cheese.map(({ title }, ind) => (
-                      <Flex
-                        key={ind}
-                        justifyContent={"space-between"}
-                        gap={2}
-                        width={"100%"}
-                        my={2}
-                      >
-                        <Flex minW={"50%"}>
-                          <Box>
-                            <label className={style.customCheckbox}>
-                              <input name="dummy" type="checkbox" />
-                              <span className={style.checkmark}></span>
-                            </label>
-                          </Box>
-                          <Text>{title}</Text>
-                        </Flex>
-                        <Box justifySelf={"flex-end"}>
-                          <InputGroup size={"sm"}>
-                            <InputLeftAddon
-                              borderRadius={"10px 0 0 10px"}
-                              bgColor={"brand.black"}
-                            >
-                              <img src={dollar} />
-                            </InputLeftAddon>
-                            <Input
-                              borderRadius={"0px 10px 10px 0px"}
-                              type="number"
-                              w={"auto"}
-                              placeholder="price"
-                            />
-                          </InputGroup>
-                        </Box>
-                      </Flex>
-                    ))}
-                  </Box>
-                </Stack>
-              </GridItem>
-              <GridItem
-                boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
-                px={"20px"}
-                py={"16px"}
-                bgColor={"brand.white"}
-              >
-                <Stack>
-                  <Flex justifyContent={"space-between"}>
-                    <Text fontWeight={"500"}>TOPPINGS (2 FREE TOPPINGS)</Text>
-                    <div className="container">
-                      <input
-                        type="checkbox"
-                        className="checkbox"
-                        id="checkbox_toppings"
-                      />
-                      <label className="switch" htmlFor="checkbox_toppings">
-                        <span className="slider"></span>
-                      </label>
-                    </div>
-                  </Flex>
-                  <hr />
-                  <Box>
-                    <Flex my={2} justifyContent={"space-between"}>
-                      <Text color={"brand.grey"}>Select Toppings</Text>
-                      <Text color={"brand.grey"} textAlign={"end"}>
-                        Default Toppings
-                      </Text>
-                    </Flex>
-                    <Box overflowY={"scroll"} maxH={"165px"} pr={6}>
-                      {toppings.map(({ title }, ind) => (
-                        <Flex
-                          key={ind}
-                          justifyContent={"space-between"}
-                          width={"100%"}
-                          my={4}
-                        >
-                          <Flex minW={"50%"}>
-                            <Box>
-                              <label className={style.customCheckbox}>
-                                <input name="dummy" type="checkbox" />
-                                <span className={style.checkmark}></span>
-                              </label>
-                            </Box>
-                            <Text>{title}</Text>
-                          </Flex>
-                          <Box justifySelf={"flex-end"}>
-                            <div className="green_container">
-                              <input
-                                type="checkbox"
-                                className="green_checkbox"
-                                id={`green_checkbox_${ind}`}
-                              />
-                              <label
-                                className="switch"
-                                htmlFor={`green_checkbox_${ind}`}
-                              >
-                                <span className="slider"></span>
-                              </label>
-                            </div>
-                          </Box>
-                        </Flex>
-                      ))}
-                    </Box>
-                  </Box>
-                </Stack>
-              </GridItem>
-              <GridItem
-                boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
-                px={"20px"}
-                py={"16px"}
-                bgColor={"brand.white"}
-              >
-                <Stack>
-                  <Flex justifyContent={"space-between"}>
-                    <Text fontWeight={"500"}>DRIZZLE IT UP!</Text>
-                    <div className="container">
-                      <input
-                        type="checkbox"
-                        className="checkbox"
-                        id="checkbox_drizzle"
-                      />
-                      <label className="switch" htmlFor="checkbox_drizzle">
-                        <span className="slider"></span>
-                      </label>
-                    </div>
-                  </Flex>
-                  <hr />
-                  <Box>
-                    <Text color={"brand.grey"}>Select Drizzle It Up!</Text>
-                    <Box overflowY={"scroll"} maxH={"165px"} pr={6}>
-                      {Drizzle.map(({ title }, ind) => (
-                        <Flex
-                          key={ind}
-                          justifyContent={"space-between"}
-                          width={"100%"}
-                          my={4}
-                        >
-                          <Flex minW={"50%"}>
-                            <Box>
-                              <label className={style.customCheckbox}>
-                                <input name="dummy" type="checkbox" />
-                                <span className={style.checkmark}></span>
-                              </label>
-                            </Box>
-                            <Text>{title}</Text>
-                          </Flex>
-                        </Flex>
-                      ))}
-                    </Box>
-                  </Box>
-                </Stack>
-              </GridItem>
-              <GridItem
-                boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
-                px={"20px"}
-                py={"16px"}
-                bgColor={"brand.white"}
-              >
-                <Stack>
-                  <Flex justifyContent={"space-between"}>
-                    <Text fontWeight={"500"}>EXTRA MEAT TOPPING</Text>
-                    <div className="container">
-                      <input
-                        type="checkbox"
-                        className="checkbox"
-                        id="checkbox_extrameat"
-                      />
-                      <label className="switch" htmlFor="checkbox_extrameat">
-                        <span className="slider"></span>
-                      </label>
-                    </div>
-                  </Flex>
-                  <hr />
-                  <Box>
-                    <Flex my={2} justifyContent={"space-between"}>
-                      <Text color={"brand.grey"}>
-                        Select Extra Meat Toppings
-                      </Text>
-                      <Text color={"brand.grey"} textAlign={"end"}>
-                        Default Toppings
-                      </Text>
-                    </Flex>
-                    <Box overflowY={"scroll"} maxH={"165px"} pr={6}>
-                      {extraMeat.map(({ title }, ind) => (
-                        <Flex
-                          key={ind}
-                          justifyContent={"space-between"}
-                          width={"100%"}
-                          my={4}
-                        >
-                          <Flex minW={"50%"}>
-                            <Box>
-                              <label className={style.customCheckbox}>
-                                <input name="dummy" type="checkbox" />
-                                <span className={style.checkmark}></span>
-                              </label>
-                            </Box>
-                            <Text>{title}</Text>
-                          </Flex>
-                          <Box justifySelf={"flex-end"}>
-                            <div className="green_container">
-                              <input
-                                type="checkbox"
-                                className="green_checkbox"
-                                id={`green_checkbox_extra_${ind}`}
-                              />
-                              <label
-                                className="switch"
-                                htmlFor={`green_checkbox_extra_${ind}`}
-                              >
-                                <span className="slider"></span>
-                              </label>
-                            </div>
-                          </Box>
-                        </Flex>
-                      ))}
-                    </Box>
-                  </Box>
-                </Stack>
-              </GridItem>
-              <GridItem
-                boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
-                px={"20px"}
-                py={"16px"}
-                bgColor={"brand.white"}
-              >
-                <Stack>
-                  <Flex justifyContent={"space-between"}>
-                    <Text fontWeight={"500"}>
-                      FLAVOR (BASE SAUCE AND TOP SEASONINGS)
-                    </Text>
-                    <div className="container">
-                      <input
-                        type="checkbox"
-                        className="checkbox"
-                        id="checkbox_flavor"
-                      />
-                      <label className="switch" htmlFor="checkbox_flavor">
-                        <span className="slider"></span>
-                      </label>
-                    </div>
-                  </Flex>
-                  <hr />
-                  <Box>
-                    <Text color={"brand.grey"}>Select Flovor</Text>
-                    <Box overflowY={"scroll"} maxH={"165px"} pr={6}>
-                      {Drizzle.map(({ title }, ind) => (
-                        <Flex
-                          key={ind}
-                          justifyContent={"space-between"}
-                          width={"100%"}
-                          my={4}
-                        >
-                          <Flex minW={"50%"}>
-                            <Box>
-                              <label className={style.customCheckbox}>
-                                <input name="dummy" type="checkbox" />
-                                <span className={style.checkmark}></span>
-                              </label>
-                            </Box>
-                            <Text>{title}</Text>
-                          </Flex>
-                        </Flex>
-                      ))}
-                    </Box>
-                  </Box>
-                </Stack>
-              </GridItem>
+              <PaneerChicken />
+              <ExtraCheese />
+              <Toppings />
+              <Drizzle />
+              <MeatToppings />
+              <Flavor />
             </Grid>
 
             <Flex gap={"20px"}>

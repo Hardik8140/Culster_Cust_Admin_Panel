@@ -42,16 +42,31 @@ export const Crust = () => {
         </Flex>
         <hr />
         <Text color={"brand.grey"}>Select Crust</Text>
-        <Stack gap={4} my={2}>
+        <Stack
+          gap={4}
+          my={2}
+          pointerEvents={!checked && "none"}
+          opacity={!checked && "0.6"}
+        >
           {crust.map(({ title }, ind) => (
             <Flex key={ind} alignItems={"center"} gap={2}>
               <Box>
                 <label className={style.customCheckbox}>
-                  <input name={title} type="checkbox" />
+                  <input
+                    name={title}
+                    type="checkbox"
+                    className="checkbox_crust"
+                    id={`${title}_checkbox_crust`}
+                  />
                   <span className={style.checkmark}></span>
                 </label>
               </Box>
-              <Text>{title}</Text>
+              <label
+                htmlFor={`${title}_checkbox_crust`}
+                style={{ cursor: "pointer" }}
+              >
+                {title}
+              </label>
             </Flex>
           ))}
         </Stack>

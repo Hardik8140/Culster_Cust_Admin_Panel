@@ -11,23 +11,17 @@ import {
 import { dollar } from "../../assets";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../Hooks/useCheckbox";
-const size = [
+const cheese = [
   {
-    title: "Medium (12 inches)",
-  },
-
-  {
-    title: "Large (14 inches)",
+    title: "Double Cheese",
   },
   {
-    title: "Extra Large (16 inches)",
-  },
-  {
-    title: "Party Size (15 x 21 inches)",
+    title: "Trippel Cheese",
   },
 ];
-export const Size = () => {
+export const ExtraCheese = () => {
   const [checked, handleChange] = useCheckbox(false);
+
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -37,15 +31,15 @@ export const Size = () => {
     >
       <Stack>
         <Flex justifyContent={"space-between"}>
-          <Text fontWeight={"500"}>SIZE</Text>
+          <Text fontWeight={"500"}>EXTRA CHEESE</Text>
           <div className="container">
             <input
               type="checkbox"
               className="checkbox"
-              id="checkbox_size"
               onChange={handleChange}
+              id="checkbox_cheese"
             />
-            <label className="switch" htmlFor="checkbox_size">
+            <label className="switch" htmlFor="checkbox_cheese">
               <span className="slider"></span>
             </label>
           </div>
@@ -59,13 +53,13 @@ export const Size = () => {
             </Text>
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {size.map(({ title }, ind) => (
+            {cheese.map(({ title }, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
                 gap={2}
                 width={"100%"}
-                my={4}
+                my={2}
               >
                 <Flex minW={"50%"}>
                   <Box>
@@ -73,14 +67,14 @@ export const Size = () => {
                       <input
                         name={title}
                         type="checkbox"
-                        id={`${title}_checkbox_size`}
-                        className="checkbox_size"
+                        className="checkbox_cheese"
+                        id={`${title}_checkbox_cheese`}
                       />
                       <span className={style.checkmark}></span>
                     </label>
                   </Box>
                   <label
-                    htmlFor={`${title}_checkbox_size`}
+                    htmlFor={`${title}_checkbox_cheese`}
                     style={{ cursor: "pointer" }}
                   >
                     {title}
@@ -99,8 +93,6 @@ export const Size = () => {
                       type="number"
                       w={"auto"}
                       placeholder="price"
-                      className="price_size"
-                      id={`${title}_price_size`}
                     />
                   </InputGroup>
                 </Box>
