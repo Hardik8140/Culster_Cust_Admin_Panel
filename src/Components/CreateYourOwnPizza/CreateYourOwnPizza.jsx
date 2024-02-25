@@ -50,6 +50,8 @@ export const CreateYourOwnPizza = () => {
     const finalFlavor = [];
     const seasonings = form.querySelector("#checkbox_seasonings");
     const finalSeasonings = [];
+    const dippings = form.querySelector("#checkbox_dippings");
+    const finalDippings = [];
 
     if (size.checked) {
       // get all values of size
@@ -154,6 +156,16 @@ export const CreateYourOwnPizza = () => {
         }
       }
     }
+
+    if (dippings.checked) {
+      // get all values of dippings
+      const dippingsCheckbox = form.querySelectorAll(".checkbox_dippings");
+      for (let i = 0; i < dippingsCheckbox.length; i++) {
+        if (dippingsCheckbox[i].checked) {
+          finalDippings.push(dippingsCheckbox[i].name);
+        }
+      }
+    }
     const data = {
       name: name.value,
       description: description.value,
@@ -166,6 +178,8 @@ export const CreateYourOwnPizza = () => {
       drizzle: finalDrizzle,
       meatToppings: finalMeatToppings,
       flavor: finalFlavor,
+      seasonings: finalSeasonings,
+      dippings: finalDippings,
     };
 
     console.log(data);
@@ -189,7 +203,7 @@ export const CreateYourOwnPizza = () => {
 
             <BreadcrumbItem>
               <BreadcrumbLink fontWeight={"700"} href="#">
-                Pizza
+                Create your own pizza
               </BreadcrumbLink>
             </BreadcrumbItem>
 
