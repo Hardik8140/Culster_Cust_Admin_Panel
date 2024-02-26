@@ -11,22 +11,18 @@ import {
 import { dollar } from "../../assets";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../Hooks/useCheckbox";
-const serving = [
+const size = [
   {
-    title: "Sauce on wings",
+    title: "Spice it up",
     isPrice: false,
   },
 
   {
-    title: "Sauce on side",
-    isPrice: false,
-  },
-  {
-    title: "wings on fires (tossed)",
+    title: "Cheese it up!",
     isPrice: true,
   },
 ];
-export const TypeOfServings = () => {
+export const PastaModifier = () => {
   const [checked, handleChange] = useCheckbox(false);
   return (
     <GridItem
@@ -37,15 +33,15 @@ export const TypeOfServings = () => {
     >
       <Stack>
         <Flex justifyContent={"space-between"}>
-          <Text fontWeight={"500"}>TYPE OF SERVINGS(REQUIRED)</Text>
+          <Text fontWeight={"500"}>PASTA MODIFIER</Text>
           <div className="container">
             <input
               type="checkbox"
               className="checkbox"
-              id="checkbox_servings"
+              id="checkbox_pastamodifier"
               onChange={handleChange}
             />
-            <label className="switch" htmlFor="checkbox_servings">
+            <label className="switch" htmlFor="checkbox_pastamodifier">
               <span className="slider"></span>
             </label>
           </div>
@@ -53,18 +49,18 @@ export const TypeOfServings = () => {
         <hr />
         <Box>
           <Flex my={2} justifyContent={"space-between"}>
-            <Text color={"brand.grey"}>Select Servings</Text>
+            <Text color={"brand.grey"}>Select Size</Text>
             <Text color={"brand.grey"} textAlign={"end"}>
               Add Price
             </Text>
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {serving.map(({ title, isPrice }, ind) => (
+            {size.map(({ title, isPrice }, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
-                gap={2}
                 alignItems={"center"}
+                gap={2}
                 width={"100%"}
                 my={4}
               >
@@ -74,14 +70,14 @@ export const TypeOfServings = () => {
                       <input
                         name={title}
                         type="checkbox"
-                        id={`${title}_checkbox_servings`}
-                        className={`checkbox_servings_price_${isPrice}`}
+                        id={`${title}_checkbox_pastamodifier`}
+                        className={`checkbox_pastamodifier_price_${isPrice}`}
                       />
                       <span className={style.checkmark}></span>
                     </label>
                   </Box>
                   <label
-                    htmlFor={`${title}_checkbox_servings`}
+                    htmlFor={`${title}_checkbox_pastamodifier`}
                     style={{ cursor: "pointer" }}
                   >
                     {title}
@@ -89,7 +85,7 @@ export const TypeOfServings = () => {
                 </Flex>
                 {isPrice && (
                   <Box justifySelf={"flex-end"}>
-                    <InputGroup servings={"sm"}>
+                    <InputGroup pastamodifier={"sm"}>
                       <InputLeftAddon
                         borderRadius={"10px 0 0 10px"}
                         bgColor={"brand.black"}
@@ -101,8 +97,8 @@ export const TypeOfServings = () => {
                         type="number"
                         w={"auto"}
                         placeholder="price"
-                        className="price_servings"
-                        id={`${title}_price_servings`}
+                        className="price_pastamodifier"
+                        id={`${title}_price_pastamodifier`}
                       />
                     </InputGroup>
                   </Box>

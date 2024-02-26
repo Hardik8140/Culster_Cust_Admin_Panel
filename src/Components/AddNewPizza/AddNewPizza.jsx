@@ -1,4 +1,4 @@
-import { Box, Grid, Flex, Button } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import Layout from "../Layout/Layout";
 import styled from "styled-components";
 import { SelectType } from "../GridItems/SelectType";
@@ -14,6 +14,7 @@ import { Drizzle } from "../GridItems/Drizzle";
 import { MeatToppings } from "../GridItems/MeatToppings";
 import { Flavor } from "../GridItems/Flavor";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
+import { FormButtons } from "../FormButtons";
 
 const links = [
   {
@@ -168,7 +169,7 @@ export const AddNewPizza = () => {
   };
   return (
     <Layout>
-      <Box bgColor={"brand.dashboard"} px={"10px"} py={8} width={"82vw"}>
+      <Box>
         <Box>
           <Breadcrumber links={links} />
         </Box>
@@ -189,28 +190,7 @@ export const AddNewPizza = () => {
               <Flavor />
             </Grid>
 
-            <Flex gap={"20px"}>
-              <Button
-                px={"28px"}
-                boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
-                py={"18px"}
-                variant={"simple"}
-                bgColor={"brand.grey200"}
-              >
-                Cancel
-              </Button>
-              <Button
-                px={"28px"}
-                boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
-                py={"18px"}
-                color={"white"}
-                variant={"simple"}
-                bgColor={"brand.primary"}
-                type="submit"
-              >
-                Save
-              </Button>
-            </Flex>
+            <FormButtons />
           </form>
         </DIV>
       </Box>
