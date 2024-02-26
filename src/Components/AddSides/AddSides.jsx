@@ -1,12 +1,9 @@
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import Layout from "../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
 import { Detail } from "../GridItems/Detail";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
-import { WingsSauces } from "../GridItems/WingsSauces";
-import { TypeOfServings } from "../GridItems/TypeOfServings";
-import { SizeOfWingBox } from "../GridItems/SizeOfWingBox";
 import { FormButtons } from "../FormButtons";
 
 const links = [
@@ -16,17 +13,17 @@ const links = [
     isCurrent: false,
   },
   {
-    title: "House of Wings!!!",
+    title: "Sides",
     link: "#",
     isCurrent: false,
   },
   {
-    title: "Add House Of  Wings!!!",
+    title: "Add Sides",
     link: "#",
     isCurrent: true,
   },
 ];
-export const HouseOfWings = () => {
+export const AddSides = () => {
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -34,72 +31,12 @@ export const HouseOfWings = () => {
     const price = form.querySelector("#price");
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
-    const typeofservings = form.querySelector("#checkbox_servings");
-    const finalTypeOfServings = [];
-    const sizeofwingbox = form.querySelector("#checkbox_sizeofwingbox");
-    const finalSizeOfWingBox = [];
 
-    if (typeofservings.checked) {
-      // get all values of typeofservings
-      const typeofservingsCheckboxTrue = form.querySelectorAll(
-        ".checkbox_servings_price_true"
-      );
-      const typeofservingsPrice = form.querySelectorAll(
-        ".price_typeofservings"
-      );
-      for (let i = 0; i < typeofservingsCheckboxTrue.length; i++) {
-        if (typeofservingsCheckboxTrue[i].checked) {
-          finalTypeOfServings.push({
-            title: typeofservingsCheckboxTrue[i].name,
-            price: +typeofservingsPrice[i].value,
-          });
-        }
-      }
-
-      const typeofservingsCheckboxFalse = form.querySelectorAll(
-        ".checkbox_servings_price_false"
-      );
-      for (let i = 0; i < typeofservingsCheckboxFalse.length; i++) {
-        if (typeofservingsCheckboxFalse[i].checked) {
-          finalTypeOfServings.push({
-            title: typeofservingsCheckboxFalse[i].name,
-          });
-        }
-      }
-    }
-    if (sizeofwingbox.checked) {
-      // get all values of sizeofwingbox
-      const sizeofwingboxCheckboxTrue = form.querySelectorAll(
-        ".checkbox_sizeofwingbox_price_true"
-      );
-      const sizeofwingboxPrice = form.querySelectorAll(".price_sizeofwingbox");
-      for (let i = 0; i < sizeofwingboxCheckboxTrue.length; i++) {
-        if (sizeofwingboxCheckboxTrue[i].checked) {
-          finalSizeOfWingBox.push({
-            title: sizeofwingboxCheckboxTrue[i].name,
-            price: +sizeofwingboxPrice[i].value,
-          });
-        }
-      }
-
-      const sizeofwingboxCheckboxFalse = form.querySelectorAll(
-        ".checkbox_sizeofwingbox_price_false"
-      );
-      for (let i = 0; i < sizeofwingboxCheckboxFalse.length; i++) {
-        if (sizeofwingboxCheckboxFalse[i].checked) {
-          finalSizeOfWingBox.push({
-            title: sizeofwingboxCheckboxFalse[i].name,
-          });
-        }
-      }
-    }
     const data = {
       name: name.value,
       price: +price.value,
       description: description.value,
       image: image ? image.src : "",
-      typeofservings: finalTypeOfServings,
-      sizeofwingbox: finalSizeOfWingBox,
     };
 
     console.log(data);
@@ -115,13 +52,7 @@ export const HouseOfWings = () => {
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
               <Detail />
               <Image />
-              <TypeOfServings />
-              <SizeOfWingBox />
-              <GridItem colSpan={2}>
-                <WingsSauces />
-              </GridItem>
             </Grid>
-
             <FormButtons />
           </form>
         </DIV>

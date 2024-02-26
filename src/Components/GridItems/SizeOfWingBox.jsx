@@ -42,10 +42,10 @@ export const SizeOfWingBox = () => {
             <input
               type="checkbox"
               className="checkbox"
-              id="checkbox_servings"
+              id="checkbox_sizeofwingbox"
               onChange={handleChange}
             />
-            <label className="switch" htmlFor="checkbox_servings">
+            <label className="switch" htmlFor="checkbox_sizeofwingbox">
               <span className="slider"></span>
             </label>
           </div>
@@ -74,14 +74,14 @@ export const SizeOfWingBox = () => {
                       <input
                         name={title}
                         type="checkbox"
-                        id={`${title}_checkbox_servings`}
-                        className="checkbox_servings"
+                        id={`${title}_checkbox_sizeofwingbox`}
+                        className={`checkbox_sizeofwingbox_price_${isPrice}`}
                       />
                       <span className={style.checkmark}></span>
                     </label>
                   </Box>
                   <label
-                    htmlFor={`${title}_checkbox_servings`}
+                    htmlFor={`${title}_checkbox_sizeofwingbox`}
                     style={{ cursor: "pointer" }}
                   >
                     {title}
@@ -89,7 +89,7 @@ export const SizeOfWingBox = () => {
                 </Flex>
                 {isPrice && (
                   <Box justifySelf={"flex-end"}>
-                    <InputGroup servings={"sm"}>
+                    <InputGroup sizeofwingbox={"sm"}>
                       <InputLeftAddon
                         borderRadius={"10px 0 0 10px"}
                         bgColor={"brand.black"}
@@ -101,8 +101,8 @@ export const SizeOfWingBox = () => {
                         type="number"
                         w={"auto"}
                         placeholder="price"
-                        className="price_servings"
-                        id={`${title}_price_servings`}
+                        className="price_sizeofwingbox"
+                        id={`${title}_price_sizeofwingbox`}
                       />
                     </InputGroup>
                   </Box>

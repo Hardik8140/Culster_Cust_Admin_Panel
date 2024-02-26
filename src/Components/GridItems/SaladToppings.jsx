@@ -1,33 +1,19 @@
-import {
-  Box,
-  Flex,
-  GridItem,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import { dollar } from "../../assets";
+import { Box, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../Hooks/useCheckbox";
-const serving = [
-  {
-    title: "Sauce on wings",
-    isPrice: false,
-  },
 
+const saladtoppings = [
   {
-    title: "Sauce on side",
-    isPrice: false,
+    title: "Paneer",
   },
   {
-    title: "wings on fires (tossed)",
-    isPrice: true,
+    title: "Chiken",
   },
 ];
-export const TypeOfServings = () => {
+
+export const SaladToppings = () => {
   const [checked, handleChange] = useCheckbox(false);
+
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -37,15 +23,15 @@ export const TypeOfServings = () => {
     >
       <Stack>
         <Flex justifyContent={"space-between"}>
-          <Text fontWeight={"500"}>TYPE OF SERVINGS(REQUIRED)</Text>
+          <Text fontWeight={"500"}>SALAD TOPPGINS</Text>
           <div className="container">
             <input
               type="checkbox"
               className="checkbox"
-              id="checkbox_servings"
               onChange={handleChange}
+              id="checkbox_saladtoppings"
             />
-            <label className="switch" htmlFor="checkbox_servings">
+            <label className="switch" htmlFor="checkbox_saladtoppings">
               <span className="slider"></span>
             </label>
           </div>
@@ -53,18 +39,17 @@ export const TypeOfServings = () => {
         <hr />
         <Box>
           <Flex my={2} justifyContent={"space-between"}>
-            <Text color={"brand.grey"}>Select Servings</Text>
+            <Text color={"brand.grey"}>Select Size</Text>
             <Text color={"brand.grey"} textAlign={"end"}>
               Add Price
             </Text>
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {serving.map(({ title, isPrice }, ind) => (
+            {saladtoppings.map(({ title }, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
                 gap={2}
-                alignItems={"center"}
                 width={"100%"}
                 my={4}
               >
@@ -74,39 +59,19 @@ export const TypeOfServings = () => {
                       <input
                         name={title}
                         type="checkbox"
-                        id={`${title}_checkbox_servings`}
-                        className={`checkbox_servings_price_${isPrice}`}
+                        className="checkbox_saladtoppings"
+                        id={`${title}_checkbox_panner`}
                       />
                       <span className={style.checkmark}></span>
                     </label>
                   </Box>
                   <label
-                    htmlFor={`${title}_checkbox_servings`}
                     style={{ cursor: "pointer" }}
+                    htmlFor={`${title}_checkbox_panner`}
                   >
                     {title}
                   </label>
                 </Flex>
-                {isPrice && (
-                  <Box justifySelf={"flex-end"}>
-                    <InputGroup servings={"sm"}>
-                      <InputLeftAddon
-                        borderRadius={"10px 0 0 10px"}
-                        bgColor={"brand.black"}
-                      >
-                        <img src={dollar} />
-                      </InputLeftAddon>
-                      <Input
-                        borderRadius={"0px 10px 10px 0px"}
-                        type="number"
-                        w={"auto"}
-                        placeholder="price"
-                        className="price_servings"
-                        id={`${title}_price_servings`}
-                      />
-                    </InputGroup>
-                  </Box>
-                )}
               </Flex>
             ))}
           </Box>

@@ -1,4 +1,4 @@
-import { Box, Grid, Flex, Button, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import Layout from "../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
@@ -7,6 +7,7 @@ import { Detail } from "../GridItems/Detail";
 import { ExtraCheese } from "../GridItems/ExtraCheese";
 import { ExtraPatty } from "../GridItems/ExtraPatty";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
+import { FormButtons } from "../FormButtons";
 
 const links = [
   {
@@ -37,6 +38,8 @@ export const AddNewBurger = () => {
     const finalCheese = [];
     const flavor = form.querySelector("#checkbox_flavor");
     const finalFlavor = [];
+    const extrapatty = form.querySelector("#checkbox_patty");
+    const finalExtraPatty = [];
 
     if (cheese.checked) {
       // get all values of cheese
@@ -61,6 +64,16 @@ export const AddNewBurger = () => {
         }
       }
     }
+
+    if (extrapatty.checked) {
+      // get all values of extrapatty
+      const extrapattyCheckbox = form.querySelectorAll(".checkbox_patty");
+      for (let i = 0; i < extrapattyCheckbox.length; i++) {
+        if (extrapattyCheckbox[i].checked) {
+          finalExtraPatty.push(extrapattyCheckbox[i].name);
+        }
+      }
+    }
     const data = {
       name: name.value,
       price: +price.value,
@@ -68,13 +81,14 @@ export const AddNewBurger = () => {
       image: image ? image.src : "",
       extracheese: finalCheese,
       flavor: finalFlavor,
+      extrapatty: finalExtraPatty,
     };
 
     console.log(data);
   };
   return (
     <Layout>
-      <Box bgColor={"brand.dashboard"} px={"10px"} py={8} width={"82vw"}>
+      <Box>
         <Box>
           <Breadcrumber links={links} />
         </Box>
@@ -90,28 +104,7 @@ export const AddNewBurger = () => {
               </GridItem>
             </Grid>
 
-            <Flex gap={"20px"}>
-              <Button
-                px={"28px"}
-                boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
-                py={"18px"}
-                variant={"simple"}
-                bgColor={"brand.grey200"}
-              >
-                Cancel
-              </Button>
-              <Button
-                px={"28px"}
-                boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
-                py={"18px"}
-                color={"white"}
-                variant={"simple"}
-                bgColor={"brand.primary"}
-                type="submit"
-              >
-                Save
-              </Button>
-            </Flex>
+            <FormButtons />
           </form>
         </DIV>
       </Box>

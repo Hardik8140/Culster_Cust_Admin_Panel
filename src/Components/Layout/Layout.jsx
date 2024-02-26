@@ -15,7 +15,9 @@ const Layout = ({ children }) => {
             position: "relative",
           }}
         ></Box>
-        <Box>{children}</Box>
+        <Box bgColor={"brand.dashboard"} px={"10px"} py={8} width={"82vw"}>
+          {children}
+        </Box>
       </Stack>
     </Flex>
   );

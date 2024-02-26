@@ -4,10 +4,8 @@ import styled from "styled-components";
 import { Image } from "../GridItems/Image";
 import { Detail } from "../GridItems/Detail";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
-import { WingsSauces } from "../GridItems/WingsSauces";
-import { TypeOfServings } from "../GridItems/TypeOfServings";
-import { SizeOfWingBox } from "../GridItems/SizeOfWingBox";
 import { FormButtons } from "../FormButtons";
+import { PaneerChicken } from "../GridItems/PaneerChicken";
 
 const links = [
   {
@@ -16,17 +14,17 @@ const links = [
     isCurrent: false,
   },
   {
-    title: "House of Wings!!!",
+    title: "Nanza",
     link: "#",
     isCurrent: false,
   },
   {
-    title: "Add House Of  Wings!!!",
+    title: "Add Nanza",
     link: "#",
     isCurrent: true,
   },
 ];
-export const HouseOfWings = () => {
+export const AddNanza = () => {
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -34,72 +32,53 @@ export const HouseOfWings = () => {
     const price = form.querySelector("#price");
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
-    const typeofservings = form.querySelector("#checkbox_servings");
-    const finalTypeOfServings = [];
-    const sizeofwingbox = form.querySelector("#checkbox_sizeofwingbox");
-    const finalSizeOfWingBox = [];
-
-    if (typeofservings.checked) {
-      // get all values of typeofservings
-      const typeofservingsCheckboxTrue = form.querySelectorAll(
-        ".checkbox_servings_price_true"
+    const toppings = form.querySelector("#checkbox_toppings");
+    const finalToppings = [];
+    const pastamodifier = form.querySelector("#checkbox_pastamodifier");
+    const finalPastaModifier = [];
+    if (pastamodifier.checked) {
+      // get all values of pastamodifier
+      const pastamodifierCheckboxTrue = form.querySelectorAll(
+        ".checkbox_pastamodifier_price_true"
       );
-      const typeofservingsPrice = form.querySelectorAll(
-        ".price_typeofservings"
-      );
-      for (let i = 0; i < typeofservingsCheckboxTrue.length; i++) {
-        if (typeofservingsCheckboxTrue[i].checked) {
-          finalTypeOfServings.push({
-            title: typeofservingsCheckboxTrue[i].name,
-            price: +typeofservingsPrice[i].value,
+      const pastamodifierPrice = form.querySelectorAll(".price_pastamodifier");
+      for (let i = 0; i < pastamodifierCheckboxTrue.length; i++) {
+        if (pastamodifierCheckboxTrue[i].checked) {
+          finalPastaModifier.push({
+            title: pastamodifierCheckboxTrue[i].name,
+            price: +pastamodifierPrice[i].value,
           });
         }
       }
 
-      const typeofservingsCheckboxFalse = form.querySelectorAll(
-        ".checkbox_servings_price_false"
+      const pastamodifierCheckboxFalse = form.querySelectorAll(
+        ".checkbox_pastamodifier_price_false"
       );
-      for (let i = 0; i < typeofservingsCheckboxFalse.length; i++) {
-        if (typeofservingsCheckboxFalse[i].checked) {
-          finalTypeOfServings.push({
-            title: typeofservingsCheckboxFalse[i].name,
+      for (let i = 0; i < pastamodifierCheckboxFalse.length; i++) {
+        if (pastamodifierCheckboxFalse[i].checked) {
+          finalPastaModifier.push({
+            title: pastamodifierCheckboxFalse[i].name,
           });
         }
       }
     }
-    if (sizeofwingbox.checked) {
-      // get all values of sizeofwingbox
-      const sizeofwingboxCheckboxTrue = form.querySelectorAll(
-        ".checkbox_sizeofwingbox_price_true"
-      );
-      const sizeofwingboxPrice = form.querySelectorAll(".price_sizeofwingbox");
-      for (let i = 0; i < sizeofwingboxCheckboxTrue.length; i++) {
-        if (sizeofwingboxCheckboxTrue[i].checked) {
-          finalSizeOfWingBox.push({
-            title: sizeofwingboxCheckboxTrue[i].name,
-            price: +sizeofwingboxPrice[i].value,
-          });
-        }
-      }
-
-      const sizeofwingboxCheckboxFalse = form.querySelectorAll(
-        ".checkbox_sizeofwingbox_price_false"
-      );
-      for (let i = 0; i < sizeofwingboxCheckboxFalse.length; i++) {
-        if (sizeofwingboxCheckboxFalse[i].checked) {
-          finalSizeOfWingBox.push({
-            title: sizeofwingboxCheckboxFalse[i].name,
-          });
+    if (toppings.checked) {
+      // get all values of toppings
+      const toppingsCheckbox = form.querySelectorAll(".checkbox_toppings");
+      for (let i = 0; i < toppingsCheckbox.length; i++) {
+        if (toppingsCheckbox[i].checked) {
+          finalToppings.push(toppingsCheckbox[i].name);
         }
       }
     }
+
     const data = {
       name: name.value,
       price: +price.value,
       description: description.value,
       image: image ? image.src : "",
-      typeofservings: finalTypeOfServings,
-      sizeofwingbox: finalSizeOfWingBox,
+      toppings: finalToppings,
+      pastamodifier: finalPastaModifier,
     };
 
     console.log(data);
@@ -115,13 +94,10 @@ export const HouseOfWings = () => {
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
               <Detail />
               <Image />
-              <TypeOfServings />
-              <SizeOfWingBox />
               <GridItem colSpan={2}>
-                <WingsSauces />
+                <PaneerChicken />
               </GridItem>
             </Grid>
-
             <FormButtons />
           </form>
         </DIV>

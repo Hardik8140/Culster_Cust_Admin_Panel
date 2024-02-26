@@ -1,21 +1,17 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import Layout from "../Layout/Layout";
-import { Name } from "../GridItems/Name";
-import { Description } from "../GridItems/Description";
+import styled from "styled-components";
+
 import { Image } from "../GridItems/Image";
-import { Size } from "../GridItems/Size";
-import { Crust } from "../GridItems/Crust";
-import { PaneerChicken } from "../GridItems/PaneerChicken";
+
 import { ExtraCheese } from "../GridItems/ExtraCheese";
 import { Toppings } from "../GridItems/Toppings";
 import { Drizzle } from "../GridItems/Drizzle";
 import { MeatToppings } from "../GridItems/MeatToppings";
-import { Flavor } from "../GridItems/Flavor";
-import styled from "styled-components";
-import { Seasonings } from "../GridItems/Seasonings";
-import { Dippings } from "../GridItems/Dippings";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../FormButtons";
+import { Detail } from "../GridItems/Detail";
+import { Seasonings } from "../GridItems/Seasonings";
 
 const links = [
   {
@@ -24,29 +20,25 @@ const links = [
     isCurrent: false,
   },
   {
-    title: "Create your own pizza",
+    title: "Cheesy Fun",
     link: "#",
     isCurrent: false,
   },
   {
-    title: "Add New Pizza",
+    title: "Add Cheesy Fun",
     link: "#",
     isCurrent: true,
   },
 ];
-export const CreateYourOwnPizza = () => {
+export const AddCheesyFun = () => {
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.querySelector("#name");
     const description = form.querySelector("#description");
+    const price = form.querySelector("#price");
     const image = form.querySelector("#image");
-    const size = form.querySelector("#checkbox_size");
-    const finalSize = [];
-    const crust = form.querySelector("#checkbox_crust");
-    const finalCrust = [];
-    const paneer = form.querySelector("#checkbox_paneer");
-    const finalPaneer = [];
+
     const cheese = form.querySelector("#checkbox_cheese");
     const finalCheese = [];
     const toppings = form.querySelector("#checkbox_toppings");
@@ -55,51 +47,8 @@ export const CreateYourOwnPizza = () => {
     const finalDrizzle = [];
     const meatToppings = form.querySelector("#checkbox_extrameat");
     const finalMeatToppings = [];
-    const flavor = form.querySelector("#checkbox_flavor");
-    const finalFlavor = [];
     const seasonings = form.querySelector("#checkbox_seasonings");
     const finalSeasonings = [];
-    const dippings = form.querySelector("#checkbox_dippings");
-    const finalDippings = [];
-
-    if (size.checked) {
-      // get all values of size
-      const sizeCheckbox = form.querySelectorAll(".checkbox_size");
-      const sizePrice = form.querySelectorAll(".price_size");
-      for (let i = 0; i < sizeCheckbox.length; i++) {
-        if (sizeCheckbox[i].checked) {
-          finalSize.push({
-            title: sizeCheckbox[i].name,
-            price: +sizePrice[i].value,
-          });
-        }
-      }
-    }
-
-    if (crust.checked) {
-      // get all values of crust
-      const curstCheckbox = form.querySelectorAll(".checkbox_crust");
-      for (let i = 0; i < curstCheckbox.length; i++) {
-        if (curstCheckbox[i].checked) {
-          finalCrust.push(curstCheckbox[i].name);
-        }
-      }
-    }
-
-    if (paneer.checked) {
-      // get all values of paneer
-      const paneerCheckbox = form.querySelectorAll(".checkbox_paneer");
-      const paneerPrice = form.querySelectorAll(".price_paneer");
-      for (let i = 0; i < paneerCheckbox.length; i++) {
-        if (paneerCheckbox[i].checked) {
-          finalPaneer.push({
-            title: paneerCheckbox[i].name,
-            price: +paneerPrice[i].value,
-          });
-        }
-      }
-    }
-
     if (cheese.checked) {
       // get all values of cheese
       const cheeseCheckbox = form.querySelectorAll(".checkbox_cheese");
@@ -146,16 +95,6 @@ export const CreateYourOwnPizza = () => {
       }
     }
 
-    if (flavor.checked) {
-      // get all values of flavor
-      const flavorCheckbox = form.querySelectorAll(".checkbox_flavor");
-      for (let i = 0; i < flavorCheckbox.length; i++) {
-        if (flavorCheckbox[i].checked) {
-          finalFlavor.push(flavorCheckbox[i].name);
-        }
-      }
-    }
-
     if (seasonings.checked) {
       // get all values of seasonings
       const seasoningsCheckbox = form.querySelectorAll(".checkbox_seasonings");
@@ -165,30 +104,16 @@ export const CreateYourOwnPizza = () => {
         }
       }
     }
-
-    if (dippings.checked) {
-      // get all values of dippings
-      const dippingsCheckbox = form.querySelectorAll(".checkbox_dippings");
-      for (let i = 0; i < dippingsCheckbox.length; i++) {
-        if (dippingsCheckbox[i].checked) {
-          finalDippings.push(dippingsCheckbox[i].name);
-        }
-      }
-    }
     const data = {
+      price: price.value,
       name: name.value,
       description: description.value,
       image: image ? image.src : "",
-      size: finalSize,
-      crust: finalCrust,
-      paneer: finalPaneer,
       extracheese: finalCheese,
       toppings: finalToppings,
       drizzle: finalDrizzle,
       meatToppings: finalMeatToppings,
-      flavor: finalFlavor,
       seasonings: finalSeasonings,
-      dippings: finalDippings,
     };
 
     console.log(data);
@@ -202,21 +127,15 @@ export const CreateYourOwnPizza = () => {
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <GridItem colSpan={2}>
-                <Name />
-              </GridItem>
-              <Description />
+              <Detail />
               <Image />
-              <Size />
-              <Crust />
-              <PaneerChicken />
-              <ExtraCheese />
               <Toppings />
               <Drizzle />
               <MeatToppings />
-              <Flavor />
-              <Seasonings />
-              <Dippings />
+              <ExtraCheese />
+              <GridItem colSpan={2}>
+                <Seasonings />
+              </GridItem>
             </Grid>
 
             <FormButtons />
