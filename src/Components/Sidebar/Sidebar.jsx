@@ -1,5 +1,5 @@
-import { Box, Icon, Stack } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { Box, Icon, ListItem, Stack, UnorderedList } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import {
   Sidebar,
   Menu,
@@ -13,7 +13,7 @@ import {
   MdOutlineReviews,
   MdTableBar,
 } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   TicketPercent,
   Utensils,
@@ -22,22 +22,39 @@ import {
   Pizza,
   Clock2,
 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { getMenuItem } from "../../Redux/MeniItems/action";
 
 const SidebarMenu = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard"); // State to track active menu item
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { menuItem, loading, error } = useSelector(
+    (store) => store.menuItemReducer
+  );
+  console.log(menuItem);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(getMenuItem());
+  }, [dispatch]);
 
   const handleMenuClick = (menuName) => {
     setActiveMenu(menuName);
-    // setIsSidebarOpen(true); // Ensure sidebar remains open when a menu item is clicked
+  };
+
+  const handleMenuItemClick = (name) => {
+    const path = `${name.toLowerCase().replace(/\s+/g, "")}`;
+    navigate(path);
   };
 
   return (
-    <>
+    <div style={{ height: "100vh", overflowY: "auto" }}>
       <Sidebar
         rootStyles={{
           [`.${sidebarClasses.container}`]: {
-            position: "fixed",
+            // position: "fixed",
+            position: "--webkit-sticky",
             top: 0,
             left: 0,
             zIndex: 100,
@@ -46,6 +63,7 @@ const SidebarMenu = () => {
             height: "auto",
             width: "240px",
             boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+            overflowY: "auto",
           },
         }}
       >
@@ -91,7 +109,18 @@ const SidebarMenu = () => {
             icon={<Utensils />}
             label="Menu Items"
           >
-          
+            {Array.isArray(menuItem) &&
+              menuItem.map((el, i) => (
+                <Box key={i} pl="3rem" pt={2} pb={2}>
+                  <UnorderedList alignItems="center">
+                    <ListItem
+                      onClick={() => handleMenuItemClick(`/${el.name}`)}
+                    >
+                      <Link>{el.name}</Link>
+                    </ListItem>
+                  </UnorderedList>
+                </Box>
+              ))}
             {/* <MenuItem
               active={activeMenu === "pizza"}
               onClick={() => handleMenuClick("pizza")}
@@ -99,7 +128,6 @@ const SidebarMenu = () => {
             >
               Pizza
             </MenuItem> */}
-            <MenuItem>Line charts</MenuItem>
           </SubMenu>
           <SubMenu icon={<Utensils />} label="Extra Items">
             <MenuItem>Dashboard</MenuItem>
@@ -127,7 +155,7 @@ const SidebarMenu = () => {
           </MenuItem>
         </Menu>
       </Sidebar>
-    </>
+    </div>
   );
 };
 

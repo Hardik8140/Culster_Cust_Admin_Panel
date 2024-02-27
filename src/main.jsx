@@ -7,7 +7,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { mode } from "@chakra-ui/theme-tools";
-import {store} from './'
+import { store } from "./Redux/store.js";
 const theme = extendTheme({
   colors: {
     brand: {
