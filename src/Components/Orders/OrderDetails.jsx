@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../Layout/Layout";
 import {
   Box,
@@ -11,6 +11,17 @@ import {
   Grid,
   GridItem,
   Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Step,
   StepDescription,
   StepIcon,
@@ -21,9 +32,10 @@ import {
   StepTitle,
   Stepper,
   Text,
+  useDisclosure,
   useSteps,
 } from "@chakra-ui/react";
-import { ChevronRightIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { logo, updown } from "../../assets";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -38,15 +50,28 @@ const steps = [
 ];
 
 const OrderDetails = () => {
-  const { activeStep, setActiveStep } = useSteps({
-    index: 1,
-    count: steps.length,
-  });
+  const [orderAccepted, setOrderAccepted] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  //   const { activeStep, setActiveStep } = useSteps({
+  //     index: 1,
+  //     count: steps.length,
+  //   });
+  const handleAcceptOrder = () => {
+    setOrderAccepted(true);
+  };
+
+  const activeStep = orderAccepted ? 1 : 0;
 
   const activeStepText = steps[activeStep].description;
 
   const max = steps.length - 1;
   const progressPercent = (activeStep / max) * 100;
+
+  //   const activeStepText = steps[activeStep].description;
+
+  //   const max = steps.length - 1;
+  //   const progressPercent = (activeStep / max) * 100;
   return (
     <Layout>
       <Box pl={8} pr={8} pt={4} w="68rem">
@@ -66,7 +91,7 @@ const OrderDetails = () => {
           </BreadcrumbItem>
         </Breadcrumb>
 
-        <Box
+        {/* <Box
           display="flex"
           justifyContent="space-between"
           alignItems="center"
@@ -90,6 +115,68 @@ const OrderDetails = () => {
               Reject
             </Button>
           </Box>
+        </Box> */}
+
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          pb={4}
+          //   border="1px solid red"
+        >
+          <Text fontSize="2rem" fontWeight="bold">
+            #0002
+          </Text>
+
+          {orderAccepted ? (
+            <Box
+              //   border="1px solid red"
+              w="30%"
+              display="flex"
+              justifyContent="space-between"
+            >
+              <Button bg="lightgray">Print Recipe</Button>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  bg="brand.add"
+                  color="white"
+                  rightIcon={<ChevronDownIcon />}
+                >
+                  Order Preparing
+                </MenuButton>
+                <MenuList>
+                  <MenuItem onClick={onOpen}>Assign Order</MenuItem>
+                  <MenuItem>On the Way</MenuItem>
+                </MenuList>
+              </Menu>
+
+              <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Modal Title</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>{/* <Lorem count={2} /> */}</ModalBody>
+
+                  <ModalFooter></ModalFooter>
+                </ModalContent>
+              </Modal>
+            </Box>
+          ) : (
+            <Box
+              // border="1px solid red"
+              w="18%"
+              display="flex"
+              justifyContent="space-between"
+            >
+              <Button bg="brand.add" color="white" onClick={handleAcceptOrder}>
+                Accept
+              </Button>
+              <Button bg="brand.primary" color="white">
+                Reject
+              </Button>
+            </Box>
+          )}
         </Box>
 
         <Box display="flex" gap="10px">
