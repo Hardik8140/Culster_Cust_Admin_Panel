@@ -3,11 +3,9 @@ import { Dashboard } from "../Components/Dashboard/Dashboard.jsx";
 import { Login } from "../Components/Login/Login";
 import Pizza from "../Components/MenuItems/Pizza";
 
-import { AddNewPizza } from "../Components/AddNewPizza/AddNewPizza.jsx";
-
-import { CreateYourOwnPizza } from "../Components/CreateYourOwnPizza/CreateYourOwnPizza.jsx";
-import { AddNewBurger } from "../Components/AddNewBurger/AddNewBurger.jsx";
-import { HouseOfWings } from "../Components/HouseOfWings/HouseOfWings.jsx";
+import { CreateYourOwnPizza } from "../Components/MenuItems/CreateYourOwnPizza/CreateYourOwnPizza.jsx";
+import { AddNewBurger } from "../Components/MenuItems/AddNewBurger/AddNewBurger.jsx";
+import { HouseOfWings } from "../Components/MenuItems/HouseOfWings/HouseOfWings.jsx";
 
 import DeliveryBoy from "../Components/Delivery Boy/DeliveryBoy.jsx";
 import Orders from "../Components/Orders/Orders.jsx";
@@ -15,12 +13,17 @@ import TImeManage from "../Components/Time Manage/TImeManage.jsx";
 import TableReservation from "../Components/Table Reservation/TableReservation.jsx";
 import CustomerReview from "../Components/Coustomer Review/CustomerReview.jsx";
 import OrderDetails from "../Components/Orders/OrderDetails.jsx";
-import { AddPastas } from "../Components/AddPastas/AddPastas.jsx";
-import { AddNanza } from "../Components/AddNanza/AddNanza.jsx";
-import { AddCheesyFun } from "../Components/AddCheesyFun/AddCheesyFun.jsx";
-import { AddSides } from "../Components/AddSides/AddSides.jsx";
-import { AddSalads } from "../Components/AddSalads/AddSalads.jsx";
-import { AddDippingSauces } from "../Components/AddDippingSauces/AddDippingSauces.jsx";
+import { AddPastas } from "../Components/MenuItems/AddPastas/AddPastas.jsx";
+import { AddNanza } from "../Components/MenuItems/AddNanza/AddNanza.jsx";
+import { AddCheesyFun } from "../Components/MenuItems/AddCheesyFun/AddCheesyFun.jsx";
+import { AddSides } from "../Components/MenuItems/AddSides/AddSides.jsx";
+import { AddSalads } from "../Components/MenuItems/AddSalads/AddSalads.jsx";
+import { AddDippingSauces } from "../Components/MenuItems/AddDippingSauces/AddDippingSauces.jsx";
+import { AddSweetTreat } from "../Components/MenuItems/AddSweetTreat/AddSweetTreat.jsx";
+import { AddCultureCrustSpecialThinkShakes } from "../Components/MenuItems/AddCultureCrustSpecialThinkShakes/AddCultureCrustSpecialThinkShakes.jsx";
+import { AddDrinks } from "../Components/MenuItems/AddDrinks/AddDrinks.jsx";
+import { AddDrinksCanPop } from "../Components/MenuItems/AddDrinksCansPop/AddDrinksCanPop.jsx";
+import { AddNewPizza } from "../Components/MenuItems/AddNewPizza/AddNewPizza.jsx";
 
 const AllRoutes = () => {
   return (
@@ -39,6 +42,13 @@ const AllRoutes = () => {
       <Route path="/add/sides" element={<AddSides />} />
       <Route path="/add/saladtoppings" element={<AddSalads />} />
       <Route path="/add/dippingsauces" element={<AddDippingSauces />} />
+      <Route path="/add/sweettreat" element={<AddSweetTreat />} />
+      <Route
+        path="/add/thikshakes"
+        element={<AddCultureCrustSpecialThinkShakes />}
+      />
+      <Route path="/add/drinkscan" element={<AddDrinksCanPop />} />
+      <Route path="/add/drinks" element={<AddDrinks />} />
 
       <Route path="/boy" element={<DeliveryBoy />} />
       <Route path="/orders" element={<Orders />} />
