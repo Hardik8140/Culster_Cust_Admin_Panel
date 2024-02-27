@@ -1,5 +1,4 @@
 import { Flex } from "antd";
-import React from "react";
 import SidebarMenu from "../Sidebar/Sidebar";
 import { Box, Stack } from "@chakra-ui/react";
 
