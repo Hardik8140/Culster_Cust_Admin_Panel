@@ -7,6 +7,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { mode } from "@chakra-ui/theme-tools";
+import {store} from './'
 const theme = extendTheme({
   colors: {
     brand: {
@@ -42,7 +43,7 @@ const theme = extendTheme({
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Provider>
+  <Provider store={store}>
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <React.StrictMode>

@@ -98,13 +98,14 @@ const SidebarMenu = () => {
             icon={<Utensils />}
             label="Menu Items"
           >
-            <MenuItem
+          
+            {/* <MenuItem
               active={activeMenu === "pizza"}
               onClick={() => handleMenuClick("pizza")}
               component={<Link to="/pizza" />}
             >
               Pizza
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem>Line charts</MenuItem>
           </SubMenu>
           <SubMenu icon={<Utensils />} label="Extra Items">
