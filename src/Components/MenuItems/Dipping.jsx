@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import Layout from "../Layout/Layout";
 import {
   Box,
   Button,
@@ -11,14 +9,17 @@ import {
   InputLeftElement,
   Text,
 } from "@chakra-ui/react";
-import { AddIcon, SearchIcon } from "@chakra-ui/icons";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
+import Layout from "../Layout/Layout";
+import { Delete, PhoneIcon, SearchIcon, Trash } from "lucide-react";
 import styled from "styled-components";
-import { RiDeleteBin7Line } from "react-icons/ri";
-import { CiEdit } from "react-icons/ci";
 import { updown } from "../../assets";
+import { CiEdit } from "react-icons/ci";
+import { RiDeleteBin7Line } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
-const DeliveryBoy = () => {
+const Dipping = () => {
   const [search, setSearch] = useState("");
   const handleSearch = (event) => {
     setSearch(event.target.value);
@@ -35,7 +36,7 @@ const DeliveryBoy = () => {
     <Layout>
       <Box mt={3} w="68.7rem" backgroundColor="brand.background">
         <Heading as="h4" size="sm">
-          Delivery Boy
+          Food Items
         </Heading>
 
         <Box display="flex" justifyContent="space-between" p={6}>
@@ -56,7 +57,7 @@ const DeliveryBoy = () => {
             color="white"
             p="1rem"
           >
-            <Link to="/addpizza">Add new Driver</Link>
+            <Link to="/add/dippingsauces">Add new Dipping Sauces</Link>
           </Button>
         </Box>
       </Box>
@@ -86,11 +87,10 @@ const DeliveryBoy = () => {
               </th>
               <th>
                 <Flex gap={1}>
-                  <Text>Mobile Number</Text>
+                  <Text>Price</Text>
                   <img src={updown} onClick={handleOrderPrice} />
                 </Flex>
               </th>
-              <th>Email Address</th>
               <th>
                 <Flex gap={1}>
                   <Text>Status</Text>
@@ -103,9 +103,8 @@ const DeliveryBoy = () => {
           <tbody>
             <tr>
               <td>#00001</td>
-              <td>Hardik Gajera</td>
-              <td>+91 8849619764</td>
-              <td>hardik.gajera.d.84@gmail.com</td>
+              <td>pizza name</td>
+              <td>$ 5.00</td>
               <td>
                 <Text
                   bgColor={"brown"}
@@ -113,7 +112,7 @@ const DeliveryBoy = () => {
                   borderRadius={"2rem"}
                   p={".5rem 1.5rem"}
                 >
-                  Available
+                  In Stock
                 </Text>
               </td>
               <td>
@@ -121,12 +120,10 @@ const DeliveryBoy = () => {
                   <IconButton
                     icon={<CiEdit size="40px" color="darkgreen" />}
                     backgroundColor="transparent"
-                    _hover={{ backgroundColor: "none" }}
                   />
                   <IconButton
-                    icon={<RiDeleteBin7Line size="40px" color="red" />}
+                    icon={<RiDeleteBin7Line size="40px" color="darkgreen" />}
                     backgroundColor="transparent"
-                    _hover={{ backgroundColor: "none" }}
                   />
                 </Box>
               </td>
@@ -136,7 +133,6 @@ const DeliveryBoy = () => {
               <td>#00002</td>
               <td>pizza name</td>
               <td>$ 5.00</td>
-              <td>Indian Style</td>
               <td>
                 <Text
                   bgColor={"brown"}
@@ -157,12 +153,10 @@ const DeliveryBoy = () => {
                   <IconButton
                     icon={<CiEdit size="40px" color="darkgreen" />}
                     backgroundColor="transparent"
-                    _hover={{ backgroundColor: "none" }}
                   />
                   <IconButton
-                    icon={<RiDeleteBin7Line size="40px" color="red" />}
+                    icon={<RiDeleteBin7Line size="40px" color="darkgreen" />}
                     backgroundColor="transparent"
-                    _hover={{ backgroundColor: "none" }}
                   />
                 </Box>
               </td>
@@ -174,7 +168,7 @@ const DeliveryBoy = () => {
   );
 };
 
-export default DeliveryBoy;
+export default Dipping;
 
 const DIV = styled.div`
   /* border: 1px solid red; */
@@ -195,6 +189,6 @@ const DIV = styled.div`
   }
 
   tbody > tr {
-    background-color: #f3f3f3;
+    background-color: #e9e9e9;
   }
 `;
