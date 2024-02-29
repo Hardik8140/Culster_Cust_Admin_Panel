@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ERROR, GOT_ITEMS_INGREDIANTS } from "../actionType"
+import { ERROR, FETCH_MENU_ITEM_FAILURE, FETCH_MENU_ITEM_REQUEST, FETCH_MENU_ITEM_SUCCESS, GOT_ITEMS_INGREDIANTS } from "../actionType"
 import { itemsIngrediants } from "../../data"
 
 export const get_Ingrediants = (id) => async (dispatch) => {
@@ -16,3 +16,15 @@ export const get_Ingrediants = (id) => async (dispatch) => {
         dispatch({ type: ERROR, payload: error.message })
     }
 }
+
+export const getMenuItem = () => async (dispatch) => {
+    dispatch({ type: FETCH_MENU_ITEM_REQUEST });
+    try {
+        let res = await axios.get(
+            `http://ec2-54-172-26-24.compute-1.amazonaws.com:8080/api/item/category`
+        );
+        dispatch({ type: FETCH_MENU_ITEM_SUCCESS, payload: res.data.data });
+    } catch (error) {
+        dispatch({ type: FETCH_MENU_ITEM_FAILURE, payload: error.message });
+    }
+};
