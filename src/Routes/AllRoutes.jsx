@@ -24,6 +24,8 @@ import { AddCultureCrustSpecialThinkShakes } from "../Components/MenuItems/AddCu
 import { AddDrinks } from "../Components/MenuItems/AddDrinks/AddDrinks.jsx";
 import { AddDrinksCanPop } from "../Components/MenuItems/AddDrinksCansPop/AddDrinksCanPop.jsx";
 import { AddNewPizza } from "../Components/MenuItems/AddNewPizza/AddNewPizza.jsx";
+import { Toppings } from "../Components/ExtraItems/Toppings.jsx";
+import { Drizzle } from "../Components/ExtraItems/Drizzle.jsx";
 
 const AllRoutes = () => {
   return (
@@ -49,6 +51,8 @@ const AllRoutes = () => {
       />
       <Route path="/add/drinkscan" element={<AddDrinksCanPop />} />
       <Route path="/add/drinks" element={<AddDrinks />} />
+      <Route path="/extra/toppings" element={<Toppings />} />
+      <Route path="/extra/drizzle" element={<Drizzle />} />
 
       <Route path="/boy" element={<DeliveryBoy />} />
       <Route path="/orders" element={<Orders />} />

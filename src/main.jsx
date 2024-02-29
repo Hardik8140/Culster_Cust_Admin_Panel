@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
@@ -7,7 +6,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { mode } from "@chakra-ui/theme-tools";
-import {store} from './'
+import { store } from "./Redux/store.js";
 const theme = extendTheme({
   colors: {
     brand: {
@@ -47,9 +46,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <BrowserRouter>
       <ChakraProvider theme={theme}>
-        <React.StrictMode>
+        <>
           <App />
-        </React.StrictMode>
+        </>
       </ChakraProvider>
     </BrowserRouter>
   </Provider>

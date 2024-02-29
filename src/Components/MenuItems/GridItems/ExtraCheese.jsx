@@ -19,7 +19,7 @@ const cheese = [
     title: "Trippel Cheese",
   },
 ];
-export const ExtraCheese = () => {
+export const ExtraCheese = ({ values = cheese }) => {
   const [checked, handleChange] = useCheckbox(false);
 
   return (
@@ -53,7 +53,7 @@ export const ExtraCheese = () => {
             </Text>
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {cheese.map(({ title }, ind) => (
+            {Object.keys(values).map((key, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
@@ -65,19 +65,19 @@ export const ExtraCheese = () => {
                   <Box>
                     <label className={style.customCheckbox}>
                       <input
-                        name={title}
+                        name={key}
                         type="checkbox"
                         className="checkbox_cheese"
-                        id={`${title}_checkbox_cheese`}
+                        id={`${key}_checkbox_cheese`}
                       />
                       <span className={style.checkmark}></span>
                     </label>
                   </Box>
                   <label
-                    htmlFor={`${title}_checkbox_cheese`}
+                    htmlFor={`${key}_checkbox_cheese`}
                     style={{ cursor: "pointer" }}
                   >
-                    {title}
+                    {values[key]}
                   </label>
                 </Flex>
                 <Box justifySelf={"flex-end"}>
@@ -93,6 +93,7 @@ export const ExtraCheese = () => {
                       type="number"
                       w={"auto"}
                       placeholder="price"
+                      className="price_extracheese"
                     />
                   </InputGroup>
                 </Box>

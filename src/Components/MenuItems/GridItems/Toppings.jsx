@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Box, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
@@ -21,9 +22,8 @@ const toppings = [
     title: "Red Paprika",
   },
 ];
-export const Toppings = () => {
+export const Toppings = ({ values }) => {
   const [checked, handleChange] = useCheckbox(false);
-
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -61,7 +61,7 @@ export const Toppings = () => {
             pointerEvents={!checked && "none"}
             opacity={!checked && "0.6"}
           >
-            {toppings.map(({ title }, ind) => (
+            {Object.keys(values).map((key, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
@@ -72,25 +72,26 @@ export const Toppings = () => {
                   <Box>
                     <label className={style.customCheckbox}>
                       <input
-                        name={title}
+                        name={key}
                         type="checkbox"
                         className={`checkbox_toppings`}
-                        id={`${title}_checkbox_toppings`}
+                        id={`${values[key]}_checkbox_toppings`}
                       />
                       <span className={style.checkmark}></span>
                     </label>
                   </Box>
                   <label
-                    htmlFor={`${title}_checkbox_toppings`}
+                    htmlFor={`${values[key]}_checkbox_toppings`}
                     style={{ cursor: "pointer" }}
                   >
-                    {title}
+                    {values[key]}
                   </label>
                 </Flex>
                 <Box justifySelf={"flex-end"}>
                   <div className="green_container">
                     <input
                       type="checkbox"
+                      name={key}
                       className="green_checkbox"
                       id={`green_checkbox_${ind}`}
                     />

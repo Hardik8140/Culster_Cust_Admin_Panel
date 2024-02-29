@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 
@@ -12,6 +12,11 @@ import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
 import { Detail } from "../GridItems/Detail";
 import { Seasonings } from "../GridItems/Seasonings";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { CheesyFunId } from "../../../data";
+import { get_Ingrediants } from "../../../Redux/MenuItems/action";
+import { CLEANUP } from "../../../Redux/actionType";
 
 const links = [
   {
@@ -31,6 +36,31 @@ const links = [
   },
 ];
 export const AddCheesyFun = () => {
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const { isLoading, error, items } = useSelector(
+    (store) => store.menuItemsReducer
+  );
+
+  useEffect(() => {
+    if (items === undefined || Object.keys(items).length === 0) {
+      dispatch(get_Ingrediants(CheesyFunId));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && error) {
+      toast({
+        title: error,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    return () => {
+      dispatch({ type: CLEANUP });
+    };
+  }, [isLoading, error, toast]);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -115,8 +145,6 @@ export const AddCheesyFun = () => {
       meatToppings: finalMeatToppings,
       seasonings: finalSeasonings,
     };
-
-    console.log(data);
   };
   return (
     <Layout>
@@ -124,23 +152,25 @@ export const AddCheesyFun = () => {
         <Box>
           <Breadcrumber links={links} />
         </Box>
-        <DIV>
-          <form onSubmit={handleForm}>
-            <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
-              <Image />
-              <Toppings />
-              <Drizzle />
-              <MeatToppings />
-              <ExtraCheese />
-              <GridItem colSpan={2}>
-                <Seasonings />
-              </GridItem>
-            </Grid>
+        {Object.keys(items).length > 0 && (
+          <DIV>
+            <form onSubmit={handleForm}>
+              <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
+                <Detail />
+                <Image />
+                <Toppings values={items?.items?.Topping} />
+                <Drizzle values={items?.items["Drizzle It Up!"]} />
+                <MeatToppings values={items?.items["Extra Meal Topping"]} />
+                <ExtraCheese values={items?.items["Extra Cheese"]} />
+                <GridItem colSpan={2}>
+                  <Seasonings values={items?.items["Seasonings"]} />
+                </GridItem>
+              </Grid>
 
-            <FormButtons />
-          </form>
-        </DIV>
+              <FormButtons />
+            </form>
+          </DIV>
+        )}
       </Box>
     </Layout>
   );
