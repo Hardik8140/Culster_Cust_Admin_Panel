@@ -19,7 +19,7 @@ import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
-const Pizza = () => {
+const Slides = () => {
   const [search, setSearch] = useState("");
   const handleSearch = (event) => {
     setSearch(event.target.value);
@@ -57,7 +57,7 @@ const Pizza = () => {
             color="white"
             p="1rem"
           >
-            <Link to="/add/pizza">Add new Pizza</Link>
+            <Link to="/add/sides">Add new Sides</Link>
           </Button>
         </Box>
       </Box>
@@ -91,7 +91,6 @@ const Pizza = () => {
                   <img src={updown} onClick={handleOrderPrice} />
                 </Flex>
               </th>
-              <th>Category</th>
               <th>
                 <Flex gap={1}>
                   <Text>Status</Text>
@@ -106,7 +105,6 @@ const Pizza = () => {
               <td>#00001</td>
               <td>pizza name</td>
               <td>$ 5.00</td>
-              <td>Indian Style</td>
               <td>
                 <Text
                   bgColor={"brown"}
@@ -135,7 +133,6 @@ const Pizza = () => {
               <td>#00002</td>
               <td>pizza name</td>
               <td>$ 5.00</td>
-              <td>Indian Style</td>
               <td>
                 <Text
                   bgColor={"brown"}
@@ -171,7 +168,7 @@ const Pizza = () => {
   );
 };
 
-export default Pizza;
+export default Slides;
 
 const DIV = styled.div`
   /* border: 1px solid red; */

@@ -24,8 +24,23 @@ import { AddCultureCrustSpecialThinkShakes } from "../Components/MenuItems/AddCu
 import { AddDrinks } from "../Components/MenuItems/AddDrinks/AddDrinks.jsx";
 import { AddDrinksCanPop } from "../Components/MenuItems/AddDrinksCansPop/AddDrinksCanPop.jsx";
 import { AddNewPizza } from "../Components/MenuItems/AddNewPizza/AddNewPizza.jsx";
+
 import { Toppings } from "../Components/ExtraItems/Toppings.jsx";
 import { Drizzle } from "../Components/ExtraItems/Drizzle.jsx";
+
+import Cyop from "../Components/MenuItems/Cyop.jsx";
+import Burger from "../Components/MenuItems/Burger.jsx";
+import HouseWings from "../Components/MenuItems/HouseWings.jsx";
+import Pasta from "../Components/MenuItems/Pasta.jsx";
+import Nanza from "../Components/MenuItems/Nanza.jsx";
+import CheseeFun from "../Components/MenuItems/CheseeFun.jsx";
+import Slides from "../Components/MenuItems/Slides.jsx";
+import Salads from "../Components/MenuItems/Salads.jsx";
+import Sweet from "../Components/MenuItems/Sweet.jsx";
+import Dipping from "../Components/MenuItems/Dipping.jsx";
+import CultureCrust from "../Components/MenuItems/CultureCrust.jsx";
+import Drinks from "../Components/MenuItems/Drinks.jsx";
+import Homemad from "../Components/MenuItems/Homemad.jsx";
 
 const AllRoutes = () => {
   return (
@@ -34,6 +49,23 @@ const AllRoutes = () => {
       <Route path="/" element={<Dashboard />} />
 
       <Route path="/pizza" element={<Pizza />} />
+      <Route path="/createownpizza" element={<Cyop />} />
+      <Route path="/Burger" element={<Burger />} />
+      <Route path="/houseofwings" element={<HouseWings />} />
+      <Route path="/pastas" element={<Pasta />} />
+      <Route path="/nanza" element={<Nanza />} />
+      <Route path="/cheesyfun" element={<CheseeFun />} />
+      <Route path="/sides" element={<Slides />} />
+      <Route path="/salads" element={<Salads />} />
+      <Route path="/sweettreat!" element={<Sweet />} />
+      <Route path="/dippingsauces" element={<Dipping />} />
+      <Route
+        path="/culturecurstspecialthickshakes!!!"
+        element={<CultureCrust />}
+      />
+      <Route path="/drinkspop" element={<Drinks />} />
+      <Route path="/homemadedrinks" element={<Homemad />} />
+
       <Route path="/createyourownpizza" element={<CreateYourOwnPizza />} />
       <Route path="/add/burger" element={<AddNewBurger />} />
       <Route path="/add/pizza" element={<AddNewPizza />} />
