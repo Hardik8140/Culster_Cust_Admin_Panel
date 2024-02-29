@@ -18,6 +18,7 @@ const Drizzled = [
 export const Flavor = ({
   // eslint-disable-next-line react/prop-types
   title = "FLAVOR (BASE SAUCE AND TOP SEASONINGS)",
+  values,
 }) => {
   const [checked, handleChange] = useCheckbox(false);
 
@@ -53,7 +54,7 @@ export const Flavor = ({
             pointerEvents={!checked && "none"}
             opacity={!checked && "0.6"}
           >
-            {Drizzled.map(({ title }, ind) => (
+            {Object.keys(values).map((key, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
@@ -64,19 +65,19 @@ export const Flavor = ({
                   <Box>
                     <label className={style.customCheckbox}>
                       <input
-                        name={title}
+                        name={key}
                         type="checkbox"
-                        id={`${title}_checkbox_flavor`}
+                        id={`${values[key]}_checkbox_flavor`}
                         className="checkbox_flavor"
                       />
                       <span className={style.checkmark}></span>
                     </label>
                   </Box>
                   <label
-                    htmlFor={`${title}_checkbox_flavor`}
+                    htmlFor={`${values[key]}_checkbox_flavor`}
                     style={{ cursor: "pointer" }}
                   >
-                    {title}
+                    {values[key]}
                   </label>
                 </Flex>
               </Flex>

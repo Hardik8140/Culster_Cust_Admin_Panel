@@ -16,9 +16,8 @@ const drizzled = [
     title: "Spicy Tandori",
   },
 ];
-export const Drizzle = () => {
+export const Drizzle = ({ values }) => {
   const [checked, handleChange] = useCheckbox(false);
-
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -51,7 +50,7 @@ export const Drizzle = () => {
             pointerEvents={!checked && "none"}
             opacity={!checked && "0.6"}
           >
-            {drizzled.map(({ title }, ind) => (
+            {Object.keys(values).map((key, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
@@ -62,19 +61,19 @@ export const Drizzle = () => {
                   <Box>
                     <label className={style.customCheckbox}>
                       <input
-                        name={title}
+                        name={key}
                         type="checkbox"
-                        id={`${title}_checkbox_drizzle`}
+                        id={`${values[key]}_checkbox_drizzle`}
                         className="checkbox_drizzle"
                       />
                       <span className={style.checkmark}></span>
                     </label>
                   </Box>
                   <label
-                    htmlFor={`${title}_checkbox_drizzle`}
+                    htmlFor={`${values[key]}_checkbox_drizzle`}
                     style={{ cursor: "pointer" }}
                   >
-                    {title}
+                    {values[key]}
                   </label>
                 </Flex>
               </Flex>

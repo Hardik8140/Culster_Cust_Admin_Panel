@@ -1,4 +1,4 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Grid, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
@@ -7,6 +7,10 @@ import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { PastaModifier } from "../GridItems/PastaModifier";
 import { Toppings } from "../GridItems/Toppings";
 import { FormButtons } from "../../FormButtons";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { get_Ingrediants } from "../../../Redux/MenuItems/action";
+import { CLEANUP } from "../../../Redux/actionType";
 
 const links = [
   {
@@ -26,6 +30,30 @@ const links = [
   },
 ];
 export const AddPastas = () => {
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const { isLoading, error, items } = useSelector(
+    (store) => store.menuItemsReducer
+  );
+  useEffect(() => {
+    if (items === undefined || Object.keys(items).length === 0) {
+      dispatch(get_Ingrediants());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && error) {
+      toast({
+        title: error,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    return () => {
+      dispatch({ type: CLEANUP });
+    };
+  }, [isLoading, error, toast]);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;

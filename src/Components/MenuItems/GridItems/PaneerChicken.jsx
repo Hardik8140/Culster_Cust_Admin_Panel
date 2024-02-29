@@ -21,9 +21,9 @@ const paneer = [
   },
 ];
 
-export const PaneerChicken = () => {
+export const PaneerChicken = ({ values }) => {
   const [checked, handleChange] = useCheckbox(false);
-
+  console.log(values);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -55,7 +55,7 @@ export const PaneerChicken = () => {
             </Text>
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {paneer.map(({ title }, ind) => (
+            {Object.keys(values).map((key, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
@@ -67,19 +67,19 @@ export const PaneerChicken = () => {
                   <Box>
                     <label className={style.customCheckbox}>
                       <input
-                        name={title}
+                        name={key}
                         type="checkbox"
                         className="checkbox_paneer"
-                        id={`${title}_checkbox_panner`}
+                        id={`${values[key]}_checkbox_panner`}
                       />
                       <span className={style.checkmark}></span>
                     </label>
                   </Box>
                   <label
                     style={{ cursor: "pointer" }}
-                    htmlFor={`${title}_checkbox_panner`}
+                    htmlFor={`${values[key]}_checkbox_panner`}
                   >
-                    {title}
+                    {values[key]}
                   </label>
                 </Flex>
                 <Box justifySelf={"flex-end"}>

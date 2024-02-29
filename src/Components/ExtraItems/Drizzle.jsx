@@ -1,43 +1,37 @@
 import { Box, Grid, GridItem, useToast } from "@chakra-ui/react";
-import Layout from "../../Layout/Layout";
+import Layout from "../Layout/Layout";
 import styled from "styled-components";
-import { Image } from "../GridItems/Image";
-import { Detail } from "../GridItems/Detail";
-import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
-import { FormButtons } from "../../FormButtons";
-import { PaneerChicken } from "../GridItems/PaneerChicken";
+import { Breadcrumber } from "../MenuItems/Breadcrumber/Breadcrumber";
+import { FormButtons } from "../FormButtons";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { get_Ingrediants } from "../../../Redux/MenuItems/action";
-import { CLEANUP } from "../../../Redux/actionType";
-import { NanzaId } from "../../../data";
+import { useEffect, useState } from "react";
+import { Add } from "./GridItems/Add";
+import { Price } from "./GridItems/Price";
+import { View } from "./GridItems/View";
+// import { CLEANUP } from "../../../Redux/actionType";
 
 const links = [
   {
-    title: "Menu Items",
+    title: "Extra Items",
     link: "#",
     isCurrent: false,
   },
   {
-    title: "Nanza",
-    link: "#",
-    isCurrent: false,
-  },
-  {
-    title: "Add Nanza",
+    title: "Drizzle it up!",
     link: "#",
     isCurrent: true,
   },
 ];
-export const AddNanza = () => {
+export const Drizzle = () => {
   const dispatch = useDispatch();
   const toast = useToast();
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
+  const [list, setList] = useState([]);
   useEffect(() => {
     if (items === undefined || Object.keys(items).length === 0) {
-      dispatch(get_Ingrediants(NanzaId));
+      //   dispatch(get_Ingrediants());
     }
   }, []);
 
@@ -51,67 +45,22 @@ export const AddNanza = () => {
       });
     }
     return () => {
-      dispatch({ type: CLEANUP });
+      //   dispatch({ type: CLEANUP });
     };
   }, [isLoading, error, toast]);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.querySelector("#name");
-    const price = form.querySelector("#price");
-    const description = form.querySelector("#description");
-    const image = form.querySelector("#image");
-    const toppings = form.querySelector("#checkbox_toppings");
-    const finalToppings = [];
-    const pastamodifier = form.querySelector("#checkbox_pastamodifier");
-    const finalPastaModifier = [];
-    if (pastamodifier.checked) {
-      // get all values of pastamodifier
-      const pastamodifierCheckboxTrue = form.querySelectorAll(
-        ".checkbox_pastamodifier_price_true"
-      );
-      const pastamodifierPrice = form.querySelectorAll(".price_pastamodifier");
-      for (let i = 0; i < pastamodifierCheckboxTrue.length; i++) {
-        if (pastamodifierCheckboxTrue[i].checked) {
-          finalPastaModifier.push({
-            title: pastamodifierCheckboxTrue[i].name,
-            price: +pastamodifierPrice[i].value,
-          });
-        }
-      }
+    // const price = form.querySelector("#price");
 
-      const pastamodifierCheckboxFalse = form.querySelectorAll(
-        ".checkbox_pastamodifier_price_false"
-      );
-      for (let i = 0; i < pastamodifierCheckboxFalse.length; i++) {
-        if (pastamodifierCheckboxFalse[i].checked) {
-          finalPastaModifier.push({
-            title: pastamodifierCheckboxFalse[i].name,
-          });
-        }
-      }
-    }
-    if (toppings.checked) {
-      // get all values of toppings
-      const toppingsCheckbox = form.querySelectorAll(".checkbox_toppings");
-      for (let i = 0; i < toppingsCheckbox.length; i++) {
-        if (toppingsCheckbox[i].checked) {
-          finalToppings.push(toppingsCheckbox[i].name);
-        }
-      }
-    }
-
-    const data = {
-      name: name.value,
-      price: +price.value,
-      description: description.value,
-      image: image ? image.src : "",
-      toppings: finalToppings,
-      pastamodifier: finalPastaModifier,
-    };
-
-    console.log(data);
+    const data = [...list, name.value];
+    name.value = "";
+    setList(data);
   };
+
+  const handleAdd = () => {};
+  const handleCancel = () => {};
   return (
     <Layout>
       <Box>
@@ -121,14 +70,17 @@ export const AddNanza = () => {
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
-              <Image />
+              <GridItem>
+                <Add name={"ADD DRIZZLE IT UP!"} handleAdd={handleAdd} />
+              </GridItem>
+              <GridItem>
+                <Price name={"ADD PRICE"} />
+              </GridItem>
               <GridItem colSpan={2}>
-                <PaneerChicken
-                  values={
-                    Object.keys(items).length > 0 &&
-                    items.items["Panner/Chicken"]
-                  }
+                <View
+                  name={"Drizzle It up!"}
+                  list={list}
+                  handleCancel={handleCancel}
                 />
               </GridItem>
             </Grid>

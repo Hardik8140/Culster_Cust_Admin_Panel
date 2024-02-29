@@ -1,4 +1,4 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Grid, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { SelectType } from "../GridItems/SelectType";
@@ -15,6 +15,11 @@ import { MeatToppings } from "../GridItems/MeatToppings";
 import { Flavor } from "../GridItems/Flavor";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { get_Ingrediants } from "../../../Redux/MenuItems/action";
+import { newPizzaId } from "../../../data";
+import { CLEANUP } from "../../../Redux/actionType";
 
 const links = [
   {
@@ -34,6 +39,30 @@ const links = [
   },
 ];
 export const AddNewPizza = () => {
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const { isLoading, error, items } = useSelector(
+    (store) => store.menuItemsReducer
+  );
+  useEffect(() => {
+    if (items === undefined || Object.keys(items).length === 0) {
+      dispatch(get_Ingrediants(newPizzaId));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && error) {
+      toast({
+        title: error,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    return () => {
+      dispatch({ type: CLEANUP });
+    };
+  }, [isLoading, error, toast]);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -167,6 +196,7 @@ export const AddNewPizza = () => {
 
     console.log(data);
   };
+  console.log(items);
   return (
     <Layout>
       <Box>
@@ -175,20 +205,33 @@ export const AddNewPizza = () => {
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
-            <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <SelectType />
-              <Name />
-              <Description />
-              <Image />
-              <Size />
-              <Crust />
-              <PaneerChicken />
-              <ExtraCheese />
-              <Toppings />
-              <Drizzle />
-              <MeatToppings />
-              <Flavor />
-            </Grid>
+            <Box minH={"70vh"}>
+              {Object.keys(items).length > 0 && (
+                <Grid
+                  my={8}
+                  w={"100%"}
+                  templateColumns="repeat(2, 1fr)"
+                  gap={1}
+                >
+                  <SelectType values={items?.type} />
+                  <Name />
+                  <Description />
+                  <Image />
+                  <Size />
+                  <Crust values={items.items["Crust(Required)"]} />
+                  <PaneerChicken values={items?.items["Panner/Chicken"]} />
+                  <ExtraCheese values={items.items["Extra Cheese"]} />
+                  <Toppings values={items?.items["Topping"]} />
+                  <Drizzle values={items?.items["Drizzle It Up!"]} />
+                  <MeatToppings />
+                  <Flavor
+                    values={
+                      items?.items["Flavour (Base sauce & Top Seasonings)"]
+                    }
+                  />
+                </Grid>
+              )}
+            </Box>
 
             <FormButtons />
           </form>

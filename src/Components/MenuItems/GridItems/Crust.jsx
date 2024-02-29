@@ -15,9 +15,8 @@ const crust = [
     title: "Thin",
   },
 ];
-export const Crust = () => {
+export const Crust = ({ values }) => {
   const [checked, handleChange] = useCheckbox(false);
-
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -48,27 +47,29 @@ export const Crust = () => {
           pointerEvents={!checked && "none"}
           opacity={!checked && "0.6"}
         >
-          {crust.map(({ title }, ind) => (
-            <Flex key={ind} alignItems={"center"} gap={2}>
-              <Box>
-                <label className={style.customCheckbox}>
-                  <input
-                    name={title}
-                    type="checkbox"
-                    className="checkbox_crust"
-                    id={`${title}_checkbox_crust`}
-                  />
-                  <span className={style.checkmark}></span>
+          {crust !== undefined &&
+            Object.keys(crust).length > 0 &&
+            Object.keys(crust).map((key, ind) => (
+              <Flex key={ind} alignItems={"center"} gap={2}>
+                <Box>
+                  <label className={style.customCheckbox}>
+                    <input
+                      name={key}
+                      type="checkbox"
+                      className="checkbox_crust"
+                      id={`${key}_checkbox_crust`}
+                    />
+                    <span className={style.checkmark}></span>
+                  </label>
+                </Box>
+                <label
+                  htmlFor={`${key}_checkbox_crust`}
+                  style={{ cursor: "pointer" }}
+                >
+                  {values[key]}
                 </label>
-              </Box>
-              <label
-                htmlFor={`${title}_checkbox_crust`}
-                style={{ cursor: "pointer" }}
-              >
-                {title}
-              </label>
-            </Flex>
-          ))}
+              </Flex>
+            ))}
         </Stack>
       </Stack>
     </GridItem>

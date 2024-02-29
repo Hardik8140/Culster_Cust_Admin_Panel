@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
@@ -8,6 +8,11 @@ import { ExtraCheese } from "../GridItems/ExtraCheese";
 import { ExtraPatty } from "../GridItems/ExtraPatty";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { get_Ingrediants } from "../../../Redux/MenuItems/action";
+import { CLEANUP } from "../../../Redux/actionType";
+import { BurgerId } from "../../../data";
 
 const links = [
   {
@@ -27,6 +32,32 @@ const links = [
   },
 ];
 export const AddNewBurger = () => {
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const { isLoading, error, items } = useSelector(
+    (store) => store.menuItemsReducer
+  );
+  useEffect(() => {
+    if (items === undefined || Object.keys(items).length === 0) {
+      dispatch(get_Ingrediants(BurgerId));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && error) {
+      toast({
+        title: error,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    return () => {
+      dispatch({ type: CLEANUP });
+    };
+  }, [isLoading, error, toast]);
+
+  console.log(items);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -88,21 +119,26 @@ export const AddNewBurger = () => {
   };
   return (
     <Layout>
-      <Box>
+      <Box minH={"100vh"}>
         <Box>
           <Breadcrumber links={links} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
-            <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
-              <Image />
-              <Flavor title="BURGER FLAVOR" />
-              <ExtraPatty />
-              <GridItem colSpan={2}>
-                <ExtraCheese />
-              </GridItem>
-            </Grid>
+            {Object.keys(items).length > 0 && (
+              <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
+                <Detail />
+                <Image />
+                <Flavor
+                  title="BURGER FLAVOR"
+                  values={items?.items["Burgur Flouver"]}
+                />
+                <ExtraPatty values={items?.items["Extra Patty"]} />
+                <GridItem colSpan={2}>
+                  <ExtraCheese />
+                </GridItem>
+              </Grid>
+            )}
 
             <FormButtons />
           </form>

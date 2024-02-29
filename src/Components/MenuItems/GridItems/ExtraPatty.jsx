@@ -22,7 +22,7 @@ const patty = [
     title: "Original Burger Patty",
   },
 ];
-export const ExtraPatty = () => {
+export const ExtraPatty = ({ values }) => {
   const [checked, handleChange] = useCheckbox(false);
 
   return (
@@ -56,7 +56,7 @@ export const ExtraPatty = () => {
             </Text>
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {patty.map(({ title }, ind) => (
+            {Object.keys(values).map((key, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
@@ -68,19 +68,19 @@ export const ExtraPatty = () => {
                   <Box>
                     <label className={style.customCheckbox}>
                       <input
-                        name={title}
+                        name={values[key]}
                         type="checkbox"
                         className="checkbox_patty"
-                        id={`${title}_checkbox_patty`}
+                        id={`${key}_checkbox_patty`}
                       />
                       <span className={style.checkmark}></span>
                     </label>
                   </Box>
                   <label
-                    htmlFor={`${title}_checkbox_patty`}
+                    htmlFor={`${key}_checkbox_patty`}
                     style={{ cursor: "pointer" }}
                   >
-                    {title}
+                    {values[key]}
                   </label>
                 </Flex>
                 <Box justifySelf={"flex-end"}>
@@ -96,7 +96,7 @@ export const ExtraPatty = () => {
                       type="number"
                       w={"auto"}
                       placeholder="price"
-                      id=""
+                      className={`price_patty`}
                     />
                   </InputGroup>
                 </Box>
