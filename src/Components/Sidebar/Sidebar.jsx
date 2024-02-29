@@ -23,13 +23,13 @@ import {
   Clock2,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMenuItem } from "../../Redux/MeniItems/action";
+import { getMenuItem } from "../../Redux/MenuItems/action";
 
 const SidebarMenu = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard"); // State to track active menu item
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { menuItem, loading, error } = useSelector(
-    (store) => store.menuItemReducer
+    (store) => store.menuItemsReducer
   );
   console.log(menuItem);
 
