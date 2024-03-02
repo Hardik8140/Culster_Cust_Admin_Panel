@@ -21,7 +21,7 @@ const paneer = [
   },
 ];
 
-export const PaneerChicken = ({ values }) => {
+export const PaneerChicken = ({ values = paneer }) => {
   const [checked, handleChange] = useCheckbox(false);
   console.log(values);
   return (

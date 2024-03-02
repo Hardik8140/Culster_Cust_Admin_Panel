@@ -22,7 +22,7 @@ const toppings = [
     title: "Red Paprika",
   },
 ];
-export const Toppings = ({ values }) => {
+export const Toppings = ({ values = toppings }) => {
   const [checked, handleChange] = useCheckbox(false);
   return (
     <GridItem

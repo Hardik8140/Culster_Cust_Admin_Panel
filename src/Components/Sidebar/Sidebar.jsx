@@ -31,7 +31,6 @@ const SidebarMenu = () => {
   const { menuItem, loading, error } = useSelector(
     (store) => store.menuItemsReducer
   );
-  console.log(menuItem);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

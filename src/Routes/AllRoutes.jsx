@@ -41,6 +41,7 @@ import Dipping from "../Components/MenuItems/Dipping.jsx";
 import CultureCrust from "../Components/MenuItems/CultureCrust.jsx";
 import Drinks from "../Components/MenuItems/Drinks.jsx";
 import Homemad from "../Components/MenuItems/Homemad.jsx";
+import { Offers } from "../Components/Offers/Offers.jsx";
 
 const AllRoutes = () => {
   return (
@@ -85,6 +86,7 @@ const AllRoutes = () => {
       <Route path="/add/drinks" element={<AddDrinks />} />
       <Route path="/extra/toppings" element={<Toppings />} />
       <Route path="/extra/drizzle" element={<Drizzle />} />
+      <Route path="/offers" element={<Offers />} />
 
       <Route path="/boy" element={<DeliveryBoy />} />
       <Route path="/orders" element={<Orders />} />

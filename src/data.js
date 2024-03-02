@@ -1,6 +1,9 @@
 export const itemsIngrediants = "http://ec2-54-172-26-24.compute-1.amazonaws.com:8080/admin/item?categoryId="
 
-
+export const linkStyle = {
+    textDecoration: "none",
+    color: "inherit",
+};
 export const CheesyFunId = "180008";
 export const NanzaId = "180007";
 export const BurgerId = "180004";
