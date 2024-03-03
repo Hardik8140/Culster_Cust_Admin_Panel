@@ -4,6 +4,7 @@ import {
   Flex,
   Heading,
   IconButton,
+  Image,
   Input,
   InputGroup,
   InputLeftElement,
@@ -14,16 +15,20 @@ import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import Layout from "../Layout/Layout";
 import { Delete, PhoneIcon, SearchIcon, Trash } from "lucide-react";
 import styled from "styled-components";
-import { updown } from "../../assets";
+import { deleteOutline, edit, updown } from "../../assets";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import CustomeFoodItes from "../CustomeFoodItes";
+import { linkStyle } from "../../data";
 
 const Dipping = () => {
   const [search, setSearch] = useState("");
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
+
+  let status = "In stock";
 
   const handleOrderId = () => {};
 
@@ -34,32 +39,29 @@ const Dipping = () => {
   const handleOrderStatus = () => {};
   return (
     <Layout>
-      <Box mt={3} w="68.7rem" backgroundColor="brand.background">
-        <Heading as="h4" size="sm">
-          Food Items
-        </Heading>
+      <Box>
+        <CustomeFoodItes />
 
-        <Box display="flex" justifyContent="space-between" p={6}>
-          <InputGroup>
+        <Flex my={6} justifyContent={"space-between"}>
+          <InputGroup bgColor={"white"} borderRadius={"10px"} w={"fit-content"}>
             <InputLeftElement pointerEvents="none">
-              <SearchIcon color="gray" size="1rem" />
+              <SearchIcon size={18} color="#949494" />
             </InputLeftElement>
-            <Input
-              type="tel"
-              placeholder="Search"
-              backgroundColor="white"
-              w="25rem"
-            />
+            <Input type="search" placeholder="Search" id={"search"} />
           </InputGroup>
           <Button
             leftIcon={<AddIcon />}
             backgroundColor="brand.add"
             color="white"
-            p="1rem"
+            p="16px 20px"
+            fontSize={"12px"}
+            variant={"simpleWhite"}
           >
-            <Link to="/add/dippingsauces">Add new Dipping Sauces</Link>
+            <Link to="/add/dippingsauces" style={linkStyle}>
+              Add New Dipping Sauces
+            </Link>
           </Button>
-        </Box>
+        </Flex>
       </Box>
 
       {/* Food Items */}
@@ -107,25 +109,28 @@ const Dipping = () => {
               <td>$ 5.00</td>
               <td>
                 <Text
-                  bgColor={"brown"}
-                  color={"white"}
-                  borderRadius={"2rem"}
-                  p={".5rem 1.5rem"}
+                  bgColor={
+                    status === "In stock" ? "brand.stock" : "brand.outofstock"
+                  }
+                  p={"4px 2px"}
+                  textAlign={"center"}
+                  borderRadius={"full"}
+                  fontWeight={"700"}
+                  fontSize={"14px"}
+                  color={"brand.white"}
                 >
-                  In Stock
+                  {status}
                 </Text>
               </td>
               <td>
-                <Box w="80%" display="flex" justifyContent="space-between">
-                  <IconButton
-                    icon={<CiEdit size="40px" color="darkgreen" />}
-                    backgroundColor="transparent"
-                  />
-                  <IconButton
-                    icon={<RiDeleteBin7Line size="40px" color="darkgreen" />}
-                    backgroundColor="transparent"
-                  />
-                </Box>
+                <Flex gap={8}>
+                  <Link to={``}>
+                    <img src={edit} alt="edit icon" />
+                  </Link>
+                  <Link to={``}>
+                    <img src={deleteOutline} alt="delete icon" />
+                  </Link>
+                </Flex>
               </td>
             </tr>
 
@@ -135,30 +140,28 @@ const Dipping = () => {
               <td>$ 5.00</td>
               <td>
                 <Text
-                  bgColor={"brown"}
-                  color={"white"}
-                  borderRadius={"2rem"}
-                  p={".5rem 1.5rem"}
+                  bgColor={
+                    status === "In stock" ? "brand.stock" : "brand.outofstock"
+                  }
+                  p={"4px 2px"}
+                  textAlign={"center"}
+                  borderRadius={"full"}
+                  fontWeight={"700"}
+                  fontSize={"14px"}
+                  color={"brand.white"}
                 >
-                  In Stock
+                  {status}
                 </Text>
               </td>
               <td>
-                <Box
-                  //   border="1px solid red"
-                  w="80%"
-                  display="flex"
-                  justifyContent="space-between"
-                >
-                  <IconButton
-                    icon={<CiEdit size="40px" color="darkgreen" />}
-                    backgroundColor="transparent"
-                  />
-                  <IconButton
-                    icon={<RiDeleteBin7Line size="40px" color="darkgreen" />}
-                    backgroundColor="transparent"
-                  />
-                </Box>
+                <Flex gap={8}>
+                  <Link to={``}>
+                    <img src={edit} alt="edit icon" />
+                  </Link>
+                  <Link to={``}>
+                    <img src={deleteOutline} alt="delete icon" />
+                  </Link>
+                </Flex>
               </td>
             </tr>
           </tbody>
@@ -174,21 +177,22 @@ const DIV = styled.div`
   /* border: 1px solid red; */
   table {
     border-collapse: separate;
-    border-spacing: 0 0.7em;
-    /* border: 1px solid red; */
+    border-spacing: 0 0.5em;
     width: 100%;
   }
 
   thead > tr > th,
   tbody > tr > td {
-    padding: 15px;
+    padding: 22px;
   }
   thead > tr {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    width: 100rem;
+    /* width: 100rem; */
   }
 
   tbody > tr {
+    border: 1px solid red;
+
     background-color: #e9e9e9;
   }
 `;
