@@ -72,7 +72,7 @@ export const CustomTable = ({ headings, values, currentPage }) => {
 };
 
 const DIV = styled.div`
-  width: 100%;
+  /* width: 100%; */
   table {
     border-collapse: separate;
     border-spacing: 0 0.5em;

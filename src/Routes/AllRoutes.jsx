@@ -54,7 +54,7 @@ const AllRoutes = () => {
       <Route path="/createownpizza" element={<Cyop />} />
       <Route path="/Burger" element={<Burger />} />
       <Route path="/houseofwings" element={<HouseWings />} />
-      <Route path="/pastas" element={<Pasta />} />
+      <Route path="/pasta" element={<Pasta />} />
       <Route path="/nanza" element={<Nanza />} />
       <Route path="/cheesyfun" element={<CheseeFun />} />
       <Route path="/sides" element={<Slides />} />
@@ -65,7 +65,7 @@ const AllRoutes = () => {
         path="/culturecurstspecialthickshakes!!!"
         element={<CultureCrust />}
       />
-      <Route path="/drinkspop" element={<Drinks />} />
+      <Route path="/drinks-canpop" element={<Drinks />} />
       <Route path="/homemadedrinks" element={<Homemad />} />
 
       {/* MenuItems */}
