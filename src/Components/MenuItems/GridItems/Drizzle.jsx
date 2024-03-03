@@ -16,7 +16,7 @@ const drizzled = [
     title: "Spicy Tandori",
   },
 ];
-export const Drizzle = ({ values }) => {
+export const Drizzle = ({ values = drizzled }) => {
   const [checked, handleChange] = useCheckbox(false);
   return (
     <GridItem

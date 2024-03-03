@@ -24,17 +24,18 @@ import {
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMenuItem } from "../../Redux/MenuItems/action";
+import { linkStyle } from "../../data";
+import styled from "styled-components";
 
 const SidebarMenu = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard"); // State to track active menu item
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMenuItemOpen, setIsMenuItemOpen] = useState(false);
   const { menuItem, loading, error } = useSelector(
     (store) => store.menuItemsReducer
   );
-  console.log(menuItem);
+  const href = window.location.href;
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   useEffect(() => {
     dispatch(getMenuItem());
   }, [dispatch]);
@@ -43,27 +44,41 @@ const SidebarMenu = () => {
     setActiveMenu(menuName);
   };
 
-  const handleMenuItemClick = (name) => {
-    const path = `${name.toLowerCase().replace(/\s+/g, "")}`;
-    navigate(path);
-  };
-
+  useEffect(() => {
+    let currentLocation = href;
+    currentLocation = currentLocation.split("/");
+    const endpoint = currentLocation[currentLocation.length - 1];
+    for (let item of menuItem) {
+      let temp = item.name.toLowerCase().replace(/\s+/g, "");
+      if (temp === endpoint) {
+        setIsMenuItemOpen(true);
+        setActiveMenu("pizza");
+        break;
+      }
+    }
+  }, [menuItem, href]);
+  // const handleMenuItemClick = (name) => {
+  //   const path = `${name.toLowerCase().replace(/\s+/g, "")}`;
+  //   navigate(path);
+  //   setActiveMenu("pizza");
+  // };
+  console.log(activeMenu);
   return (
-    <div style={{ height: "100vh", overflowY: "auto" }}>
+    <DIV>
       <Sidebar
+        className="sideBar"
         rootStyles={{
           [`.${sidebarClasses.container}`]: {
-            // position: "fixed",
-            position: "--webkit-sticky",
+            position: "fixed",
             top: 0,
             left: 0,
             zIndex: 100,
             backgroundColor: "white",
             padding: "10px",
-            height: "auto",
-            width: "240px",
-            boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-            overflowY: "auto",
+            minHeight: "100vh",
+            width: "250px",
+            overflow: "auto",
+            boxShadow: "2px 0px 20px 0px #00000026",
           },
         }}
       >
@@ -78,7 +93,7 @@ const SidebarMenu = () => {
           <img
             src={logo}
             alt="Logo"
-            style={{ width: "80%", maxWidth: "150px" }}
+            style={{ width: "80%", maxWidth: "70px" }}
           />
         </div>
         <Menu
@@ -94,29 +109,62 @@ const SidebarMenu = () => {
           }}
         >
           <MenuItem
-            icon={<MdOutlineDashboard />}
+            icon={
+              <MdOutlineDashboard
+                size={"22px"}
+                color={activeMenu !== "dashboard" && "#4a4a4b"}
+              />
+            }
             active={activeMenu === "dashboard"}
             onClick={() => handleMenuClick("dashboard")}
-            component={<Link to="/" />}
+            component={
+              <Link
+                to="/"
+                style={{
+                  ...linkStyle,
+                  color: activeMenu === "dashboard" && "white",
+                }}
+              />
+            }
           >
             Dashboard
           </MenuItem>
           <SubMenu
-            defaultOpen={false}
+            defaultOpen={true}
             onOpenChange={(open) => {
               if (open) setActiveMenu("pizza");
             }}
-            icon={<Utensils />}
+            active={activeMenu === "pizza"}
+            style={{
+              ...linkStyle,
+              color: activeMenu === "dashboard" && "black",
+            }}
+            icon={
+              <Utensils
+                size={"22px"}
+                color={activeMenu !== "pizza" ? "#4a4a4b" : "white"}
+              />
+            }
             label="Menu Items"
           >
             {Array.isArray(menuItem) &&
               menuItem.map((el, i) => (
-                <Box key={i} pl="3rem" pt={2} pb={2}>
-                  <UnorderedList alignItems="center">
-                    <ListItem
-                      onClick={() => handleMenuItemClick(`/${el.name}`)}
-                    >
-                      <Link>{el.name}</Link>
+                <Box
+                  key={i}
+                  pl="1.5rem"
+                  pt={2}
+                  pb={2}
+                  color={"#919191"}
+                  bgColor={"brand.orderbg"}
+                >
+                  <UnorderedList>
+                    <ListItem>
+                      <Link
+                        style={linkStyle}
+                        to={`/${el.name.toLowerCase().replace(/\s+/g, "")}`}
+                      >
+                        {el.name}
+                      </Link>
                     </ListItem>
                   </UnorderedList>
                 </Box>
@@ -129,34 +177,107 @@ const SidebarMenu = () => {
               Pizza
             </MenuItem> */}
           </SubMenu>
-          <SubMenu icon={<Utensils />} label="Extra Items">
+          <SubMenu
+            icon={
+              <Utensils
+                size={"22px"}
+                color={activeMenu !== "extraitems" ? "#4a4a4b" : "white"}
+              />
+            }
+            label="Extra Items"
+          >
             <MenuItem>Dashboard</MenuItem>
             <MenuItem>Line charts</MenuItem>
           </SubMenu>
-          <MenuItem icon={<TicketPercent />}>Offers</MenuItem>
-          <MenuItem icon={<BellDot />}>Notifications</MenuItem>
-          <MenuItem icon={<Users />} component={<Link to="/boy" />}>
+          <MenuItem
+            icon={
+              <TicketPercent
+                size={"22px"}
+                color={activeMenu !== "offers" ? "#4a4a4b" : "white"}
+              />
+            }
+          >
+            Offers
+          </MenuItem>
+          <MenuItem
+            icon={
+              <BellDot
+                size={"22px"}
+                color={activeMenu !== "notifications" ? "#4a4a4b" : "white"}
+              />
+            }
+          >
+            Notifications
+          </MenuItem>
+          <MenuItem
+            icon={
+              <Users
+                size={"22px"}
+                color={activeMenu !== "deliveryboy" ? "#4a4a4b" : "white"}
+              />
+            }
+            component={<Link to="/boy" />}
+          >
             Delivery Boy
           </MenuItem>
-          <MenuItem icon={<Pizza />} component={<Link to="/orders" />}>
+          <MenuItem
+            icon={
+              <Pizza
+                size={"22px"}
+                color={activeMenu !== "orders" ? "#4a4a4b" : "white"}
+              />
+            }
+            component={<Link to="/orders" />}
+          >
             Orders
           </MenuItem>
-          <MenuItem icon={<Clock2 />} component={<Link to="/time" />}>
+          <MenuItem
+            icon={
+              <Clock2
+                size={"22px"}
+                color={activeMenu !== "timemange" ? "#4a4a4b" : "white"}
+              />
+            }
+            component={<Link to="/time" />}
+          >
             Time Manage
           </MenuItem>
-          <MenuItem icon={<MdTableBar />} component={<Link to="/table" />}>
+          <MenuItem
+            icon={
+              <MdTableBar
+                size={"22px"}
+                color={activeMenu !== "tablereservation" ? "#4a4a4b" : "white"}
+              />
+            }
+            component={<Link to="/table" />}
+          >
             Table Reservation
           </MenuItem>
           <MenuItem
             icon={<MdOutlineReviews />}
-            component={<Link to="/customer" />}
+            component={
+              <Link
+                to="/customer"
+                size={"22px"}
+                color={activeMenu !== "customerreview" ? "#4a4a4b" : "white"}
+              />
+            }
           >
             Customer Review
           </MenuItem>
         </Menu>
       </Sidebar>
-    </div>
+    </DIV>
   );
 };
+const DIV = styled.div`
+  .ps-sidebar-container::-webkit-scrollbar {
+    display: none;
+  }
+  .ps-sidebar-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+`;
 
 export default SidebarMenu;

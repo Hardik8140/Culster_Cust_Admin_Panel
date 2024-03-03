@@ -28,26 +28,16 @@ const statics = [
     Icon: ep_sell,
     num: 30,
   },
-  {
-    title: "Today's Orders",
-    Icon: bill,
-    num: 30,
-  },
-  {
-    title: "Today's Orders",
-    Icon: bill,
-    num: 30,
-  },
 ];
 export const Dashboard = () => {
   return (
     <Layout>
-      <Box bgColor={"brand.background"}>
+      <Box>
         <Text fontSize={"24px"} fontWeight={"700"}>
           Dashboard
         </Text>
 
-        <Flex flexWrap={"wrap"} gap={"10px"}>
+        <Flex flexWrap={"wrap"} my={8} gap={"10px"}>
           {statics.map(({ title, Icon, num }, ind) => (
             <Box
               key={ind}

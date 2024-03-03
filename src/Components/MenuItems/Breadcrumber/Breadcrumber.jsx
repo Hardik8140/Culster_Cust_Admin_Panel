@@ -1,5 +1,6 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { ChevronRightIcon } from "lucide-react";
+import { linkStyle } from "../../../data";
 
 // eslint-disable-next-line react/prop-types
 export const Breadcrumber = ({ links }) => {
@@ -18,7 +19,8 @@ export const Breadcrumber = ({ links }) => {
             fontWeight={!item.isCurrent && "700"}
             href={item.link}
             isCurrentPage={item.isCurrent}
-            color={item.isCurrent && "black"}
+            style={linkStyle}
+            color={item.isCurrent && "brand.black !important"}
           >
             {item.title}
           </BreadcrumbLink>

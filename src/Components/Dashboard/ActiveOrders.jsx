@@ -13,6 +13,7 @@ import styled from "styled-components";
 import { updown } from "../../assets";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { linkStyle } from "../../data";
 
 export const ActiveOrders = () => {
   const [search, setSearch] = useState("");
@@ -27,7 +28,7 @@ export const ActiveOrders = () => {
       <Box>
         <InputGroup>
           <InputLeftElement>
-            <SearchIcon size={20} color={"#949494"} />
+            <SearchIcon size={18} color={"#949494"} />
           </InputLeftElement>
           <Input
             type={"text"}
@@ -41,7 +42,7 @@ export const ActiveOrders = () => {
 
       {/* table */}
       <DIV>
-        <table>
+        <table width={"100%"}>
           <thead
             style={{
               fontWeight: "600",
@@ -79,21 +80,27 @@ export const ActiveOrders = () => {
               <td>Debit Card</td>
               <td>
                 <Text
-                  bgColor={"brown"}
+                  bgColor={"brand.pending"}
                   color={"white"}
-                  borderRadius={"2rem"}
-                  p={".5rem 1.5rem"}
+                  borderRadius={"44px"}
+                  p={"4px 10px"}
+                  textAlign={"center"}
+                  fontWeight={"700"}
+                  fontSize={"14px"}
                 >
                   Pending
                 </Text>
               </td>
               <td>12/01/2024</td>
-              <td>
-                <Link to="/orders">
+              <td style={{ textAlign: "center" }}>
+                <Link to="/orders" style={linkStyle}>
                   <Button
-                    py={6}
-                    px={12}
-                    borderRadius={16}
+                    p={"14px 25px 14px 25px"}
+                    margin={"auto"}
+                    borderRadius={"10px"}
+                    fontSize={"14px"}
+                    variant={"simpleWhite"}
+                    fontWeight={"500"}
                     bgColor={"brand.buttonbg"}
                   >
                     View Details
@@ -109,24 +116,32 @@ export const ActiveOrders = () => {
               <td>Debit Card</td>
               <td>
                 <Text
-                  bgColor={"brown"}
+                  bgColor={"brand.progress"}
                   color={"white"}
-                  borderRadius={"2rem"}
-                  p={".5rem 1.5rem"}
+                  borderRadius={"44px"}
+                  p={"4px 10px"}
+                  fontSize={"14px"}
+                  textAlign={"center"}
+                  fontWeight={"700"}
                 >
-                  Pending
+                  In Progress
                 </Text>
               </td>
               <td>12/01/2024</td>
-              <td>
-                <Button
-                  py={6}
-                  px={12}
-                  borderRadius={16}
-                  bgColor={"brand.buttonbg"}
-                >
-                  View Details
-                </Button>
+              <td style={{ textAlign: "center" }}>
+                <Link to="/orders" style={linkStyle}>
+                  <Button
+                    p={"14px 25px 14px 25px"}
+                    margin={"auto"}
+                    borderRadius={"10px"}
+                    fontSize={"14px"}
+                    variant={"simpleWhite"}
+                    fontWeight={"500"}
+                    bgColor={"brand.buttonbg"}
+                  >
+                    View Details
+                  </Button>
+                </Link>
               </td>
             </tr>
 
@@ -138,21 +153,27 @@ export const ActiveOrders = () => {
               <td>Debit Card</td>
               <td>
                 <Text
-                  bgColor={"brown"}
+                  bgColor={"brand.ontheway"}
                   color={"white"}
-                  borderRadius={"2rem"}
-                  p={".5rem 1.5rem"}
+                  borderRadius={"44px"}
+                  p={"4px 10px"}
+                  fontSize={"14px"}
+                  textAlign={"center"}
+                  fontWeight={"700"}
                 >
-                  Pending
+                  on the way
                 </Text>
               </td>
               <td>12/01/2024</td>
-              <td>
-                <Link to="/orders">
+              <td style={{ textAlign: "center" }}>
+                <Link to="/orders" style={linkStyle}>
                   <Button
-                    py={6}
-                    px={12}
-                    borderRadius={16}
+                    p={"14px 25px 14px 25px"}
+                    margin={"auto"}
+                    borderRadius={"10px"}
+                    fontSize={"14px"}
+                    variant={"simpleWhite"}
+                    fontWeight={"500"}
                     bgColor={"brand.buttonbg"}
                   >
                     View Details
@@ -170,7 +191,7 @@ export const ActiveOrders = () => {
 const DIV = styled.div`
   table {
     border-collapse: separate;
-    border-spacing: 0 0.3em;
+    border-spacing: 0 0.5em;
   }
 
   thead > tr > th,
@@ -178,10 +199,10 @@ const DIV = styled.div`
     padding: 22px;
   }
   thead > tr {
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    box-shadow: 0px 1px 4px 0px #00000033;
   }
 
   tbody > tr {
-    background-color: #e9e9e9;
+    background-color: #f3f3f3;
   }
 `;
