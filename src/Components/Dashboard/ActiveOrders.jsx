@@ -42,7 +42,7 @@ export const ActiveOrders = () => {
 
       {/* table */}
       <DIV>
-        <table>
+        <table width={"100%"}>
           <thead
             style={{
               fontWeight: "600",

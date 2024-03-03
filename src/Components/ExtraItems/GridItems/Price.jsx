@@ -17,6 +17,7 @@ export const Price = ({ name }) => {
       px={"20px"}
       py={"16px"}
       pb={"24px"}
+      height={"100%"}
       bgColor={"brand.white"}
     >
       <Stack>
@@ -33,6 +34,7 @@ export const Price = ({ name }) => {
               borderRadius={"0px 10px 10px 0px"}
               type="number"
               w={"auto"}
+              fontSize={"16px"}
               placeholder="price"
               className="price_extra"
               id={`price`}

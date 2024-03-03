@@ -33,6 +33,7 @@ export const Image = () => {
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
       px={"20px"}
+      height={"100%"}
       py={"16px"}
       bgColor={"brand.white"}
     >

@@ -19,8 +19,8 @@ export const Breadcrumber = ({ links }) => {
             fontWeight={!item.isCurrent && "700"}
             href={item.link}
             isCurrentPage={item.isCurrent}
-            color={item.isCurrent && "black"}
             style={linkStyle}
+            color={item.isCurrent && "brand.black !important"}
           >
             {item.title}
           </BreadcrumbLink>

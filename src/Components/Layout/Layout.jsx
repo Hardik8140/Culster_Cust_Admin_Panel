@@ -4,7 +4,7 @@ import { Box, Stack } from "@chakra-ui/react";
 
 const Layout = ({ children }) => {
   return (
-    <Flex gap={0}>
+    <Flex>
       <SidebarMenu />
       <Stack mb={24} gap={0}>
         <Box

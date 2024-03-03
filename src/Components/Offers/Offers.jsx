@@ -61,7 +61,7 @@ export const Offers = () => {
             fontSize={"12px"}
             variant={"simpleWhite"}
           >
-            <Link to="/add/offer" style={linkStyle}>
+            <Link to="/offers/add" style={linkStyle}>
               Add New Offer
             </Link>
           </Button>
