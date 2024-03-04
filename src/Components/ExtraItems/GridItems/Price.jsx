@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { dollar } from "../../../assets";
 
-export const Price = ({ name }) => {
+export const Price = ({ name = "Price" }) => {
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}

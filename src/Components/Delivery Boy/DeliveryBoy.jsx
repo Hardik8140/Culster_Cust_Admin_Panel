@@ -33,8 +33,8 @@ const DeliveryBoy = () => {
   const handleOrderStatus = () => {};
   return (
     <Layout>
-      <Box mt={3} w="68.7rem" backgroundColor="brand.background">
-        <Heading as="h4" size="sm">
+      <Box>
+        <Heading as="h4" fontSize={"24px"} fontWeight={"700"}>
           Delivery Boy
         </Heading>
 
