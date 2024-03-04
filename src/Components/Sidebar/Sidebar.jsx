@@ -1,5 +1,5 @@
-import { Box, Icon, ListItem, Stack, UnorderedList } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import {
   Sidebar,
   Menu,
@@ -7,13 +7,13 @@ import {
   SubMenu,
   sidebarClasses,
 } from "react-pro-sidebar";
-import { logo } from "../../assets";
+import { logo, menu } from "../../assets";
 import {
   MdOutlineDashboard,
   MdOutlineReviews,
   MdTableBar,
 } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   TicketPercent,
   Utensils,
@@ -28,8 +28,9 @@ import { linkStyle } from "../../data";
 import styled from "styled-components";
 
 const SidebarMenu = () => {
-  const [activeMenu, setActiveMenu] = useState("dashboard"); // State to track active menu item
+  const [activeMenu, setActiveMenu] = useState("dashboard");
   const [isMenuItemOpen, setIsMenuItemOpen] = useState(false);
+  const [subMenuItem, setSubMenuItem] = useState("");
   const { menuItem, loading, error } = useSelector(
     (store) => store.menuItemsReducer
   );
@@ -37,7 +38,9 @@ const SidebarMenu = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getMenuItem());
+    if (menuItem.length === 0) {
+      dispatch(getMenuItem());
+    }
   }, [dispatch]);
 
   const handleMenuClick = (menuName) => {
@@ -51,8 +54,13 @@ const SidebarMenu = () => {
     for (let item of menuItem) {
       let temp = item.name.toLowerCase().replace(/\s+/g, "");
       if (temp === endpoint) {
-        setIsMenuItemOpen(true);
+        // setIsMenuItemOpen(true);
         setActiveMenu("pizza");
+        const submenu = document.querySelector(".subMenuItem");
+        submenu.classList.add("ps-open");
+        console.log(submenu);
+        setSubMenuItem(item.name);
+        setTimeout(() => {}, 1000);
         break;
       }
     }
@@ -62,7 +70,6 @@ const SidebarMenu = () => {
   //   navigate(path);
   //   setActiveMenu("pizza");
   // };
-  console.log(activeMenu);
   return (
     <DIV>
       <Sidebar
@@ -130,7 +137,8 @@ const SidebarMenu = () => {
             Dashboard
           </MenuItem>
           <SubMenu
-            defaultOpen={true}
+            // defaultOpen={isMenuItemOpen}
+            className="subMenuItem"
             onOpenChange={(open) => {
               if (open) setActiveMenu("pizza");
             }}
@@ -158,7 +166,13 @@ const SidebarMenu = () => {
                   bgColor={"brand.orderbg"}
                 >
                   <UnorderedList>
-                    <ListItem>
+                    <ListItem
+                      color={
+                        subMenuItem === el.name
+                          ? "brand.primary"
+                          : "brand.black"
+                      }
+                    >
                       <Link
                         style={linkStyle}
                         to={`/${el.name.toLowerCase().replace(/\s+/g, "")}`}
@@ -254,14 +268,12 @@ const SidebarMenu = () => {
             Table Reservation
           </MenuItem>
           <MenuItem
-            icon={<MdOutlineReviews />}
-            component={
-              <Link
-                to="/customer"
-                size={"22px"}
+            icon={
+              <MdOutlineReviews
                 color={activeMenu !== "customerreview" ? "#4a4a4b" : "white"}
               />
             }
+            component={<Link to="/customer" size={"22px"} />}
           >
             Customer Review
           </MenuItem>
