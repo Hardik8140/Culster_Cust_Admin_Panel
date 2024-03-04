@@ -1,8 +1,9 @@
 import axios from "axios"
-import { ERROR, FETCH_MENU_ITEM_FAILURE, FETCH_MENU_ITEM_REQUEST, FETCH_MENU_ITEM_SUCCESS, GOT_ITEMS_INGREDIANTS } from "../actionType"
+import { ERROR, FETCH_MENU_ITEM_FAILURE, FETCH_MENU_ITEM_REQUEST, FETCH_MENU_ITEM_SUCCESS, GOT_ITEMS_INGREDIANTS, LOADING } from "../actionType"
 import { itemsIngrediants } from "../../data"
 
 export const get_Ingrediants = (id) => async (dispatch) => {
+    dispatch({ type: LOADING })
     try {
         let res = await axios.get(`${itemsIngrediants}${id}`)
         res = res.data;

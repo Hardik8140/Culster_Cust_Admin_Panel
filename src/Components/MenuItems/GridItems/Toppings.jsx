@@ -2,26 +2,19 @@
 import { Box, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
-const toppings = [
-  {
-    title: "Baby Conrs",
-  },
-  {
-    title: "Fresh Mushroom",
-  },
-  {
-    title: "Pineapples",
-  },
-  {
-    title: "Red Paprika",
-  },
-  {
-    title: "Pineapples",
-  },
-  {
-    title: "Red Paprika",
-  },
-];
+const toppings = {
+  11: "Baby Conrs",
+
+  12: "Fresh Mushroom",
+
+  13: "Pineapples",
+
+  14: "Red Paprika",
+
+  15: "Pineapples",
+
+  16: "Red Paprika",
+};
 export const Toppings = ({ values = toppings }) => {
   const [checked, handleChange] = useCheckbox(false);
   return (

@@ -1,24 +1,19 @@
 import { Box, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import useCheckbox from "../../../Hooks/useCheckbox";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
-const Drizzled = [
-  {
-    title: "Creamy Garlic",
-  },
-  {
-    title: "BBQ",
-  },
-  {
-    title: "Chilli Coriander",
-  },
-  {
-    title: "Spicy Tandori",
-  },
-];
+const Drizzled = {
+  11: "Creamy Garlic",
+
+  12: "BBQ",
+
+  13: "Chilli Coriander",
+
+  14: "Spicy Tandori",
+};
 export const Flavor = ({
   // eslint-disable-next-line react/prop-types
   title = "FLAVOR (BASE SAUCE AND TOP SEASONINGS)",
-  values,
+  values = Drizzled,
 }) => {
   const [checked, handleChange] = useCheckbox(false);
 

@@ -57,7 +57,6 @@ export const AddNewBurger = () => {
     };
   }, [isLoading, error, toast]);
 
-  console.log(items);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;

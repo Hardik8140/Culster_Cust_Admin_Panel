@@ -11,18 +11,12 @@ import {
 import { dollar } from "../../../assets";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
-const patty = [
-  {
-    title: "Cripy Chiken",
-  },
-  {
-    title: "Tandoori Paneer",
-  },
-  {
-    title: "Original Burger Patty",
-  },
-];
-export const ExtraPatty = ({ values }) => {
+const patty = {
+  11: "Cripy Chiken",
+  12: "Tandoori Paneer",
+  13: "Original Burger Patty",
+};
+export const ExtraPatty = ({ values = patty }) => {
   const [checked, handleChange] = useCheckbox(false);
 
   return (
