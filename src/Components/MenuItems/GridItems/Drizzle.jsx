@@ -2,21 +2,16 @@ import { Box, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import useCheckbox from "../../../Hooks/useCheckbox";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 
-const drizzled = [
-  {
-    title: "Creamy Garlic",
-  },
-  {
-    title: "BBQ",
-  },
-  {
-    title: "Chilli Coriander",
-  },
-  {
-    title: "Spicy Tandori",
-  },
-];
-export const Drizzle = ({ values = drizzled }) => {
+const Drizzled = {
+  11: "Creamy Garlic",
+
+  12: "BBQ",
+
+  13: "Chilli Coriander",
+
+  14: "Spicy Tandori",
+};
+export const Drizzle = ({ values = Drizzled }) => {
   const [checked, handleChange] = useCheckbox(false);
   return (
     <GridItem

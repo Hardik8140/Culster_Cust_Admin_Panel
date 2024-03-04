@@ -1,8 +1,13 @@
 /* eslint-disable react/prop-types */
 import { GridItem, Select, Stack, Text } from "@chakra-ui/react";
 
+const options = {
+  11: "option",
+  22: "option",
+  33: "option",
+};
 export const SelectType = ({
-  values,
+  values = options,
   name = "Select Type",
   placed = "Select Type",
   ids = "type",

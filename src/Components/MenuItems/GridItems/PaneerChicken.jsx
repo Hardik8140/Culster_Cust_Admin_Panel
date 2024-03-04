@@ -12,15 +12,10 @@ import { dollar } from "../../../assets";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
 
-const paneer = [
-  {
-    title: "Paneer",
-  },
-  {
-    title: "Chiken",
-  },
-];
-
+const paneer = {
+  11: "Panner",
+  12: "Chicken",
+};
 export const PaneerChicken = ({ values = paneer }) => {
   const [checked, handleChange] = useCheckbox(false);
   console.log(values);

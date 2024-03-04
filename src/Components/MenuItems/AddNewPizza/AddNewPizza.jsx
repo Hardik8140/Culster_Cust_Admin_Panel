@@ -1,4 +1,4 @@
-import { Box, Grid, useToast } from "@chakra-ui/react";
+import { Box, Grid, Skeleton, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { SelectType } from "../GridItems/SelectType";
@@ -196,7 +196,6 @@ export const AddNewPizza = () => {
 
     console.log(data);
   };
-  console.log(items);
   return (
     <Layout>
       <Box>
@@ -229,6 +228,25 @@ export const AddNewPizza = () => {
                       items?.items["Flavour (Base sauce & Top Seasonings)"]
                     }
                   />
+                </Grid>
+              )}
+              {Object.keys(items).length === 0 && (
+                <Grid
+                  my={8}
+                  w={"100%"}
+                  templateColumns="repeat(2, 1fr)"
+                  gap={1}
+                >
+                  <Skeleton height="80px" />
+                  <Skeleton height="80px" />
+                  <Skeleton height="120px" />
+                  <Skeleton height="120px" />
+                  <Skeleton height="130px" />
+                  <Skeleton height="130px" />
+                  <Skeleton height="120px" />
+                  <Skeleton height="120px" />
+                  <Skeleton height="120px" />
+                  <Skeleton height="120px" />
                 </Grid>
               )}
             </Box>

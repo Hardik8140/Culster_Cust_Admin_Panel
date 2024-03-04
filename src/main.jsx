@@ -49,9 +49,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <BrowserRouter>
       <ChakraProvider theme={theme}>
-        <>
-          <App />
-        </>
+        <App />
       </ChakraProvider>
     </BrowserRouter>
   </Provider>
