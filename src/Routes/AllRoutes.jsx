@@ -43,6 +43,8 @@ import Drinks from "../Components/MenuItems/Drinks.jsx";
 import Homemad from "../Components/MenuItems/Homemad.jsx";
 import { Offers } from "../Components/Offers/Offers.jsx";
 import { AddNewOffer } from "../Components/Offers/AddNewOffer.jsx";
+import ShowToppings from "../Components/ExtraItems/ShowToppings.jsx";
+import ShowDizzleitUp from "../Components/ExtraItems/ShowDizzleitUp.jsx";
 
 const AllRoutes = () => {
   return (
@@ -51,7 +53,7 @@ const AllRoutes = () => {
       <Route path="/" element={<Dashboard />} />
 
       <Route path="/pizza" element={<Pizza />} />
-      <Route path="/createownpizza" element={<Cyop />} />
+      <Route path="/createownpizza  " element={<Cyop />} />
       <Route path="/Burger" element={<Burger />} />
       <Route path="/houseofwings" element={<HouseWings />} />
       <Route path="/pasta" element={<Pasta />} />
@@ -88,8 +90,11 @@ const AllRoutes = () => {
       <Route path="/add/drinks" element={<AddDrinks />} />
 
       {/* ExtraItems */}
+      <Route path="/toppings" element={<ShowToppings />} />
+      <Route path="/drizzles" element={<ShowDizzleitUp />} />
       <Route path="/extra/toppings" element={<Toppings />} />
       <Route path="/extra/drizzle" element={<Drizzle />} />
+
       {/* Offers */}
       <Route path="/offers" element={<Offers />} />
       <Route path="/offers/add" element={<AddNewOffer />} />

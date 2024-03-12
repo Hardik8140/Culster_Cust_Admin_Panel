@@ -16,6 +16,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import styled from "styled-components";
 import { updown } from "../../assets";
 import { Link } from "react-router-dom";
+import { linkStyle } from "../../data";
 
 const Orders = () => {
   const [search, setSearch] = useState("");
@@ -50,7 +51,7 @@ const Orders = () => {
 
         {/* table */}
         <DIV>
-          <table>
+          <table width={"100%"}>
             <thead
               style={{
                 fontWeight: "600",
@@ -88,21 +89,27 @@ const Orders = () => {
                 <td>Debit Card</td>
                 <td>
                   <Text
-                    bgColor={"brown"}
+                    bgColor={"brand.pending"}
                     color={"white"}
-                    borderRadius={"2rem"}
-                    p={".5rem 1.5rem"}
+                    borderRadius={"44px"}
+                    p={"4px 10px"}
+                    textAlign={"center"}
+                    fontWeight={"700"}
+                    fontSize={"14px"}
                   >
                     Pending
                   </Text>
                 </td>
                 <td>12/01/2024</td>
-                <td>
-                  <Link to="/orders/:id">
+                <td style={{ textAlign: "center" }}>
+                  <Link to="/orders" style={linkStyle}>
                     <Button
-                      py={6}
-                      px={12}
-                      borderRadius={16}
+                      p={"14px 25px 14px 25px"}
+                      margin={"auto"}
+                      borderRadius={"10px"}
+                      fontSize={"14px"}
+                      variant={"simpleWhite"}
+                      fontWeight={"500"}
                       bgColor={"brand.buttonbg"}
                     >
                       View Details
@@ -118,21 +125,27 @@ const Orders = () => {
                 <td>Debit Card</td>
                 <td>
                   <Text
-                    bgColor={"brown"}
+                    bgColor={"brand.progress"}
                     color={"white"}
-                    borderRadius={"2rem"}
-                    p={".5rem 1.5rem"}
+                    borderRadius={"44px"}
+                    p={"4px 10px"}
+                    fontSize={"14px"}
+                    textAlign={"center"}
+                    fontWeight={"700"}
                   >
-                    Pending
+                    In Progress
                   </Text>
                 </td>
                 <td>12/01/2024</td>
-                <td>
-                  <Link to="/orders/:id">
+                <td style={{ textAlign: "center" }}>
+                  <Link to="/orders" style={linkStyle}>
                     <Button
-                      py={6}
-                      px={12}
-                      borderRadius={16}
+                      p={"14px 25px 14px 25px"}
+                      margin={"auto"}
+                      borderRadius={"10px"}
+                      fontSize={"14px"}
+                      variant={"simpleWhite"}
+                      fontWeight={"500"}
                       bgColor={"brand.buttonbg"}
                     >
                       View Details
@@ -149,24 +162,32 @@ const Orders = () => {
                 <td>Debit Card</td>
                 <td>
                   <Text
-                    bgColor={"brown"}
+                    bgColor={"brand.ontheway"}
                     color={"white"}
-                    borderRadius={"2rem"}
-                    p={".5rem 1.5rem"}
+                    borderRadius={"44px"}
+                    p={"4px 10px"}
+                    fontSize={"14px"}
+                    textAlign={"center"}
+                    fontWeight={"700"}
                   >
-                    Pending
+                    on the way
                   </Text>
                 </td>
                 <td>12/01/2024</td>
-                <td>
-                  <Button
-                    py={6}
-                    px={12}
-                    borderRadius={16}
-                    bgColor={"brand.buttonbg"}
-                  >
-                    View Details
-                  </Button>
+                <td style={{ textAlign: "center" }}>
+                  <Link to="/orders" style={linkStyle}>
+                    <Button
+                      p={"14px 25px 14px 25px"}
+                      margin={"auto"}
+                      borderRadius={"10px"}
+                      fontSize={"14px"}
+                      variant={"simpleWhite"}
+                      fontWeight={"500"}
+                      bgColor={"brand.buttonbg"}
+                    >
+                      View Details
+                    </Button>
+                  </Link>
                 </td>
               </tr>
             </tbody>

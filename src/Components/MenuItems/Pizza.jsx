@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Center,
   Flex,
   Heading,
   IconButton,
@@ -146,14 +147,16 @@ const Pizza = () => {
                 </Text>
               </td>
               <td>
-                <Flex gap={8}>
-                  <Link to={``}>
-                    <img src={edit} alt="edit icon" />
-                  </Link>
-                  <Link to={``}>
-                    <img src={deleteOutline} alt="delete icon" />
-                  </Link>
-                </Flex>
+                <Center>
+                  <Flex gap={8}>
+                    <Link to={``}>
+                      <img src={edit} alt="edit icon" />
+                    </Link>
+                    <Link to={``}>
+                      <img src={deleteOutline} alt="delete icon" />
+                    </Link>
+                  </Flex>
+                </Center>
               </td>
             </tr>
 
@@ -178,14 +181,16 @@ const Pizza = () => {
                 </Text>
               </td>
               <td>
-                <Flex gap={8}>
-                  <Link to={``}>
-                    <img src={edit} alt="edit icon" />
-                  </Link>
-                  <Link to={``}>
-                    <img src={deleteOutline} alt="delete icon" />
-                  </Link>
-                </Flex>
+                <Center>
+                  <Flex gap={8}>
+                    <Link to={``}>
+                      <img src={edit} alt="edit icon" />
+                    </Link>
+                    <Link to={``}>
+                      <img src={deleteOutline} alt="delete icon" />
+                    </Link>
+                  </Flex>
+                </Center>
               </td>
             </tr>
           </tbody>

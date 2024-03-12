@@ -183,13 +183,6 @@ const SidebarMenu = () => {
                   </UnorderedList>
                 </Box>
               ))}
-            {/* <MenuItem
-              active={activeMenu === "pizza"}
-              onClick={() => handleMenuClick("pizza")}
-              component={<Link to="/pizza" />}
-            >
-              Pizza
-            </MenuItem> */}
           </SubMenu>
           <SubMenu
             icon={
@@ -200,8 +193,38 @@ const SidebarMenu = () => {
             }
             label="Extra Items"
           >
-            <MenuItem>Dashboard</MenuItem>
-            <MenuItem>Line charts</MenuItem>
+            <Box
+              pl="1.5rem"
+              pt={2}
+              pb={2}
+              color={"#919191"}
+              bgColor={"brand.orderbg"}
+            >
+              <UnorderedList>
+                <ListItem
+                  color={
+                    subMenuItem === "Toppings" ? "brand.primary" : "brand.black"
+                  }
+                >
+                  <Link style={linkStyle} to="/toppings">
+                    Toppings
+                  </Link>
+                </ListItem>
+                <ListItem
+                  color={
+                    subMenuItem === "Drizzle it up"
+                      ? "brand.primary"
+                      : "brand.black"
+                  }
+                >
+                  <Link style={linkStyle} to="/drizzles">
+                    Drizzle it up!
+                  </Link>
+                </ListItem>
+              </UnorderedList>
+            </Box>
+            {/* <MenuItem>Toppings</MenuItem> */}
+            {/* <MenuItem>Line charts</MenuItem> */}
           </SubMenu>
           <MenuItem
             icon={
