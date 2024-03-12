@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Center,
   Flex,
   Heading,
   IconButton,
@@ -57,7 +58,7 @@ const Burger = () => {
             fontSize={"12px"}
             variant={"simpleWhite"}
           >
-            <Link to="/add/pizza" style={linkStyle}>
+            <Link to="/add/burger" style={linkStyle}>
               Add New Burger
             </Link>
           </Button>
@@ -123,14 +124,16 @@ const Burger = () => {
                 </Text>
               </td>
               <td>
-                <Flex gap={8}>
-                  <Link to={``}>
-                    <img src={edit} alt="edit icon" />
-                  </Link>
-                  <Link to={``}>
-                    <img src={deleteOutline} alt="delete icon" />
-                  </Link>
-                </Flex>
+                <Center>
+                  <Flex gap={8}>
+                    <Link to={``}>
+                      <img src={edit} alt="edit icon" />
+                    </Link>
+                    <Link to={``}>
+                      <img src={deleteOutline} alt="delete icon" />
+                    </Link>
+                  </Flex>
+                </Center>
               </td>
             </tr>
 
@@ -154,14 +157,16 @@ const Burger = () => {
                 </Text>
               </td>
               <td>
-                <Flex gap={8}>
-                  <Link to={``}>
-                    <img src={edit} alt="edit icon" />
-                  </Link>
-                  <Link to={``}>
-                    <img src={deleteOutline} alt="delete icon" />
-                  </Link>
-                </Flex>
+                <Center>
+                  <Flex gap={8}>
+                    <Link to={``}>
+                      <img src={edit} alt="edit icon" />
+                    </Link>
+                    <Link to={``}>
+                      <img src={deleteOutline} alt="delete icon" />
+                    </Link>
+                  </Flex>
+                </Center>
               </td>
             </tr>
           </tbody>
