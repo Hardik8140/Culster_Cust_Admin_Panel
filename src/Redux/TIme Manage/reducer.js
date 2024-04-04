@@ -1,18 +1,16 @@
 import {
   CLEANUP,
   ERROR,
-  FETCH_MENU_ITEM_FAILURE,
-  FETCH_MENU_ITEM_REQUEST,
-  FETCH_MENU_ITEM_SUCCESS,
-  GOT_ITEMS_INGREDIANTS,
+  GET_ALL_OUTLET_SUCCESS,
+  GET_OUTLET_TIME_SLOTS_SUCCESS,
   LOADING,
 } from "../actionType";
 
 const initalState = {
   loading: false,
   error: "",
-  items: {},
-  menuItem: [],
+  outlets: [],
+  outletOnId: [],
 };
 
 export const reducer = (state = initalState, { type, payload }) => {
@@ -28,25 +26,28 @@ export const reducer = (state = initalState, { type, payload }) => {
         isLoading: false,
         error: payload,
       };
-    case GOT_ITEMS_INGREDIANTS:
+    case GET_ALL_OUTLET_SUCCESS:
       return {
         ...state,
         error: "",
         isLoading: false,
-        items: payload,
+        outlets: payload,
       };
+    case GET_OUTLET_TIME_SLOTS_SUCCESS:
+      return {
+        ...state,
+        error: "",
+        isLoading: false,
+        outletOnId: payload,
+      };
+
     case CLEANUP:
       return {
         ...state,
         isLoading: false,
         error: "",
       };
-    case FETCH_MENU_ITEM_REQUEST:
-      return { ...state, loading: true, error: payload };
-    case FETCH_MENU_ITEM_SUCCESS:
-      return { ...state, menuItem: payload, loading: false, error: false };
-    case FETCH_MENU_ITEM_FAILURE:
-      return { ...state, loading: false, error: payload };
+
     default:
       return state;
   }

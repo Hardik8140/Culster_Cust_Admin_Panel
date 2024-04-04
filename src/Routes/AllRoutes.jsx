@@ -45,6 +45,7 @@ import { Offers } from "../Components/Offers/Offers.jsx";
 import { AddNewOffer } from "../Components/Offers/AddNewOffer.jsx";
 import ShowToppings from "../Components/ExtraItems/ShowToppings.jsx";
 import ShowDizzleitUp from "../Components/ExtraItems/ShowDizzleitUp.jsx";
+import CustomerSupport from "../Components/Customer Support/CustomerSupport.jsx";
 
 const AllRoutes = () => {
   return (
@@ -53,7 +54,7 @@ const AllRoutes = () => {
       <Route path="/" element={<Dashboard />} />
 
       <Route path="/pizza" element={<Pizza />} />
-      <Route path="/createownpizza  " element={<Cyop />} />
+      <Route path="/createownpizza" element={<Cyop />} />
       <Route path="/Burger" element={<Burger />} />
       <Route path="/houseofwings" element={<HouseWings />} />
       <Route path="/pasta" element={<Pasta />} />
@@ -105,6 +106,7 @@ const AllRoutes = () => {
       <Route path="/time" element={<TImeManage />} />
       <Route path="/table" element={<TableReservation />} />
       <Route path="/customer" element={<CustomerReview />} />
+      <Route path="/customersupport" element={<CustomerSupport />} />
     </Routes>
   );
 };

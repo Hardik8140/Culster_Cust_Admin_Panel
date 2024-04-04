@@ -3,6 +3,7 @@ import Layout from "../Layout/Layout";
 import {
   Box,
   Button,
+  Center,
   Flex,
   Heading,
   IconButton,
@@ -122,14 +123,16 @@ const DeliveryBoy = () => {
                 </Text>
               </td>
               <td>
-                <Flex gap={8}>
-                  <Link to={``}>
-                    <img src={edit} alt="edit icon" />
-                  </Link>
-                  <Link to={``}>
-                    <img src={deleteOutline} alt="delete icon" />
-                  </Link>
-                </Flex>
+                <Center>
+                  <Flex gap={8}>
+                    <Link to={``}>
+                      <img src={edit} alt="edit icon" />
+                    </Link>
+                    <Link to={``}>
+                      <img src={deleteOutline} alt="delete icon" />
+                    </Link>
+                  </Flex>
+                </Center>
               </td>
             </tr>
 
@@ -154,129 +157,21 @@ const DeliveryBoy = () => {
                 </Text>
               </td>
               <td>
-                <Flex gap={8}>
-                  <Link to={``}>
-                    <img src={edit} alt="edit icon" />
-                  </Link>
-                  <Link to={``}>
-                    <img src={deleteOutline} alt="delete icon" />
-                  </Link>
-                </Flex>
+                <Center>
+                  <Flex gap={8}>
+                    <Link to={``}>
+                      <img src={edit} alt="edit icon" />
+                    </Link>
+                    <Link to={``}>
+                      <img src={deleteOutline} alt="delete icon" />
+                    </Link>
+                  </Flex>
+                </Center>
               </td>
             </tr>
           </tbody>
         </table>
       </DIV>
-
-      {/* Food Items */}
-      {/* <DIV>
-        <table>
-          <thead
-            style={{
-              fontWeight: "600",
-              fontSize: "16px",
-              backgroundColor: "#FFFFFF",
-            }}
-          >
-            <tr>
-              <th>
-                <Flex gap={1}>
-                  <Text>ID</Text>
-                  <img src={updown} onClick={handleOrderId} />
-                </Flex>
-              </th>
-              <th>
-                <Flex gap={1}>
-                  <Text>Food Name</Text>
-                  <img src={updown} onClick={handleOrderName} />
-                </Flex>
-              </th>
-              <th>
-                <Flex gap={1}>
-                  <Text>Mobile Number</Text>
-                  <img src={updown} onClick={handleOrderPrice} />
-                </Flex>
-              </th>
-              <th>Email Address</th>
-              <th>
-                <Flex gap={1}>
-                  <Text>Status</Text>
-                  <img src={updown} onClick={handleOrderStatus} />
-                </Flex>
-              </th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>#00001</td>
-              <td>Hardik Gajera</td>
-              <td>+91 8849619764</td>
-              <td>hardik.gajera.d.84@gmail.com</td>
-              <td>
-                <Text
-                  bgColor={"brown"}
-                  color={"white"}
-                  borderRadius={"2rem"}
-                  p={".5rem 1.5rem"}
-                >
-                  Available
-                </Text>
-              </td>
-              <td>
-                <Box w="80%" display="flex" justifyContent="space-between">
-                  <IconButton
-                    icon={<CiEdit size="40px" color="darkgreen" />}
-                    backgroundColor="transparent"
-                    _hover={{ backgroundColor: "none" }}
-                  />
-                  <IconButton
-                    icon={<RiDeleteBin7Line size="40px" color="red" />}
-                    backgroundColor="transparent"
-                    _hover={{ backgroundColor: "none" }}
-                  />
-                </Box>
-              </td>
-            </tr>
-
-            <tr>
-              <td>#00002</td>
-              <td>pizza name</td>
-              <td>$ 5.00</td>
-              <td>Indian Style</td>
-              <td>
-                <Text
-                  bgColor={"brown"}
-                  color={"white"}
-                  borderRadius={"2rem"}
-                  p={".5rem 1.5rem"}
-                >
-                  In Stock
-                </Text>
-              </td>
-              <td>
-                <Box
-                  //   border="1px solid red"
-                  w="80%"
-                  display="flex"
-                  justifyContent="space-between"
-                >
-                  <IconButton
-                    icon={<CiEdit size="40px" color="darkgreen" />}
-                    backgroundColor="transparent"
-                    _hover={{ backgroundColor: "none" }}
-                  />
-                  <IconButton
-                    icon={<RiDeleteBin7Line size="40px" color="red" />}
-                    backgroundColor="transparent"
-                    _hover={{ backgroundColor: "none" }}
-                  />
-                </Box>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </DIV> */}
     </Layout>
   );
 };
