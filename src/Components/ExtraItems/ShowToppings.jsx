@@ -20,6 +20,7 @@ import { View } from "lucide-react";
 import { get_toppings } from "../../Redux/ExtraItems/action";
 import { CloseIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import { CLEANUP } from "../../Redux/actionType";
 
 const links = [
   {
@@ -36,9 +37,7 @@ const links = [
 
 const ShowToppings = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, toppings } = useSelector(
-    (store) => store.extraItemsReducer
-  );
+  const { error, toppings } = useSelector((store) => store.extraItemsReducer);
   const [selectedToppings, setSelectedToppings] = useState([]);
 
   const toast = useToast();
@@ -59,7 +58,10 @@ const ShowToppings = () => {
         isClosable: true,
       });
     }
-  }, [error, toast]);
+    return () => {
+      dispatch({ type: CLEANUP });
+    };
+  }, [error, toast, dispatch]);
 
   const handleRemoveTopping = (toppingToRemove) => {
     setSelectedToppings(

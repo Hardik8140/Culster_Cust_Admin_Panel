@@ -1,14 +1,17 @@
 import {
   Flex,
   GridItem,
+  Image,
   Input,
   InputGroup,
   InputLeftAddon,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { dollar } from "../../../assets";
+import { dollarGray } from "../../../assets";
+import styled from "styled-components";
 
+// eslint-disable-next-line react/prop-types
 export const Price = ({ name = "Price" }) => {
   return (
     <GridItem
@@ -22,12 +25,14 @@ export const Price = ({ name = "Price" }) => {
       <Stack>
         <Text fontWeight={"500"}>{name}</Text>
         <Flex>
-          <InputGroup size={"sm"}>
+          <InputGroup height={"40px"}>
             <InputLeftAddon
               borderRadius={"10px 0 0 10px"}
-              bgColor={"brand.grey"}
+              bgColor={"#EFEFEF"}
+              border={"0.5px solid "}
+              borderColor={"#DBD8D8"}
             >
-              <img src={dollar} />
+              <IMAGE src={dollarGray} />
             </InputLeftAddon>
             <Input
               borderRadius={"0px 10px 10px 0px"}
@@ -44,3 +49,10 @@ export const Price = ({ name = "Price" }) => {
     </GridItem>
   );
 };
+
+const IMAGE = styled.img`
+  fill: #9e9e9e !important;
+  .dollar {
+    fill: #9e9e9e !important;
+  }
+`;

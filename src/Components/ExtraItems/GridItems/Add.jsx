@@ -19,7 +19,7 @@ export const Add = ({ name, handleAdd }) => {
             color={"white"}
             variant={"simple"}
             bgColor={"brand.primary"}
-            type="submit"
+            onClick={handleAdd}
           >
             Add
           </Button>

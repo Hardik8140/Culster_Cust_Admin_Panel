@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { Add } from "./GridItems/Add";
 import { Price } from "./GridItems/Price";
 import { View } from "./GridItems/View";
+import { CLEANUP } from "../../Redux/actionType";
+import { get_toppings, post_Toppings } from "../../Redux/ExtraItems/action";
 // import { CLEANUP } from "../../../Redux/actionType";
 
 const links = [
@@ -25,16 +27,18 @@ const links = [
 export const Toppings = () => {
   const dispatch = useDispatch();
   const toast = useToast();
-  const { isLoading, error, items } = useSelector(
-    (store) => store.menuItemsReducer
+  const { isLoading, error, toppings } = useSelector(
+    (store) => store.extraItemsReducer
   );
   const [list, setList] = useState([]);
-  useEffect(() => {
-    if (items === undefined || Object.keys(items).length === 0) {
-      //   dispatch(get_Ingrediants());
-    }
-  }, []);
 
+  useEffect(() => {
+    if (!toppings || toppings.length === 0) {
+      dispatch(get_toppings());
+    } else {
+      setList(toppings);
+    }
+  }, [dispatch, toppings]);
   useEffect(() => {
     if (!isLoading && error) {
       toast({
@@ -45,22 +49,34 @@ export const Toppings = () => {
       });
     }
     return () => {
-      //   dispatch({ type: CLEANUP });
+      dispatch({ type: CLEANUP });
     };
-  }, [isLoading, error, toast]);
+  }, [isLoading, error, toast, dispatch]);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
-    const name = form.querySelector("#name");
-    // const price = form.querySelector("#price");
+    const price = form.querySelector("#price");
+    const top = list.map((item) => item.name);
 
-    const data = [...list, name.value];
+    const obj = {
+      toppings: top,
+    };
+    if (price.value) {
+      obj.toppingPrice = +price.value;
+    }
+    dispatch(post_Toppings(obj));
+  };
+  const handleAdd = () => {
+    const name = document.querySelector("#name");
+    let data;
+    data = [...list, { name: name.value }];
     name.value = "";
     setList(data);
   };
-
-  const handleAdd = () => {};
-  const handleCancel = () => {};
+  const handleCancel = (ind) => {
+    const filtered = list.filter((item, i) => i !== ind);
+    setList(filtered);
+  };
   return (
     <Layout>
       <Box>
