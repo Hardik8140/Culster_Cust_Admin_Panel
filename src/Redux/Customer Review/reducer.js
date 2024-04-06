@@ -1,18 +1,9 @@
-import {
-  CLEANUP,
-  ERROR,
-  FETCH_MENU_ITEM_FAILURE,
-  FETCH_MENU_ITEM_REQUEST,
-  FETCH_MENU_ITEM_SUCCESS,
-  GOT_ITEMS_INGREDIANTS,
-  LOADING,
-} from "../actionType";
+import { CLEANUP, ERROR, GET_REVIEW_SUCCESS, LOADING } from "../actionType";
 
 const initalState = {
   loading: false,
   error: "",
-  items: {},
-  menuItem: [],
+  reviews: [],
 };
 
 export const reducer = (state = initalState, { type, payload }) => {
@@ -28,25 +19,21 @@ export const reducer = (state = initalState, { type, payload }) => {
         isLoading: false,
         error: payload,
       };
-    case GOT_ITEMS_INGREDIANTS:
+    case GET_REVIEW_SUCCESS:
       return {
         ...state,
         error: "",
         isLoading: false,
-        items: payload,
+        reviews: payload,
       };
+
     case CLEANUP:
       return {
         ...state,
         isLoading: false,
         error: "",
       };
-    case FETCH_MENU_ITEM_REQUEST:
-      return { ...state, loading: true, error: payload };
-    case FETCH_MENU_ITEM_SUCCESS:
-      return { ...state, menuItem: payload, loading: false, error: false };
-    case FETCH_MENU_ITEM_FAILURE:
-      return { ...state, loading: false, error: payload };
+
     default:
       return state;
   }

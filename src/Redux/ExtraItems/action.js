@@ -10,7 +10,7 @@ export const get_toppings = () => async (dispatch) => {
   dispatch({ type: LOADING });
   try {
     let res = await axios.get(
-      `http://ec2-54-172-26-24.compute-1.amazonaws.com:8080/admin/extraitem?extraItemId=220003`
+      `https://ec2-54-172-26-24.compute-1.amazonaws.com:8443/admin/extraitem?extraItemId=220003`
     );
     res = res.data;
     // console.log(res.data);
@@ -28,7 +28,7 @@ export const get_drizzles = () => async (dispatch) => {
   dispatch({ type: LOADING });
   try {
     let res = await axios.get(
-      `http://ec2-54-172-26-24.compute-1.amazonaws.com:8080/admin/extraitem?extraItemId=220006`
+      `https://ec2-54-172-26-24.compute-1.amazonaws.com:8443/admin/extraitem?extraItemId=220006`
     );
     res = res.data;
     console.log(res.data);

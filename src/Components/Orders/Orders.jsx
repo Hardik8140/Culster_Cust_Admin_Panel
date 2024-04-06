@@ -26,7 +26,7 @@ const Orders = () => {
   return (
     <Layout>
       {/* <ActiveOrders /> */}
-      <Stack my={12} p={4} gap={4} bgColor={"brand.background"}>
+      <Stack p={4} gap={4} bgColor={"brand.background"}>
         <Text fontSize={"24px"} fontWeight={"bold"}>
           All Orders
         </Text>
