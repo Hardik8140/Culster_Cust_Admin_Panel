@@ -1,5 +1,5 @@
-export const backendAPI = "http://ec2-54-172-26-24.compute-1.amazonaws.com:8080/"
-export const itemsIngrediants = "http://ec2-54-172-26-24.compute-1.amazonaws.com:8080/admin/item?categoryId="
+export const backendAPI = "https://ec2-54-172-26-24.compute-1.amazonaws.com:8443/"
+export const itemsIngrediants = "https://ec2-54-172-26-24.compute-1.amazonaws.com:8443/admin/item?categoryId="
 export const linkStyle = {
     textDecoration: "none",
     color: "inherit",
