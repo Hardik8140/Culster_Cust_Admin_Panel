@@ -88,6 +88,8 @@ const ShowToppings = () => {
                 height="52px"
                 fontWeight="600"
                 fontSize="16px"
+                boxShadow={"0px 1px 4px 0px #03559233 "}
+                variant={"unstyled"}
               >
                 Edit
               </Button>
@@ -99,18 +101,18 @@ const ShowToppings = () => {
               <Box
                 key={i}
                 bgColor="brand.background"
-                borderRadius={7}
+                borderRadius={"8px"}
                 // p={2}
+                p={"4px"}
               >
                 <Box
-                  p={1}
                   display="flex"
-                  gap={6}
+                  gap={4}
+                  p={"4px"}
                   alignItems="center"
-                  fontWeight="400"
-                  fontSize="16px"
-                  color="#1F1F1F"
+                  height={"100%"}
                 >
+
                   <span>
                     {el.name}
                     <IconButton
@@ -120,6 +122,16 @@ const ShowToppings = () => {
                       onClick={() => handleRemoveTopping(el.extraItemId)}
                     />
                   </span>
+                  <Text fontWeight="400" fontSize="16px" color="#1F1F1F">
+                    {el.name}
+                  </Text>
+                  <IconButton
+                    bg="none"
+                    _hover={{ bg: "none" }}
+                    icon={<CloseIcon />}
+                    color={"#919191"}
+                    onClick={() => handleRemoveTopping(el.extraItemId)}
+                  />
                   {/* <CloseIcon onClick={() => handleRemoveTopping(el)} /> */}
                 </Box>
               </Box>
@@ -138,17 +150,18 @@ let DIV = styled.div`
   margin-top: 30px; /* The switch - the box around the slider */
 
   .inner-box-1 {
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: white;
     padding: 12px 20px 12px 20px;
+    box-shadow: 0px 1px 4px 0px #00000033;
   }
   .inner-box-2 {
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    box-shadow: 0px 1px 4px 0px #00000033;
     display: inline;
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     padding: 16px 20px 16px 20px;
     background-color: white;
