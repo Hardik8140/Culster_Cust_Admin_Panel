@@ -4,6 +4,7 @@ import {
   GET_EXTRA_ITEM_DRIZZLE_SUCCESS,
   GET_EXTRA_ITEM_TOPPINGS_SUCCESS,
   LOADING,
+  POSTED_TOPPINGS,
 } from "../actionType";
 
 const initalState = {
@@ -40,6 +41,13 @@ export const reducer = (state = initalState, { type, payload }) => {
         isLoading: false,
         drizzles: payload,
       };
+    case POSTED_TOPPINGS:
+      return {
+        ...state,
+        error: "",
+        isLoading: false,
+        toppings: payload,
+      }
     case CLEANUP:
       return {
         ...state,
