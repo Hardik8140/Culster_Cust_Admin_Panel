@@ -35,6 +35,7 @@ const SidebarMenu = () => {
     (store) => store.menuItemsReducer
   );
   const href = window.location.href;
+  // console.log(menuItem);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -97,11 +98,13 @@ const SidebarMenu = () => {
             marginTop: "10px",
           }}
         >
-          <img
-            src={logo}
-            alt="Logo"
-            style={{ width: "80%", maxWidth: "70px" }}
-          />
+          <Link to="/">
+            <img
+              src={logo}
+              alt="Logo"
+              style={{ width: "80%", maxWidth: "70px" }}
+            />
+          </Link>
         </div>
         <Menu
           menuItemStyles={{
@@ -197,35 +200,24 @@ const SidebarMenu = () => {
               pl="1.5rem"
               pt={2}
               pb={2}
-              color={"#919191"}
+              color={"#1F1F1F"}
               bgColor={"brand.orderbg"}
             >
               <UnorderedList>
-                <ListItem
-                  color={
-                    subMenuItem === "Toppings" ? "brand.primary" : "brand.black"
-                  }
-                >
+                <ListItem pt={2} pb={2}>
                   <Link style={linkStyle} to="/toppings">
                     Toppings
                   </Link>
                 </ListItem>
-                <ListItem
-                  color={
-                    subMenuItem === "Drizzle it up"
-                      ? "brand.primary"
-                      : "brand.black"
-                  }
-                >
+                <ListItem pt={2} pb={2}>
                   <Link style={linkStyle} to="/drizzles">
                     Drizzle it up!
                   </Link>
                 </ListItem>
               </UnorderedList>
             </Box>
-            {/* <MenuItem>Toppings</MenuItem> */}
-            {/* <MenuItem>Line charts</MenuItem> */}
           </SubMenu>
+
           <MenuItem
             icon={
               <TicketPercent
@@ -299,6 +291,16 @@ const SidebarMenu = () => {
             component={<Link to="/customer" size={"22px"} />}
           >
             Customer Review
+          </MenuItem>
+          <MenuItem
+            icon={
+              <MdOutlineReviews
+                color={activeMenu !== "customersupport" ? "#4a4a4b" : "white"}
+              />
+            }
+            component={<Link to="/customersupport" size={"22px"} />}
+          >
+            Customer Support
           </MenuItem>
         </Menu>
       </Sidebar>

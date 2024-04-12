@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import {
   Box,
@@ -13,12 +13,34 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { CiEdit } from "react-icons/ci";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchOutletTimeSlots,
+  get_all_outlets,
+} from "../../Redux/TIme Manage/action";
+import axios from "axios";
 
 const TImeManage = () => {
   const [openingHour, setOpeningHour] = useState("");
   const [openingMinute, setOpeningMinute] = useState("");
   const [closingHour, setClosingHour] = useState("");
   const [closingMinute, setClosingMinute] = useState("");
+
+  const [selectedDay, setSelectedDay] = useState(""); // Track the selected day
+
+  const dispatch = useDispatch();
+  const outlets = useSelector((store) => store.timeReducer.outlets);
+  const outletOnId = useSelector((store) => store.timeReducer.outletOnId);
+  console.log(outletOnId);
+
+  useEffect(() => {
+    dispatch(get_all_outlets());
+  }, []);
+
+  const handleOutletChange = (e) => {
+    let outletId = e.target.value;
+    dispatch(fetchOutletTimeSlots(outletId));
+  };
 
   const handleOpeningHourChange = (event) => {
     setOpeningHour(event.target.value);
@@ -35,9 +57,32 @@ const TImeManage = () => {
   const handleClosingMinuteChange = (event) => {
     setClosingMinute(event.target.value);
   };
+
+  useEffect(() => {
+    // Set the default opening and closing times based on the selected day
+    const selectedDaySlot = outletOnId.find(
+      (slot) => slot.weekDay === selectedDay
+    );
+    if (selectedDaySlot) {
+      const [openingHours, openingMinutes] =
+        selectedDaySlot.startTime.split(":");
+      const [closingHours, closingMinutes] = selectedDaySlot.endTime.split(":");
+      setOpeningHour(openingHours);
+      setOpeningMinute(openingMinutes);
+      setClosingHour(closingHours);
+      setClosingMinute(closingMinutes);
+    } else {
+      // If there's no slot for the selected day, reset the times to empty strings
+      setOpeningHour("");
+      setOpeningMinute("");
+      setClosingHour("");
+      setClosingMinute("");
+    }
+  }, [outletOnId, selectedDay]);
+
   return (
     <Layout>
-      <Box p={10} w="69rem" boxShadow="lg">
+      <Box p={2}>
         <Heading as="h2" size="md" pb={6}>
           Set your business hours
         </Heading>
@@ -48,16 +93,19 @@ const TImeManage = () => {
 
         <Box backgroundColor="#ffffff" p={4} borderRadius={6}>
           <Select
-            placeholder="Select Restourent"
-            color="lightgray"
+            color=""
             pb="10px"
             w="30%"
+            onChange={(e) => handleOutletChange(e)}
           >
-            {/* <option value="" color="gray">
-              Select Restarunt
-            </option> */}
-
-            {/* Here map the all restorent */}
+            <option value="" style={{ color: "lightgray" }}>
+              Select Restaurant
+            </option>
+            {outlets.map((el) => (
+              <option key={el.outletId} value={el.outletId}>
+                {el.outletName}
+              </option>
+            ))}
           </Select>
 
           <Box
@@ -80,29 +128,20 @@ const TImeManage = () => {
           <Box boxShadow="base" p="15px" borderRadius="3px">
             <Text>Organization Business Hours</Text>
           </Box>
+
+          {}
           <Box mt={5} boxShadow="base" p="15px" borderRadius="3px" mb={10}>
             <ButtonGroup>
-              <Button backgroundColor="lightgray" borderRadius="none">
-                Sun
-              </Button>
-              <Button backgroundColor="lightgray" borderRadius="none">
-                Mon
-              </Button>
-              <Button backgroundColor="lightgray" borderRadius="none">
-                Tue
-              </Button>
-              <Button backgroundColor="lightgray" borderRadius="none">
-                Wed
-              </Button>
-              <Button backgroundColor="lightgray" borderRadius="none">
-                Thu
-              </Button>
-              <Button backgroundColor="lightgray" borderRadius="none">
-                Fri
-              </Button>
-              <Button backgroundColor="lightgray" borderRadius="none">
-                Sat
-              </Button>
+              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+                <Button
+                  key={day}
+                  backgroundColor={selectedDay === day ? "blue" : "lightgray"} // Highlight selected day
+                  borderRadius="none"
+                  onClick={() => setSelectedDay(day)}
+                >
+                  {day}
+                </Button>
+              ))}
             </ButtonGroup>
           </Box>
 
@@ -110,58 +149,48 @@ const TImeManage = () => {
             <Checkbox defaultChecked mr={10}>
               All Day Close
             </Checkbox>
-
+            <Text>From:</Text> {/* Added text for start time */}
             <Select
               w="10%"
               value={openingHour}
               onChange={handleOpeningHourChange}
             >
-              {/* Dynamically generate options for opening hours */}
               {Array.from({ length: 24 }, (_, i) => (
                 <option key={i} value={i}>{`${i
                   .toString()
                   .padStart(2, "0")}H`}</option>
               ))}
             </Select>
-
             <Text mx={1}>:</Text>
-
             <Select
               w="10%"
               value={openingMinute}
               onChange={handleOpeningMinuteChange}
             >
-              {/* Dynamically generate options for opening minutes */}
               {Array.from({ length: 60 }, (_, i) => (
                 <option key={i} value={i}>{`${i
                   .toString()
                   .padStart(2, "0")}M`}</option>
               ))}
             </Select>
-
             <Text mx={2}>to</Text>
-
             <Select
               w="10%"
               value={closingHour}
               onChange={handleClosingHourChange}
             >
-              {/* Dynamically generate options for closing hours */}
               {Array.from({ length: 24 }, (_, i) => (
                 <option key={i} value={i}>{`${i
                   .toString()
                   .padStart(2, "0")}H`}</option>
               ))}
             </Select>
-
             <Text mx={1}>:</Text>
-
             <Select
               w="10%"
               value={closingMinute}
               onChange={handleClosingMinuteChange}
             >
-              {/* Dynamically generate options for closing minutes */}
               {Array.from({ length: 60 }, (_, i) => (
                 <option key={i} value={i}>{`${i
                   .toString()

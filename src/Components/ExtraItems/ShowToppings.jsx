@@ -83,6 +83,7 @@ const ShowToppings = () => {
             </Text>
             <Link to="/extra/toppings">
               <Button
+                variant="unstyled"
                 bgColor="brand.add"
                 color="white"
                 w="107px"
@@ -113,6 +114,16 @@ const ShowToppings = () => {
                   alignItems="center"
                   height={"100%"}
                 >
+
+                  <span>
+                    {el.name}
+                    <IconButton
+                      bg="none"
+                      _hover={{ bg: "none" }}
+                      icon={<CloseIcon />}
+                      onClick={() => handleRemoveTopping(el.extraItemId)}
+                    />
+                  </span>
                   <Text fontWeight="400" fontSize="16px" color="#1F1F1F">
                     {el.name}
                   </Text>
