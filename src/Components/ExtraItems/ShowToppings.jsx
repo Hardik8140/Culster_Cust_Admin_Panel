@@ -89,7 +89,7 @@ const ShowToppings = () => {
                 fontWeight="600"
                 fontSize="16px"
                 boxShadow={"0px 1px 4px 0px #03559233 "}
-                variant={"unstyled"}
+                // variant={"unstyled"}
               >
                 Edit
               </Button>
@@ -112,7 +112,6 @@ const ShowToppings = () => {
                   alignItems="center"
                   height={"100%"}
                 >
-
                   <span>
                     {el.name}
                     <IconButton

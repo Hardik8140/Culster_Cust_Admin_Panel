@@ -31,7 +31,6 @@ const TImeManage = () => {
   const dispatch = useDispatch();
   const outlets = useSelector((store) => store.timeReducer.outlets);
   const outletOnId = useSelector((store) => store.timeReducer.outletOnId);
-  // console.log(outletOnId);
 
   useEffect(() => {
     dispatch(get_all_outlets());
@@ -46,6 +45,7 @@ const TImeManage = () => {
     const selectedDaySlot = outletOnId.find(
       (slot) => slot.weekDay === selectedDay
     );
+    console.log(selectedDay);
     if (selectedDaySlot) {
       const [openingHours, openingMinutes] =
         selectedDaySlot.startTime.split(":");
@@ -56,15 +56,14 @@ const TImeManage = () => {
       setClosingHour(closingHours);
       setClosingMinute(closingMinutes);
     } else {
-      setOpeningHour("00");
-      setOpeningMinute("00");
-
-      setClosingHour("23");
-      setClosingMinute("59");
+      setOpeningHour("");
+      setOpeningMinute("");
+      setClosingHour("");
+      setClosingMinute("");
     }
   }, [outletOnId, selectedDay]);
 
-  console.log(closingHour, closingMinute);
+  // console.log(closingHour, closingMinute);
   return (
     <Layout>
       <Box p={2}>
@@ -135,11 +134,7 @@ const TImeManage = () => {
               All Day Close
             </Checkbox>
             <Text>From:</Text>
-            <Select
-              w="10%"
-              value={openingHour}
-              // onChange={handleOpeningHourChange}
-            >
+            <Select w="10%" value={openingHour}>
               {Array.from({ length: 24 }, (_, i) => (
                 <option key={i} value={i}>{`${i
                   .toString()
@@ -147,11 +142,7 @@ const TImeManage = () => {
               ))}
             </Select>
             <Text mx={1}>:</Text>
-            <Select
-              w="10%"
-              value={openingMinute}
-              // onChange={handleOpeningMinuteChange}
-            >
+            <Select w="10%" value={openingMinute}>
               {Array.from({ length: 60 }, (_, i) => (
                 <option key={i} value={i}>{`${i
                   .toString()
@@ -159,11 +150,7 @@ const TImeManage = () => {
               ))}
             </Select>
             <Text mx={2}>to</Text>
-            <Select
-              w="10%"
-              value={closingHour}
-              // onChange={handleClosingHourChange}
-            >
+            <Select w="10%" value={closingHour}>
               {Array.from({ length: 24 }, (_, i) => (
                 <option key={i} value={i}>{`${i
                   .toString()
@@ -171,11 +158,7 @@ const TImeManage = () => {
               ))}
             </Select>
             <Text mx={1}>:</Text>
-            <Select
-              w="10%"
-              value={closingMinute}
-              // onChange={handleClosingMinuteChange}
-            >
+            <Select w="10%" value={closingMinute}>
               {Array.from({ length: 60 }, (_, i) => (
                 <option key={i} value={i}>{`${i
                   .toString()
