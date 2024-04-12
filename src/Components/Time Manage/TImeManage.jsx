@@ -45,7 +45,7 @@ const TImeManage = () => {
     const selectedDaySlot = outletOnId.find(
       (slot) => slot.weekDay === selectedDay
     );
-    console.log(selectedDay);
+    // console.log(selectedD/ay);
     if (selectedDaySlot) {
       const [openingHours, openingMinutes] =
         selectedDaySlot.startTime.split(":");
