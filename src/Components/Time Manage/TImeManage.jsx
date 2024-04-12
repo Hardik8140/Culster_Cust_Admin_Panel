@@ -26,12 +26,12 @@ const TImeManage = () => {
   const [closingHour, setClosingHour] = useState("");
   const [closingMinute, setClosingMinute] = useState("");
 
-  const [selectedDay, setSelectedDay] = useState(""); // Track the selected day
+  const [selectedDay, setSelectedDay] = useState("");
 
   const dispatch = useDispatch();
   const outlets = useSelector((store) => store.timeReducer.outlets);
   const outletOnId = useSelector((store) => store.timeReducer.outletOnId);
-  console.log(outletOnId);
+  // console.log(outletOnId);
 
   useEffect(() => {
     dispatch(get_all_outlets());
@@ -42,44 +42,29 @@ const TImeManage = () => {
     dispatch(fetchOutletTimeSlots(outletId));
   };
 
-  const handleOpeningHourChange = (event) => {
-    setOpeningHour(event.target.value);
-  };
-
-  const handleOpeningMinuteChange = (event) => {
-    setOpeningMinute(event.target.value);
-  };
-
-  const handleClosingHourChange = (event) => {
-    setClosingHour(event.target.value);
-  };
-
-  const handleClosingMinuteChange = (event) => {
-    setClosingMinute(event.target.value);
-  };
-
   useEffect(() => {
-    // Set the default opening and closing times based on the selected day
     const selectedDaySlot = outletOnId.find(
       (slot) => slot.weekDay === selectedDay
     );
     if (selectedDaySlot) {
       const [openingHours, openingMinutes] =
         selectedDaySlot.startTime.split(":");
-      const [closingHours, closingMinutes] = selectedDaySlot.endTime.split(":");
       setOpeningHour(openingHours);
       setOpeningMinute(openingMinutes);
+      console.log(typeof openingHours, openingMinutes);
+      const [closingHours, closingMinutes] = selectedDaySlot.endTime.split(":");
       setClosingHour(closingHours);
       setClosingMinute(closingMinutes);
     } else {
-      // If there's no slot for the selected day, reset the times to empty strings
-      setOpeningHour("");
-      setOpeningMinute("");
-      setClosingHour("");
-      setClosingMinute("");
+      setOpeningHour("00");
+      setOpeningMinute("00");
+
+      setClosingHour("23");
+      setClosingMinute("59");
     }
   }, [outletOnId, selectedDay]);
 
+  console.log(closingHour, closingMinute);
   return (
     <Layout>
       <Box p={2}>
@@ -135,7 +120,7 @@ const TImeManage = () => {
               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
                 <Button
                   key={day}
-                  backgroundColor={selectedDay === day ? "blue" : "lightgray"} // Highlight selected day
+                  backgroundColor={selectedDay === day ? "dark" : "lightgray"}
                   borderRadius="none"
                   onClick={() => setSelectedDay(day)}
                 >
@@ -149,11 +134,11 @@ const TImeManage = () => {
             <Checkbox defaultChecked mr={10}>
               All Day Close
             </Checkbox>
-            <Text>From:</Text> {/* Added text for start time */}
+            <Text>From:</Text>
             <Select
               w="10%"
               value={openingHour}
-              onChange={handleOpeningHourChange}
+              // onChange={handleOpeningHourChange}
             >
               {Array.from({ length: 24 }, (_, i) => (
                 <option key={i} value={i}>{`${i
@@ -165,7 +150,7 @@ const TImeManage = () => {
             <Select
               w="10%"
               value={openingMinute}
-              onChange={handleOpeningMinuteChange}
+              // onChange={handleOpeningMinuteChange}
             >
               {Array.from({ length: 60 }, (_, i) => (
                 <option key={i} value={i}>{`${i
@@ -177,7 +162,7 @@ const TImeManage = () => {
             <Select
               w="10%"
               value={closingHour}
-              onChange={handleClosingHourChange}
+              // onChange={handleClosingHourChange}
             >
               {Array.from({ length: 24 }, (_, i) => (
                 <option key={i} value={i}>{`${i
@@ -189,7 +174,7 @@ const TImeManage = () => {
             <Select
               w="10%"
               value={closingMinute}
-              onChange={handleClosingMinuteChange}
+              // onChange={handleClosingMinuteChange}
             >
               {Array.from({ length: 60 }, (_, i) => (
                 <option key={i} value={i}>{`${i
