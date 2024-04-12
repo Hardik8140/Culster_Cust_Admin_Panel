@@ -2,17 +2,14 @@ import {
   Box,
   Button,
   Flex,
-  Input,
   InputGroup,
   InputRightAddon,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
 import { X } from "lucide-react";
 
 export const View = ({ name, handleCancel, list }) => {
-  console.log(list);
   return (
     <Stack
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -28,32 +25,36 @@ export const View = ({ name, handleCancel, list }) => {
           list.map((item, ind) => (
             <InputGroup
               key={ind}
-              size={"sm"}
+              height={"44px"}
               cursor={"pointer"}
-              onClick={handleCancel}
               w={"fit-content"}
             >
               <Button
                 type="button"
                 w={"auto"}
+                p={"5px 12px"}
                 placeholder="price"
                 className="price_extra"
                 id={`price`}
-                px={8}
-                py={6}
                 borderRadius={"10px 0 0 10px"}
-                variant={"simple"}
                 bgColor={"brand.orderbg"}
+                variant={"unstyled"}
+                height={"100%"}
+                fontSize={"16px"}
+                color={"#1F1F1F"}
+                fontWeight={"400"}
               >
-                {item}
+                {item.name}
               </Button>
               <InputRightAddon
-                py={6}
                 borderRadius={"0 10px 10px 0"}
                 bgColor={"brand.orderbg"}
                 border={"none"}
+                p={"14px"}
+                height={"100%"}
+                onClick={() => handleCancel(ind)}
               >
-                <X size={18} />
+                <X size={18} color="#919191" />
               </InputRightAddon>
             </InputGroup>
           ))}

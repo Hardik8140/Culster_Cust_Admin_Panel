@@ -4,7 +4,9 @@ import {
   GET_EXTRA_ITEM_DRIZZLE_SUCCESS,
   GET_EXTRA_ITEM_TOPPINGS_SUCCESS,
   LOADING,
+  POSTED_TOPPINGS,
 } from "../actionType";
+import { backendAPI } from "../../data";
 
 export const get_toppings = () => async (dispatch) => {
   dispatch({ type: LOADING });
@@ -44,3 +46,23 @@ export const get_drizzles = () => async (dispatch) => {
     dispatch({ type: ERROR, payload: error.message });
   }
 };
+export const post_Toppings = (toppingData) => async (dispatch) => {
+  dispatch({ type: LOADING });
+  try {
+    let res = await axios.post(
+      `${backendAPI}admin/add/extraitem?extraItemId=220003`,
+      toppingData
+    );
+
+    if (res.success) {
+      dispatch({
+        type: POSTED_TOPPINGS,
+        payload: toppingData.toppings,
+      });
+    } else {
+      dispatch({ type: ERROR, payload: res.message });
+    }
+  } catch (error) {
+    dispatch({ type: ERROR, payload: error.message });
+  }
+} 

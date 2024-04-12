@@ -49,12 +49,11 @@ const TImeManage = () => {
     if (selectedDaySlot) {
       const [openingHours, openingMinutes] =
         selectedDaySlot.startTime.split(":");
-      setOpeningHour(openingHours);
-      setOpeningMinute(openingMinutes);
-      console.log(typeof openingHours, openingMinutes);
       const [closingHours, closingMinutes] = selectedDaySlot.endTime.split(":");
-      setClosingHour(closingHours);
-      setClosingMinute(closingMinutes);
+      setOpeningHour(openingHours + "H");
+      setOpeningMinute(openingMinutes + "M");
+      setClosingHour(closingHours + "H");
+      setClosingMinute(closingMinutes + "M");
     } else {
       setOpeningHour("");
       setOpeningMinute("");
@@ -62,8 +61,6 @@ const TImeManage = () => {
       setClosingMinute("");
     }
   }, [outletOnId, selectedDay]);
-
-  // console.log(closingHour, closingMinute);
   return (
     <Layout>
       <Box p={2}>
@@ -136,33 +133,37 @@ const TImeManage = () => {
             <Text>From:</Text>
             <Select w="10%" value={openingHour}>
               {Array.from({ length: 24 }, (_, i) => (
-                <option key={i} value={i}>{`${i
-                  .toString()
-                  .padStart(2, "0")}H`}</option>
+                <option
+                  key={i}
+                  value={`${i.toString().padStart(2, "0")}H`}
+                >{`${i.toString().padStart(2, "0")}H`}</option>
               ))}
             </Select>
             <Text mx={1}>:</Text>
             <Select w="10%" value={openingMinute}>
               {Array.from({ length: 60 }, (_, i) => (
-                <option key={i} value={i}>{`${i
-                  .toString()
-                  .padStart(2, "0")}M`}</option>
+                <option
+                  key={i}
+                  value={`${i.toString().padStart(2, "0")}M`}
+                >{`${i.toString().padStart(2, "0")}M`}</option>
               ))}
             </Select>
             <Text mx={2}>to</Text>
             <Select w="10%" value={closingHour}>
               {Array.from({ length: 24 }, (_, i) => (
-                <option key={i} value={i}>{`${i
-                  .toString()
-                  .padStart(2, "0")}H`}</option>
+                <option
+                  key={i}
+                  value={`${i.toString().padStart(2, "0")}H`}
+                >{`${i.toString().padStart(2, "0")}H`}</option>
               ))}
             </Select>
             <Text mx={1}>:</Text>
             <Select w="10%" value={closingMinute}>
               {Array.from({ length: 60 }, (_, i) => (
-                <option key={i} value={i}>{`${i
-                  .toString()
-                  .padStart(2, "0")}M`}</option>
+                <option
+                  key={i}
+                  value={`${i.toString().padStart(2, "0")}M`}
+                >{`${i.toString().padStart(2, "0")}M`}</option>
               ))}
             </Select>
           </Box>
