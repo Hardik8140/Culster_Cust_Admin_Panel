@@ -67,10 +67,10 @@ const TImeManage = () => {
       const [openingHours, openingMinutes] =
         selectedDaySlot.startTime.split(":");
       const [closingHours, closingMinutes] = selectedDaySlot.endTime.split(":");
-      setOpeningHour(openingHours);
-      setOpeningMinute(openingMinutes);
-      setClosingHour(closingHours);
-      setClosingMinute(closingMinutes);
+      setOpeningHour(openingHours + "H");
+      setOpeningMinute(openingMinutes + "M");
+      setClosingHour(closingHours + "H");
+      setClosingMinute(closingMinutes + "M");
     } else {
       // If there's no slot for the selected day, reset the times to empty strings
       setOpeningHour("");
@@ -79,7 +79,6 @@ const TImeManage = () => {
       setClosingMinute("");
     }
   }, [outletOnId, selectedDay]);
-
   return (
     <Layout>
       <Box p={2}>
@@ -129,7 +128,7 @@ const TImeManage = () => {
             <Text>Organization Business Hours</Text>
           </Box>
 
-          {}
+          { }
           <Box mt={5} boxShadow="base" p="15px" borderRadius="3px" mb={10}>
             <ButtonGroup>
               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
@@ -156,9 +155,11 @@ const TImeManage = () => {
               onChange={handleOpeningHourChange}
             >
               {Array.from({ length: 24 }, (_, i) => (
-                <option key={i} value={i}>{`${i
+                <option key={i} value={`${i
                   .toString()
-                  .padStart(2, "0")}H`}</option>
+                  .padStart(2, "0")}H`}>{`${i
+                    .toString()
+                    .padStart(2, "0")}H`}</option>
               ))}
             </Select>
             <Text mx={1}>:</Text>
@@ -168,9 +169,11 @@ const TImeManage = () => {
               onChange={handleOpeningMinuteChange}
             >
               {Array.from({ length: 60 }, (_, i) => (
-                <option key={i} value={i}>{`${i
+                <option key={i} value={`${i
                   .toString()
-                  .padStart(2, "0")}M`}</option>
+                  .padStart(2, "0")}M`}>{`${i
+                    .toString()
+                    .padStart(2, "0")}M`}</option>
               ))}
             </Select>
             <Text mx={2}>to</Text>
@@ -180,9 +183,11 @@ const TImeManage = () => {
               onChange={handleClosingHourChange}
             >
               {Array.from({ length: 24 }, (_, i) => (
-                <option key={i} value={i}>{`${i
+                <option key={i} value={`${i
                   .toString()
-                  .padStart(2, "0")}H`}</option>
+                  .padStart(2, "0")}H`}>{`${i
+                    .toString()
+                    .padStart(2, "0")}H`}</option>
               ))}
             </Select>
             <Text mx={1}>:</Text>
@@ -192,9 +197,11 @@ const TImeManage = () => {
               onChange={handleClosingMinuteChange}
             >
               {Array.from({ length: 60 }, (_, i) => (
-                <option key={i} value={i}>{`${i
+                <option key={i} value={`${i
                   .toString()
-                  .padStart(2, "0")}M`}</option>
+                  .padStart(2, "0")}M`}>{`${i
+                    .toString()
+                    .padStart(2, "0")}M`}</option>
               ))}
             </Select>
           </Box>
