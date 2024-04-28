@@ -35,13 +35,13 @@ export const getMenuItem = () => async (dispatch) => {
   }
 };
 
-export const addNewPizza = (pizzaData) => async (dispatch) => {
+export const addNewPizza = (pizzaData, handleNavigate) => async (dispatch) => {
   dispatch({ type: LOADING });
   try {
     let res = await axios.post(`${backendAPI}admin/add/item`, pizzaData);
     res = await res.data;
     if (res.success) {
-      dispatch({ type: ADDED_NEW_PIZZA, payload: res.data });
+      handleNavigate();
     } else {
       dispatch({ type: ERROR, payload: res.message });
     }

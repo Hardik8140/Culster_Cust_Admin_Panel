@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import { addNewPizza, get_Ingrediants } from "../../../Redux/MenuItems/action";
 import { newPizzaId } from "../../../data";
 import { CLEANUP } from "../../../Redux/actionType";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const links = [
   {
@@ -41,17 +42,16 @@ const links = [
 export const AddNewPizza = () => {
   const dispatch = useDispatch();
   const toast = useToast();
+  const navigate = useNavigate();
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
   useEffect(() => {
     if (items === undefined || Object.keys(items).length === 0) {
-      console.log("called");
       dispatch(get_Ingrediants(newPizzaId));
     }
   }, []);
 
-  console.log(items);
   const handleError = (error) => {
     toast({
       title: error,
@@ -65,7 +65,7 @@ export const AddNewPizza = () => {
       toast({
         title: "Loading...",
         status: "info",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
       });
     }
@@ -76,6 +76,16 @@ export const AddNewPizza = () => {
       dispatch({ type: CLEANUP });
     };
   }, [isLoading, error, toast]);
+
+  const handleNavigate = () => {
+    toast({
+      title: "Pizza added successfully!",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/pizza");
+  };
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -113,7 +123,7 @@ export const AddNewPizza = () => {
       return;
     }
     let data = {
-      type: +type.value,
+      subCategoryId: +type.value,
       pizzaName: name.value,
       description: description.value,
       categoryId: 180002,
@@ -253,7 +263,7 @@ export const AddNewPizza = () => {
         items: [...data.items, ...finalFlavor],
       };
     }
-    dispatch(addNewPizza(data));
+    dispatch(addNewPizza(data, handleNavigate));
   };
 
   return (
