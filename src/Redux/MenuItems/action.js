@@ -1,6 +1,5 @@
 import axios from "axios";
 import {
-  ADDED_NEW_PIZZA,
   ERROR,
   FETCH_MENU_ITEM_FAILURE,
   FETCH_MENU_ITEM_REQUEST,
