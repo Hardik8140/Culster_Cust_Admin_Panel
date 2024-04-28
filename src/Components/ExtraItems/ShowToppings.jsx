@@ -1,26 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../Layout/Layout";
-import styled from "styled-components";
-import { FormButtons } from "../FormButtons";
-import {
-  Box,
-  Button,
-  Grid,
-  GridItem,
-  IconButton,
-  Text,
-  list,
-  useToast,
-} from "@chakra-ui/react";
-import { useDispatch, useSelector } from "react-redux";
-import { Breadcrumber } from "../MenuItems/Breadcrumber/Breadcrumber";
-import { Add } from "./GridItems/Add";
-import { Price } from "./GridItems/Price";
-import { View } from "lucide-react";
-import { get_toppings } from "../../Redux/ExtraItems/action";
 import { CloseIcon } from "@chakra-ui/icons";
+import { Box, Button, IconButton, Text, useToast } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { get_toppings } from "../../Redux/ExtraItems/action";
 import { CLEANUP } from "../../Redux/actionType";
+import Layout from "../Layout/Layout";
+import { Breadcrumber } from "../MenuItems/Breadcrumber/Breadcrumber";
 
 const links = [
   {
@@ -113,7 +100,6 @@ const ShowToppings = () => {
                   alignItems="center"
                   height={"100%"}
                 >
-
                   <span>
                     {el.name}
                     <IconButton

@@ -1,32 +1,45 @@
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Center,
   Flex,
-  Heading,
-  IconButton,
-  Image,
   Input,
   InputGroup,
   InputLeftElement,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
-import Layout from "../Layout/Layout";
-import { Delete, PhoneIcon, SearchIcon, Trash } from "lucide-react";
+import { SearchIcon } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { deleteOutline, edit, updown } from "../../assets";
-import { CiEdit } from "react-icons/ci";
-import { RiDeleteBin7Line } from "react-icons/ri";
-import { Link } from "react-router-dom";
 import { linkStyle } from "../../data";
+import Layout from "../Layout/Layout";
+import { useDispatch, useSelector } from "react-redux";
+import { get_Added_Pizza } from "../../Redux/Get_All_MenuItems/action";
+import { delete_Added_Pizza } from "../../Redux/Delete_All_MenuItem/action";
 
 const Pizza = () => {
   const [search, setSearch] = useState("");
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
+
+  const { loading, error, pizza } = useSelector(
+    (store) => store.get_all_menuitem_reducer
+  );
+  const dispatch = useDispatch();
+  // console.log(pizza);
+
+  useEffect(() => {
+    dispatch(get_Added_Pizza());
+  }, [dispatch]);
+
+  const handleDelete = (id) => {
+    dispatch(delete_Added_Pizza(id));
+  };
+
   let status = "In stock";
   const handleOrderId = () => {};
 
@@ -115,7 +128,12 @@ const Pizza = () => {
                   <img src={updown} onClick={handleOrderPrice} />
                 </Flex>
               </th>
-              <th>Category</th>
+              <th>
+                <Flex gap={1}>
+                  <Text>Category</Text>
+                  <img src={updown} onClick={handleOrderPrice} />
+                </Flex>
+              </th>
               <th>
                 <Flex gap={1}>
                   <Text>Status</Text>
@@ -126,73 +144,48 @@ const Pizza = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>#00001</td>
-              <td>pizza name</td>
-              <td>$ 5.00</td>
-              <td>Indian Style</td>
-              <td>
-                <Text
-                  bgColor={
-                    status === "In stock" ? "brand.stock" : "brand.outofstock"
-                  }
-                  p={"4px 2px"}
-                  textAlign={"center"}
-                  borderRadius={"full"}
-                  fontWeight={"700"}
-                  fontSize={"14px"}
-                  color={"brand.white"}
-                >
-                  {status}
-                </Text>
-              </td>
-              <td>
-                <Center>
-                  <Flex gap={8}>
-                    <Link to={``}>
-                      <img src={edit} alt="edit icon" />
-                    </Link>
-                    <Link to={``}>
-                      <img src={deleteOutline} alt="delete icon" />
-                    </Link>
-                  </Flex>
-                </Center>
-              </td>
-            </tr>
-
-            <tr>
-              <td>#00002</td>
-              <td>pizza name</td>
-              <td>$ 5.00</td>
-              <td>Indian Style</td>
-              <td>
-                <Text
-                  bgColor={
-                    status === "In stock" ? "brand.stock" : "brand.outofstock"
-                  }
-                  p={"4px 2px"}
-                  textAlign={"center"}
-                  borderRadius={"full"}
-                  fontWeight={"700"}
-                  fontSize={"14px"}
-                  color={"brand.white"}
-                >
-                  {status}
-                </Text>
-              </td>
-              <td>
-                <Center>
-                  <Flex gap={8}>
-                    <Link to={``}>
-                      <img src={edit} alt="edit icon" />
-                    </Link>
-                    <Link to={``}>
-                      <img src={deleteOutline} alt="delete icon" />
-                    </Link>
-                  </Flex>
-                </Center>
-              </td>
-            </tr>
+            {Array.isArray(pizza) &&
+              pizza.map((el, i) => (
+                <tr key={i}>
+                  <td>{el.pizzaId}</td>
+                  <td>{el.name}</td>
+                  <td>
+                    {el.sizes.find((size) => size.size === "medium")
+                      ? el.sizes.find((size) => size.size === "medium").price
+                      : "N/A"}
+                  </td>
+                  <td>{el.subCategory.itemTypeName}</td>
+                  <td>
+                    <Text
+                      bgColor={
+                        el.isDeleted === null
+                          ? "brand.outofstock"
+                          : "brand.stock"
+                      }
+                      p={"4px 2px"}
+                      textAlign={"center"}
+                      borderRadius={"full"}
+                      fontWeight={"700"}
+                      fontSize={"14px"}
+                      color={"brand.white"}
+                    >
+                      {el.isDeleted === null ? "Out of stock" : "In stock"}{" "}
+                    </Text>
+                  </td>
+                  <td>
+                    <Center>
+                      <Flex gap={8}>
+                        <Link to={``}>
+                          <img src={edit} alt="edit icon" />
+                        </Link>
+                        <Link onClick={() => handleDelete(el.pizzaId)}>
+                          <img src={deleteOutline} alt="delete icon" />
+                        </Link>
+                      </Flex>
+                    </Center>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </DIV>

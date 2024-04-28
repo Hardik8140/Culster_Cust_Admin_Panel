@@ -59,7 +59,7 @@ export const updatePizza = (pizzaData) => async (dispatch) => {
     );
     res = await res.data;
     if (res.success) {
-      dispatch({ type: ADDED_NEW_PIZZA, payload: res.data });
+      // dispatch({ type: ADDED_NEW_PIZZA, payload: res.data });
     } else {
       dispatch({ type: ERROR, payload: res.message });
     }
@@ -74,7 +74,7 @@ export const deletePizza = (id) => async (dispatch) => {
     let res = await axios.delete(`${backendAPI}admin/deleteitem?itemId=${id}`);
     res = await res.data;
     if (res.success) {
-      dispatch({ type: ADDED_NEW_PIZZA, payload: res.data });
+      // dispatch({ type: ADDED_NEW_PIZZA, payload: res.data });
     } else {
       dispatch({ type: ERROR, payload: res.message });
     }
