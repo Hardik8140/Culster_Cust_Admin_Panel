@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import { ActiveOrders } from "../Dashboard/ActiveOrders";
 import {
@@ -15,13 +15,37 @@ import {
 import { SearchIcon } from "@chakra-ui/icons";
 import styled from "styled-components";
 import { updown } from "../../assets";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { linkStyle } from "../../data";
+import { useDispatch, useSelector } from "react-redux";
+import { get_All_Orders } from "../../Redux/Orders/action";
 
 const Orders = () => {
   const [search, setSearch] = useState("");
   const handleSearch = (event) => {
     setSearch(event.target.value);
+  };
+
+  const { loading, error, orders } = useSelector((store) => store.orderReducer);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(get_All_Orders());
+  }, [dispatch]);
+
+  const navigate = useNavigate();
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = `${
+      date.getMonth() + 1
+    }/${date.getDate()}/${date.getFullYear()}`;
+    return formattedDate;
+  };
+
+  const handleDetails = (id) => {
+    navigate(`/orders/${id}`);
   };
   return (
     <Layout>
@@ -81,115 +105,48 @@ const Orders = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>#00001</td>
-                <td>John Doe</td>
-                <td>Pizza & 1 more</td>
-                <td>Delivery</td>
-                <td>Debit Card</td>
-                <td>
-                  <Text
-                    bgColor={"brand.pending"}
-                    color={"white"}
-                    borderRadius={"44px"}
-                    p={"4px 10px"}
-                    textAlign={"center"}
-                    fontWeight={"700"}
-                    fontSize={"14px"}
-                  >
-                    Pending
-                  </Text>
-                </td>
-                <td>12/01/2024</td>
-                <td style={{ textAlign: "center" }}>
-                  <Link to="/orders" style={linkStyle}>
-                    <Button
-                      p={"14px 25px 14px 25px"}
-                      margin={"auto"}
-                      borderRadius={"10px"}
-                      fontSize={"14px"}
-                      variant={"simpleWhite"}
-                      fontWeight={"500"}
-                      bgColor={"brand.buttonbg"}
-                    >
-                      View Details
-                    </Button>
-                  </Link>
-                </td>
-              </tr>
-              <tr>
-                <td>#00001</td>
-                <td>John Doe</td>
-                <td>Pizza & 1 more</td>
-                <td>Delivery</td>
-                <td>Debit Card</td>
-                <td>
-                  <Text
-                    bgColor={"brand.progress"}
-                    color={"white"}
-                    borderRadius={"44px"}
-                    p={"4px 10px"}
-                    fontSize={"14px"}
-                    textAlign={"center"}
-                    fontWeight={"700"}
-                  >
-                    In Progress
-                  </Text>
-                </td>
-                <td>12/01/2024</td>
-                <td style={{ textAlign: "center" }}>
-                  <Link to="/orders" style={linkStyle}>
-                    <Button
-                      p={"14px 25px 14px 25px"}
-                      margin={"auto"}
-                      borderRadius={"10px"}
-                      fontSize={"14px"}
-                      variant={"simpleWhite"}
-                      fontWeight={"500"}
-                      bgColor={"brand.buttonbg"}
-                    >
-                      View Details
-                    </Button>
-                  </Link>
-                </td>
-              </tr>
-
-              <tr>
-                <td>#00001</td>
-                <td>John Doe</td>
-                <td>Pizza & 1 more</td>
-                <td>Delivery</td>
-                <td>Debit Card</td>
-                <td>
-                  <Text
-                    bgColor={"brand.ontheway"}
-                    color={"white"}
-                    borderRadius={"44px"}
-                    p={"4px 10px"}
-                    fontSize={"14px"}
-                    textAlign={"center"}
-                    fontWeight={"700"}
-                  >
-                    on the way
-                  </Text>
-                </td>
-                <td>12/01/2024</td>
-                <td style={{ textAlign: "center" }}>
-                  <Link to="/orders" style={linkStyle}>
-                    <Button
-                      p={"14px 25px 14px 25px"}
-                      margin={"auto"}
-                      borderRadius={"10px"}
-                      fontSize={"14px"}
-                      variant={"simpleWhite"}
-                      fontWeight={"500"}
-                      bgColor={"brand.buttonbg"}
-                    >
-                      View Details
-                    </Button>
-                  </Link>
-                </td>
-              </tr>
+              {Array.isArray(orders) &&
+                orders.map((el, i) => (
+                  <tr key={i}>
+                    <td>{el.orderId}</td>
+                    <td style={{ textWrap: "nowrap" }}>{el.customerName}</td>
+                    <td style={{ textAlign: "center" }}>
+                      {el.items.length > 0 ? el.items[0].title : "N/A"}
+                    </td>
+                    <td>{el.paymentType}</td>
+                    <td>{el.transferType}</td>
+                    <td>
+                      <Text
+                        bgColor={"brand.pending"}
+                        color={"white"}
+                        borderRadius={"44px"}
+                        p={"4px 10px"}
+                        textAlign={"center"}
+                        fontWeight={"700"}
+                        fontSize={"14px"}
+                      >
+                        {el.status}
+                      </Text>
+                    </td>
+                    <td>{formatDate(el.orderDate)}</td>
+                    <td style={{ textAlign: "center" }}>
+                      <Link style={linkStyle}>
+                        <Button
+                          p={"14px 25px 14px 25px"}
+                          margin={"auto"}
+                          borderRadius={"10px"}
+                          fontSize={"14px"}
+                          variant={"simpleWhite"}
+                          fontWeight={"500"}
+                          bgColor={"brand.buttonbg"}
+                          onClick={() => handleDetails(el.orderId)}
+                        >
+                          View Details
+                        </Button>
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </DIV>
