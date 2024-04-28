@@ -11,22 +11,26 @@ import {
 import { dollar } from "../../../assets";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
-const size = [
+const sized = [
   {
     title: "Medium (12 inches)",
+    named: "medium",
   },
 
   {
     title: "Large (14 inches)",
+    named: "large",
   },
   {
     title: "Extra Large (16 inches)",
+    named: "Extra Large",
   },
   {
     title: "Party Size (15 x 21 inches)",
+    named: "Party Size",
   },
 ];
-export const Size = () => {
+export const Size = ({ size = sized }) => {
   const [checked, handleChange] = useCheckbox(false);
   return (
     <GridItem
@@ -59,7 +63,7 @@ export const Size = () => {
             </Text>
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {size.map(({ title }, ind) => (
+            {size.length > 0 && size.map(({ title, named }, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
@@ -71,7 +75,7 @@ export const Size = () => {
                   <Box>
                     <label className={style.customCheckbox}>
                       <input
-                        name={title}
+                        name={named}
                         type="checkbox"
                         id={`${title}_checkbox_size`}
                         className="checkbox_size"

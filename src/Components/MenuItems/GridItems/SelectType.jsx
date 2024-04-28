@@ -7,7 +7,7 @@ const options = {
   33: "option",
 };
 export const SelectType = ({
-  values = options,
+  values = {},
   name = "Select Type",
   placed = "Select Type",
   ids = "type",
@@ -22,8 +22,8 @@ export const SelectType = ({
       <Stack>
         <Text fontWeight={"400"}>{name}</Text>
         <Select placeholder={placed} fontSize={"16px"} size="lg" id={ids}>
-          {Object.keys(values).map((item) => (
-            <option key={item}>{values[item]}</option>
+          {Object.keys(values).length > 0 && Object.keys(values).map((item) => (
+            <option key={item} value={item}>{values[item]}</option>
           ))}
         </Select>
       </Stack>

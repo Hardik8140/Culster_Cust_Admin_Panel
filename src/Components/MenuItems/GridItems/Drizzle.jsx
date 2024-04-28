@@ -11,7 +11,7 @@ const Drizzled = {
 
   14: "Spicy Tandori",
 };
-export const Drizzle = ({ values = Drizzled }) => {
+export const Drizzle = ({ values = {} }) => {
   const [checked, handleChange] = useCheckbox(false);
   return (
     <GridItem
@@ -45,7 +45,7 @@ export const Drizzle = ({ values = Drizzled }) => {
             pointerEvents={!checked && "none"}
             opacity={!checked && "0.6"}
           >
-            {Object.keys(values).map((key, ind) => (
+            {Object.keys(values).length > 0 && Object.keys(values).map((key, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}

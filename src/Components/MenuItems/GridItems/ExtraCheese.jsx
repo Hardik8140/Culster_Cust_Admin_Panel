@@ -16,7 +16,7 @@ const cheese = {
   11: "Trippel Cheese",
   12: "Double Cheese",
 };
-export const ExtraCheese = ({ values = cheese }) => {
+export const ExtraCheese = ({ values = {} }) => {
   const [checked, handleChange] = useCheckbox(false);
 
   return (
@@ -45,12 +45,12 @@ export const ExtraCheese = ({ values = cheese }) => {
         <Box>
           <Flex my={2} justifyContent={"space-between"}>
             <Text color={"brand.grey"}>Select Size</Text>
-            <Text color={"brand.grey"} textAlign={"end"}>
+            {/* <Text color={"brand.grey"} textAlign={"end"}>
               Add Price
-            </Text>
+            </Text> */}
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {Object.keys(values).map((key, ind) => (
+            {Object.keys(values).length > 0 && Object.keys(values).map((key, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
@@ -77,7 +77,7 @@ export const ExtraCheese = ({ values = cheese }) => {
                     {values[key]}
                   </label>
                 </Flex>
-                <Box justifySelf={"flex-end"}>
+                {/* <Box justifySelf={"flex-end"}>
                   <InputGroup size={"sm"}>
                     <InputLeftAddon
                       borderRadius={"10px 0 0 10px"}
@@ -93,7 +93,7 @@ export const ExtraCheese = ({ values = cheese }) => {
                       className="price_extracheese"
                     />
                   </InputGroup>
-                </Box>
+                </Box> */}
               </Flex>
             ))}
           </Box>

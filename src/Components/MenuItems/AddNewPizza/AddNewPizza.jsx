@@ -17,9 +17,10 @@ import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { get_Ingrediants } from "../../../Redux/MenuItems/action";
+import { addNewPizza, get_Ingrediants } from "../../../Redux/MenuItems/action";
 import { newPizzaId } from "../../../data";
 import { CLEANUP } from "../../../Redux/actionType";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const links = [
   {
@@ -41,6 +42,7 @@ const links = [
 export const AddNewPizza = () => {
   const dispatch = useDispatch();
   const toast = useToast();
+  const navigate = useNavigate();
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
@@ -50,19 +52,40 @@ export const AddNewPizza = () => {
     }
   }, []);
 
+  const handleError = (error) => {
+    toast({
+      title: error,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  };
   useEffect(() => {
-    if (!isLoading && error) {
+    if (isLoading) {
       toast({
-        title: error,
-        status: "error",
-        duration: 5000,
+        title: "Loading...",
+        status: "info",
+        duration: 3000,
         isClosable: true,
       });
+    }
+    if (!isLoading && error) {
+      handleError(error);
     }
     return () => {
       dispatch({ type: CLEANUP });
     };
   }, [isLoading, error, toast]);
+
+  const handleNavigate = () => {
+    toast({
+      title: "Pizza added successfully!",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/pizza");
+  };
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -71,7 +94,7 @@ export const AddNewPizza = () => {
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
     const size = form.querySelector("#checkbox_size");
-    const finalSize = [];
+    let finalSize = [];
     const crust = form.querySelector("#checkbox_crust");
     const finalCrust = [];
     const paneer = form.querySelector("#checkbox_paneer");
@@ -86,18 +109,47 @@ export const AddNewPizza = () => {
     const finalMeatToppings = [];
     const flavor = form.querySelector("#checkbox_flavor");
     const finalFlavor = [];
+
+    if (!type.value) {
+      handleError("Please select type");
+      return;
+    }
+    if (!name.value) {
+      handleError("Please enter name");
+      return;
+    }
+    if (!description.value) {
+      handleError("Please enter description");
+      return;
+    }
+    let data = {
+      subCategoryId: +type.value,
+      pizzaName: name.value,
+      description: description.value,
+      categoryId: 180002,
+      items: [],
+    };
     if (size.checked) {
       // get all values of size
       const sizeCheckbox = form.querySelectorAll(".checkbox_size");
       const sizePrice = form.querySelectorAll(".price_size");
+      finalSize = {};
       for (let i = 0; i < sizeCheckbox.length; i++) {
         if (sizeCheckbox[i].checked) {
-          finalSize.push({
-            title: sizeCheckbox[i].name,
-            price: +sizePrice[i].value,
-          });
+          if (!sizePrice[i].value) {
+            handleError(`Please enter price for ${sizeCheckbox[i].name} size`);
+            return;
+          }
+          finalSize = {
+            ...finalSize,
+            [sizeCheckbox[i].name]: +sizePrice[i].value,
+          };
         }
       }
+      data = {
+        ...data,
+        pizzaSize: finalSize,
+      };
     }
 
     if (crust.checked) {
@@ -108,6 +160,10 @@ export const AddNewPizza = () => {
           finalCrust.push(curstCheckbox[i].name);
         }
       }
+      data = {
+        ...data,
+        items: [...data.items, ...finalCrust],
+      };
     }
 
     if (paneer.checked) {
@@ -116,12 +172,18 @@ export const AddNewPizza = () => {
       const paneerPrice = form.querySelectorAll(".price_paneer");
       for (let i = 0; i < paneerCheckbox.length; i++) {
         if (paneerCheckbox[i].checked) {
-          finalPaneer.push({
-            title: paneerCheckbox[i].name,
-            price: +paneerPrice[i].value,
-          });
+          finalPaneer.push(paneerCheckbox[i].name);
+
+          // finalPaneer.push({
+          //   title: paneerCheckbox[i].name,
+          //   price: +paneerPrice[i].value,
+          // });
         }
       }
+      data = {
+        ...data,
+        items: [...data.items, ...finalPaneer],
+      };
     }
 
     if (cheese.checked) {
@@ -130,12 +192,18 @@ export const AddNewPizza = () => {
       const cheesePrice = form.querySelectorAll(".price_cheese");
       for (let i = 0; i < cheeseCheckbox.length; i++) {
         if (cheeseCheckbox[i].checked) {
-          finalCheese.push({
-            title: cheeseCheckbox[i].name,
-            price: +cheesePrice[i].value,
-          });
+          finalCheese.push(cheeseCheckbox[i].name);
+
+          // finalCheese.push({
+          //   title: cheeseCheckbox[i].name,
+          //   price: +cheesePrice[i].value,
+          // });
         }
       }
+      data = {
+        ...data,
+        items: [...data.items, ...finalCheese],
+      };
     }
 
     if (toppings.checked) {
@@ -146,6 +214,10 @@ export const AddNewPizza = () => {
           finalToppings.push(toppingsCheckbox[i].name);
         }
       }
+      data = {
+        ...data,
+        items: [...data.items, ...finalToppings],
+      };
     }
 
     if (drizzle.checked) {
@@ -156,18 +228,26 @@ export const AddNewPizza = () => {
           finalDrizzle.push(drizzleCheckbox[i].name);
         }
       }
+      data = {
+        ...data,
+        items: [...data.items, ...finalDrizzle],
+      };
     }
 
     if (meatToppings.checked) {
       // get all values of meatToppings
       const meatToppingsCheckbox = form.querySelectorAll(
-        ".checkbox_meatToppings"
+        ".checkbox_meattoppings"
       );
       for (let i = 0; i < meatToppingsCheckbox.length; i++) {
         if (meatToppingsCheckbox[i].checked) {
           finalMeatToppings.push(meatToppingsCheckbox[i].name);
         }
       }
+      data = {
+        ...data,
+        items: [...data.items, ...finalMeatToppings],
+      };
     }
 
     if (flavor.checked) {
@@ -178,24 +258,14 @@ export const AddNewPizza = () => {
           finalFlavor.push(flavorCheckbox[i].name);
         }
       }
+      data = {
+        ...data,
+        items: [...data.items, ...finalFlavor],
+      };
     }
-    const data = {
-      type: type.value,
-      name: name.value,
-      description: description.value,
-      image: image ? image.src : "",
-      size: finalSize,
-      crust: finalCrust,
-      paneer: finalPaneer,
-      extracheese: finalCheese,
-      toppings: finalToppings,
-      drizzle: finalDrizzle,
-      meatToppings: finalMeatToppings,
-      flavor: finalFlavor,
-    };
-
-    console.log(data);
+    dispatch(addNewPizza(data, handleNavigate));
   };
+
   return (
     <Layout>
       <Box>
@@ -216,13 +286,13 @@ export const AddNewPizza = () => {
                   <Name />
                   <Description />
                   <Image />
-                  <Size />
+                  <Size values={items?.items["size"]} />
                   <Crust values={items.items["Crust(Required)"]} />
                   <PaneerChicken values={items?.items["Panner/Chicken"]} />
                   <ExtraCheese values={items.items["Extra Cheese"]} />
-                  <Toppings values={items?.items["Topping"]} />
+                  <Toppings values={items?.items["Toppings"]} />
                   <Drizzle values={items?.items["Drizzle It Up!"]} />
-                  <MeatToppings />
+                  <MeatToppings values={items?.items["Extra Meat Topping"]} />
                   <Flavor
                     values={
                       items?.items["Flavour (Base sauce & Top Seasonings)"]
