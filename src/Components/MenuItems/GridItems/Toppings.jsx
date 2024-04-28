@@ -15,7 +15,7 @@ const toppings = {
 
   16: "Red Paprika",
 };
-export const Toppings = ({ values = toppings }) => {
+export const Toppings = ({ values = {} }) => {
   const [checked, handleChange] = useCheckbox(false);
   return (
     <GridItem
@@ -54,7 +54,7 @@ export const Toppings = ({ values = toppings }) => {
             pointerEvents={!checked && "none"}
             opacity={!checked && "0.6"}
           >
-            {Object.keys(values).map((key, ind) => (
+            {Object.keys(values).length > 0 && Object.keys(values).map((key, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}

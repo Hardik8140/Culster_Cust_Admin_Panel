@@ -1,4 +1,5 @@
 import {
+  ADDED_NEW_PIZZA,
   CLEANUP,
   ERROR,
   FETCH_MENU_ITEM_FAILURE,
@@ -40,6 +41,7 @@ export const reducer = (state = initalState, { type, payload }) => {
         ...state,
         isLoading: false,
         error: "",
+        // items: {},
       };
     case FETCH_MENU_ITEM_REQUEST:
       return { ...state, loading: true, error: payload };
@@ -47,6 +49,8 @@ export const reducer = (state = initalState, { type, payload }) => {
       return { ...state, menuItem: payload, loading: false, error: false };
     case FETCH_MENU_ITEM_FAILURE:
       return { ...state, loading: false, error: payload };
+    case ADDED_NEW_PIZZA:
+      return { ...state, menuItem: [...menuItem, payload] };
     default:
       return state;
   }

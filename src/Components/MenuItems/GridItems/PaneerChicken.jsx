@@ -16,9 +16,8 @@ const paneer = {
   11: "Panner",
   12: "Chicken",
 };
-export const PaneerChicken = ({ values = paneer }) => {
+export const PaneerChicken = ({ values = {} }) => {
   const [checked, handleChange] = useCheckbox(false);
-  console.log(values);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -45,12 +44,12 @@ export const PaneerChicken = ({ values = paneer }) => {
         <Box>
           <Flex my={2} justifyContent={"space-between"}>
             <Text color={"brand.grey"}>Select Size</Text>
-            <Text color={"brand.grey"} textAlign={"end"}>
+            {/* <Text color={"brand.grey"} textAlign={"end"}>
               Add Price
-            </Text>
+            </Text> */}
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {Object.keys(values).map((key, ind) => (
+            {Object.keys(values).length > 0 && Object.keys(values).map((key, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
@@ -77,7 +76,7 @@ export const PaneerChicken = ({ values = paneer }) => {
                     {values[key]}
                   </label>
                 </Flex>
-                <Box justifySelf={"flex-end"}>
+                {/* <Box justifySelf={"flex-end"}>
                   <InputGroup size={"sm"}>
                     <InputLeftAddon
                       borderRadius={"10px 0 0 10px"}
@@ -93,7 +92,7 @@ export const PaneerChicken = ({ values = paneer }) => {
                       className="price_paneer"
                     />
                   </InputGroup>
-                </Box>
+                </Box> */}
               </Flex>
             ))}
           </Box>

@@ -8,7 +8,7 @@ const crusted = {
   13: "Crispy Ultra Thin",
   14: "Thin",
 };
-export const Crust = ({ values = crusted }) => {
+export const Crust = ({ values = {} }) => {
   const [checked, handleChange] = useCheckbox(false);
   return (
     <GridItem
@@ -40,8 +40,7 @@ export const Crust = ({ values = crusted }) => {
           pointerEvents={!checked && "none"}
           opacity={!checked && "0.6"}
         >
-          {values !== undefined &&
-            Object.keys(values).length > 0 &&
+          {Object.keys(values).length > 0 &&
             Object.keys(values).map((key, ind) => (
               <Flex key={ind} alignItems={"center"} gap={2}>
                 <Box>

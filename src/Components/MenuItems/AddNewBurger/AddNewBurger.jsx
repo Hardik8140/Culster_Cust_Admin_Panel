@@ -42,7 +42,7 @@ export const AddNewBurger = () => {
       dispatch(get_Ingrediants(BurgerId));
     }
   }, []);
-
+  console.log('burger ingredients', items)
   useEffect(() => {
     if (!isLoading && error) {
       toast({
@@ -130,11 +130,11 @@ export const AddNewBurger = () => {
                 <Image />
                 <Flavor
                   title="BURGER FLAVOR"
-                  values={items?.items["Burgur Flouver"]}
+                  values={items?.items["Burger Flavor"]}
                 />
                 <ExtraPatty values={items?.items["Extra Patty"]} />
                 <GridItem colSpan={2}>
-                  <ExtraCheese />
+                  <ExtraCheese values={items?.items["Extra Cheese"]} />
                 </GridItem>
               </Grid>
             )}

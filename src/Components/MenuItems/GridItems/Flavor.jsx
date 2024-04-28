@@ -11,12 +11,10 @@ const Drizzled = {
   14: "Spicy Tandori",
 };
 export const Flavor = ({
-  // eslint-disable-next-line react/prop-types
   title = "FLAVOR (BASE SAUCE AND TOP SEASONINGS)",
-  values = Drizzled,
+  values = {},
 }) => {
   const [checked, handleChange] = useCheckbox(false);
-
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -49,34 +47,35 @@ export const Flavor = ({
             pointerEvents={!checked && "none"}
             opacity={!checked && "0.6"}
           >
-            {Object.keys(values).map((key, ind) => (
-              <Flex
-                key={ind}
-                justifyContent={"space-between"}
-                width={"100%"}
-                my={4}
-              >
-                <Flex minW={"50%"}>
-                  <Box>
-                    <label className={style.customCheckbox}>
-                      <input
-                        name={key}
-                        type="checkbox"
-                        id={`${values[key]}_checkbox_flavor`}
-                        className="checkbox_flavor"
-                      />
-                      <span className={style.checkmark}></span>
+            {Object.keys(values).length > 0 &&
+              Object.keys(values).map((key, ind) => (
+                <Flex
+                  key={ind}
+                  justifyContent={"space-between"}
+                  width={"100%"}
+                  my={4}
+                >
+                  <Flex minW={"50%"}>
+                    <Box>
+                      <label className={style.customCheckbox}>
+                        <input
+                          name={key}
+                          type="checkbox"
+                          id={`${values[key]}_checkbox_flavor`}
+                          className="checkbox_flavor"
+                        />
+                        <span className={style.checkmark}></span>
+                      </label>
+                    </Box>
+                    <label
+                      htmlFor={`${values[key]}_checkbox_flavor`}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {values[key]}
                     </label>
-                  </Box>
-                  <label
-                    htmlFor={`${values[key]}_checkbox_flavor`}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {values[key]}
-                  </label>
+                  </Flex>
                 </Flex>
-              </Flex>
-            ))}
+              ))}
           </Box>
         </Box>
       </Stack>

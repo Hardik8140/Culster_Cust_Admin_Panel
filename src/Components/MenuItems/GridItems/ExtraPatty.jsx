@@ -16,7 +16,7 @@ const patty = {
   12: "Tandoori Paneer",
   13: "Original Burger Patty",
 };
-export const ExtraPatty = ({ values = patty }) => {
+export const ExtraPatty = ({ values = {} }) => {
   const [checked, handleChange] = useCheckbox(false);
 
   return (
