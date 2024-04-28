@@ -1,32 +1,42 @@
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Center,
   Flex,
-  Heading,
-  IconButton,
-  Image,
   Input,
   InputGroup,
   InputLeftElement,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
-import Layout from "../Layout/Layout";
-import { Delete, PhoneIcon, SearchIcon, Trash } from "lucide-react";
+import { SearchIcon } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { deleteOutline, edit, updown } from "../../assets";
-import { CiEdit } from "react-icons/ci";
-import { RiDeleteBin7Line } from "react-icons/ri";
-import { Link } from "react-router-dom";
-import CustomeFoodItes from "../CustomeFoodItes";
 import { linkStyle } from "../../data";
+import CustomeFoodItes from "../CustomeFoodItes";
+import Layout from "../Layout/Layout";
+import { useDispatch, useSelector } from "react-redux";
+import { get_Added_HoW } from "../../Redux/Get_All_MenuItems/action";
+import { delete_Added_HoW } from "../../Redux/Delete_All_MenuItem/action";
 
 const HouseWings = () => {
   const [search, setSearch] = useState("");
   const handleSearch = (event) => {
     setSearch(event.target.value);
+  };
+  const { loading, error, hos } = useSelector(
+    (store) => store.get_all_menuitem_reducer
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(get_Added_HoW());
+  }, [dispatch]);
+
+  const handleDelete = (id) => {
+    dispatch(delete_Added_HoW(id));
   };
 
   let status = "In stock";
@@ -104,71 +114,44 @@ const HouseWings = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>#00001</td>
-              <td>pizza name</td>
-              <td>$ 5.00</td>
-              <td>
-                <Text
-                  bgColor={
-                    status === "In stock" ? "brand.stock" : "brand.outofstock"
-                  }
-                  p={"4px 2px"}
-                  textAlign={"center"}
-                  borderRadius={"full"}
-                  fontWeight={"700"}
-                  fontSize={"14px"}
-                  color={"brand.white"}
-                >
-                  {status}
-                </Text>
-              </td>
-              <td>
-                <Center>
-                  <Flex gap={8}>
-                    <Link to={``}>
-                      <img src={edit} alt="edit icon" />
-                    </Link>
-                    <Link to={``}>
-                      <img src={deleteOutline} alt="delete icon" />
-                    </Link>
-                  </Flex>
-                </Center>
-              </td>
-            </tr>
-
-            <tr>
-              <td>#00002</td>
-              <td>pizza name</td>
-              <td>$ 5.00</td>
-              <td>
-                <Text
-                  bgColor={
-                    status === "In stock" ? "brand.stock" : "brand.outofstock"
-                  }
-                  p={"4px 2px"}
-                  textAlign={"center"}
-                  borderRadius={"full"}
-                  fontWeight={"700"}
-                  fontSize={"14px"}
-                  color={"brand.white"}
-                >
-                  {status}
-                </Text>
-              </td>
-              <td>
-                <Center>
-                  <Flex gap={8}>
-                    <Link to={``}>
-                      <img src={edit} alt="edit icon" />
-                    </Link>
-                    <Link to={``}>
-                      <img src={deleteOutline} alt="delete icon" />
-                    </Link>
-                  </Flex>
-                </Center>
-              </td>
-            </tr>
+            {Array.isArray(hos) &&
+              hos.map((el, i) => (
+                <tr key={i}>
+                  <td>{el.pizzaId}</td>
+                  <td>{el.name}</td>
+                  <td>$ </td>
+                  <td>
+                    <Text
+                      bgColor={
+                        el.isDeleted === null
+                          ? "brand.outofstock"
+                          : "brand.stock"
+                      }
+                      w={"fit-content"}
+                      p={"4px 8px"}
+                      textAlign={"center"}
+                      borderRadius={"full"}
+                      fontWeight={"700"}
+                      fontSize={"14px"}
+                      color={"brand.white"}
+                    >
+                      {el.isDeleted === null ? "Out of stock" : "In stock"}{" "}
+                    </Text>
+                  </td>
+                  <td>
+                    <Center>
+                      <Flex gap={8}>
+                        <Link to={``}>
+                          <img src={edit} alt="edit icon" />
+                        </Link>
+                        <Link onClick={() => handleDelete(el.pizzaId)}>
+                          <img src={deleteOutline} alt="delete icon" />
+                        </Link>
+                      </Flex>
+                    </Center>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </DIV>

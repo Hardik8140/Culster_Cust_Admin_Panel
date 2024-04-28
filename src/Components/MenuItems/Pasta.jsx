@@ -1,32 +1,43 @@
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Center,
   Flex,
-  Heading,
-  IconButton,
-  Image,
   Input,
   InputGroup,
   InputLeftElement,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
-import Layout from "../Layout/Layout";
-import { Delete, PhoneIcon, SearchIcon, Trash } from "lucide-react";
-import styled from "styled-components";
-import { deleteOutline, edit, updown } from "../../assets";
-import { CiEdit } from "react-icons/ci";
-import { RiDeleteBin7Line } from "react-icons/ri";
+import { SearchIcon } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import CustomeFoodItes from "../CustomeFoodItes";
+import styled from "styled-components";
+import { get_Added_Pasta } from "../../Redux/Get_All_MenuItems/action";
+import { deleteOutline, edit, updown } from "../../assets";
 import { linkStyle } from "../../data";
+import CustomeFoodItes from "../CustomeFoodItes";
+import Layout from "../Layout/Layout";
+import { delete_Added_Pasta } from "../../Redux/Delete_All_MenuItem/action";
 
 const Pasta = () => {
   const [search, setSearch] = useState("");
   const handleSearch = (event) => {
     setSearch(event.target.value);
+  };
+
+  const { loading, error, pasta } = useSelector(
+    (store) => store.get_all_menuitem_reducer
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(get_Added_Pasta());
+  }, [dispatch]);
+
+  const handleDelete = (id) => {
+    dispatch(delete_Added_Pasta(id));
   };
 
   let status = "In stock";
@@ -105,71 +116,44 @@ const Pasta = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>#00001</td>
-              <td>pizza name</td>
-              <td>$ 5.00</td>
-              <td>
-                <Text
-                  bgColor={
-                    status === "In stock" ? "brand.stock" : "brand.outofstock"
-                  }
-                  p={"4px 2px"}
-                  textAlign={"center"}
-                  borderRadius={"full"}
-                  fontWeight={"700"}
-                  fontSize={"14px"}
-                  color={"brand.white"}
-                >
-                  {status}
-                </Text>
-              </td>
-              <td>
-                <Center>
-                  <Flex gap={8}>
-                    <Link to={``}>
-                      <img src={edit} alt="edit icon" />
-                    </Link>
-                    <Link to={``}>
-                      <img src={deleteOutline} alt="delete icon" />
-                    </Link>
-                  </Flex>
-                </Center>
-              </td>
-            </tr>
-
-            <tr>
-              <td>#00002</td>
-              <td>pizza name</td>
-              <td>$ 5.00</td>
-              <td>
-                <Text
-                  bgColor={
-                    status === "In stock" ? "brand.stock" : "brand.outofstock"
-                  }
-                  p={"4px 2px"}
-                  textAlign={"center"}
-                  borderRadius={"full"}
-                  fontWeight={"700"}
-                  fontSize={"14px"}
-                  color={"brand.white"}
-                >
-                  {status}
-                </Text>
-              </td>
-              <td>
-                <Center>
-                  <Flex gap={8}>
-                    <Link to={``}>
-                      <img src={edit} alt="edit icon" />
-                    </Link>
-                    <Link to={``}>
-                      <img src={deleteOutline} alt="delete icon" />
-                    </Link>
-                  </Flex>
-                </Center>
-              </td>
-            </tr>
+            {Array.isArray(pasta) &&
+              pasta.map((el, i) => (
+                <tr key={i}>
+                  <td>{el.pizzaId}</td>
+                  <td>{el.name}</td>
+                  <td>$ 5.00</td>
+                  <td>
+                    <Text
+                      bgColor={
+                        el.isDeleted === null
+                          ? "brand.outofstock"
+                          : "brand.stock"
+                      }
+                      w={"fit-content"}
+                      p={"4px 8px"}
+                      textAlign={"center"}
+                      borderRadius={"full"}
+                      fontWeight={"700"}
+                      fontSize={"14px"}
+                      color={"brand.white"}
+                    >
+                      {el.isDeleted === null ? "Out of stock" : "In stock"}{" "}
+                    </Text>
+                  </td>
+                  <td>
+                    <Center>
+                      <Flex gap={8}>
+                        <Link to={``}>
+                          <img src={edit} alt="edit icon" />
+                        </Link>
+                        <Link onClick={() => handleDelete(el.pizzaId)}>
+                          <img src={deleteOutline} alt="delete icon" />
+                        </Link>
+                      </Flex>
+                    </Center>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </DIV>

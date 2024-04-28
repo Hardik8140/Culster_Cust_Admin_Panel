@@ -23,3 +23,41 @@ export const GET_TABLE_RESERVATION_SUCCESS = "GET_TABLE_RESERVATION_SUCCESS";
 export const GET_ALL_OUTLET_SUCCESS = "GET_ALL_OUTLET_SUCCESS";
 export const GET_OUTLET_TIME_SLOTS_SUCCESS = "GET_OUTLET_TIME_SLOTS_SUCCESS";
 export const POST_OUTLET_TIME_SLOTS_SUCCESS = "POST_OUTLET_TIME_SLOTS_SUCCESS";
+
+export const GET_DASHBOARD_DATA = "GET_DASHBOARD_DATA";
+
+// ===================== MENU ITEMS GET===============================
+
+export const GET_PIZZA = "GET_PIZZA";
+export const GET_BURGER = "GET_BURGER";
+export const GET_HOUSE_OF_WINGS = "GET_HOUSE_OF_WINGS";
+export const GET_PASTA = "GET_PASTA";
+export const GET_NANZA = "GET_NANZA";
+export const GET_CHEESY_FUN = "GET_CHEESY_FUN";
+export const GET_SIDES = "GET_SIDES";
+export const GET_SALADS = "GET_SALADS";
+export const GET_SWEET_TREET = "GET_SWEET_TREET";
+export const GET_DEEPING_SAUCES = "GET_DEEPING_SAUCES";
+export const GET_THEEK_SHAKE = "GET_THEEK_SHAKE";
+export const GET_DRINKS_CAN_POP = "GET_DRINKS_CAN_POP";
+export const GET_HOME_MADE_DRINKS = "GET_HOME_MADE_DRINKS";
+
+// ===================== MENU ITEMS DELETE===============================
+
+export const DELETE_PIZZA = "DELETE_PIZZA";
+export const DELETE_BURGER = "DELETE_BURGER";
+export const DELETE_HOUSE_OF_WINGS = "DELETE_HOUSE_OF_WINGS";
+export const DELETE_PASTA = "DELETE_PASTA";
+export const DELETE_NANZA = "DELETE_NANZA";
+export const DELETE_CHEESY_FUN = "DELETE_CHEESY_FUN";
+export const DELETE_SIDES = "DELETE_SIDES";
+export const DELETE_SALADS = "DELETE_SALADS";
+export const DELETE_SWEET_TREET = "DELETE_SWEET_TREET";
+export const DELETE_DEEPING_SAUCES = "DELETE_DEEPING_SAUCES";
+export const DELETE_THEEK_SHAKE = "DELETE_THEEK_SHAKE";
+export const DELETE_DRINKS_CAN_POP = "DELETE_DRINKS_CAN_POP";
+export const DELETE_HOME_MADE_DRINKS = "DELETE_HOME_MADE_DRINKS";
+
+// ===================== GET ALL ORDER & VIEW DETAILS===============================
+
+export const GET_ALL_ORDERS = "GET_ALL_ORDERS";

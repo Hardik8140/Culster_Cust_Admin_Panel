@@ -7,6 +7,9 @@ import { reducer as reviewReducer } from "./Customer Review/reducer";
 import { reducer as supportReducer } from "./Customer_Support/reducer";
 import { reducer as reserveTableReducer } from "./Table Reservation/reducer";
 import { reducer as timeReducer } from "./TIme Manage/reducer";
+import { reducer as dashboardReducer } from "./Dashboard/reducer";
+import { reducer as get_all_menuitem_reducer } from "./Get_All_MenuItems/reducer";
+import { reducer as orderReducer } from "./Orders/reducer";
 
 const rootReducer = combineReducers({
   menuItemsReducer,
@@ -15,6 +18,9 @@ const rootReducer = combineReducers({
   supportReducer,
   reserveTableReducer,
   timeReducer,
+  dashboardReducer,
+  get_all_menuitem_reducer,
+  orderReducer,
 });
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
