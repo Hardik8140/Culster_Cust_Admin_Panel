@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
 import { GridItem, Input, Stack, Text } from "@chakra-ui/react";
+import { useState } from "react";
 
 export const Name = ({
   name = "Name",
   placed = "Enter Name",
   ids = "name",
+  itemValue,
 }) => {
+  const [item, setItem] = useState(itemValue || "");
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -16,7 +19,14 @@ export const Name = ({
     >
       <Stack>
         <Text>{name}</Text>
-        <Input type="text" fontSize={"16px"} placeholder={placed} id={ids} />
+        <Input
+          type="text"
+          value={item}
+          onChange={(e) => setItem(e.target.value)}
+          fontSize={"16px"}
+          placeholder={placed}
+          id={ids}
+        />
       </Stack>
     </GridItem>
   );

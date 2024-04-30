@@ -2,9 +2,9 @@ import { Button, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import { Upload } from "lucide-react";
 import { useRef, useState } from "react";
 
-export const Image = () => {
+export const Image = ({ itemValue }) => {
   const inputRef = useRef();
-  const [imagePrev, setImagePrev] = useState("");
+  const [imagePrev, setImagePrev] = useState(itemValue || "");
   const handleFileChange = (event) => {
     const fileObj = event.target.files[0];
     if (!fileObj) {
