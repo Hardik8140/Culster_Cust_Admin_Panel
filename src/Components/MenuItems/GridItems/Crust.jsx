@@ -1,6 +1,7 @@
 import { Box, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
+import { useEffect, useState } from "react";
 
 const crusted = {
   11: "Regular",
@@ -8,8 +9,20 @@ const crusted = {
   13: "Crispy Ultra Thin",
   14: "Thin",
 };
-export const Crust = ({ values = {} }) => {
+export const Crust = ({ values = {}, itemValue = [] }) => {
   const [checked, handleChange] = useCheckbox(false);
+  const [item, setItem] = useState(itemValue || []);
+  useEffect(() => {
+    if (itemValue.length > 0 && Object.keys(values).length > 0) {
+      const main_checkbox = document.querySelector("#checkbox_crust");
+      main_checkbox.checked = true;
+      // handleChange(main_checkbox);
+      for (const id of itemValue) {
+        const checkbox = document.querySelector(`#checkbox_crust_${id}`);
+        checkbox.checked = true;
+      }
+    }
+  }, [itemValue]);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -49,13 +62,13 @@ export const Crust = ({ values = {} }) => {
                       name={key}
                       type="checkbox"
                       className="checkbox_crust"
-                      id={`${key}_checkbox_crust`}
+                      id={`checkbox_crust_${key}`}
                     />
                     <span className={style.checkmark}></span>
                   </label>
                 </Box>
                 <label
-                  htmlFor={`${key}_checkbox_crust`}
+                  htmlFor={`checkbox_crust_${key}`}
                   style={{ cursor: "pointer" }}
                 >
                   {values[key]}

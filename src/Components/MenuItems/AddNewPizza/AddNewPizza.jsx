@@ -16,21 +16,32 @@ import { Flavor } from "../GridItems/Flavor";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { addNewPizza, get_Ingrediants } from "../../../Redux/MenuItems/action";
-import { newPizzaId } from "../../../data";
+import {
+  AddDippingsId,
+  CrustId,
+  DrizzleitupId,
+  ExtraCheeseId,
+  ExtraMeatToppingId,
+  FlavorId,
+  PannerChickenId,
+  SeasoningsId,
+  ToppingsId,
+  newPizzaId,
+} from "../../../data";
 import { CLEANUP } from "../../../Redux/actionType";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 const links = [
   {
     title: "Menu Items",
-    link: "#",
+    link: "/",
     isCurrent: false,
   },
   {
     title: "Pizza",
-    link: "#",
+    link: "/pizza",
     isCurrent: false,
   },
   {
@@ -41,17 +52,99 @@ const links = [
 ];
 export const AddNewPizza = () => {
   const dispatch = useDispatch();
+  const [link, setLink] = useState(links);
+  const { pizzaId } = useParams();
   const toast = useToast();
+  const [pizzaData, setPizzaData] = useState({});
+  const [pizzaItems, setPizzaItems] = useState({});
   const navigate = useNavigate();
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
+
+  const { pizza } = useSelector((store) => store.get_all_menuitem_reducer);
+  useEffect(() => {
+    if (pizzaId) {
+      const currentPizza = pizza.filter((item) => item.pizzaId === +pizzaId);
+      setPizzaData(currentPizza[0]);
+      let updated = link.map((item) => {
+        if (item.title === "Add New Pizza") {
+          return {
+            title: "Edit Pizza",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
+    }
+  }, [pizzaId]);
+
   useEffect(() => {
     if (items === undefined || Object.keys(items).length === 0) {
       dispatch(get_Ingrediants(newPizzaId));
     }
   }, []);
+  useEffect(() => {
+    if (pizzaData["pizzaId"]) {
+      let extra_items = pizzaData["extraItems"];
+      let crust_items = [],
+        flavor_items = [],
+        toppings_items = [],
+        extra_meat_toppings_items = [],
+        extra_cheese_items = [],
+        drizzle_items = [],
+        seasonings_items = [],
+        add_dippings_items = [],
+        paneer_chicken_items = [];
+      for (const extra of extra_items) {
+        switch (extra["extraItem"]["extraItemId"]) {
+          case CrustId:
+            crust_items.push(extra["extraItemId"]);
+            break;
+          case FlavorId:
+            flavor_items.push(extra["extraItemId"]);
+            break;
+          case ToppingsId:
+            toppings_items.push(extra["extraItemId"]);
+            break;
+          case ExtraMeatToppingId:
+            extra_meat_toppings_items.push(extra["extraItemId"]);
+            break;
+          case ExtraCheeseId:
+            extra_cheese_items.push(extra["extraItemId"]);
+            break;
+          case DrizzleitupId:
+            drizzle_items.push(extra["extraItemId"]);
+            break;
+          case SeasoningsId:
+            seasonings_items.push(extra["extraItemId"]);
+            break;
+          case AddDippingsId:
+            add_dippings_items.push(extra["extraItemId"]);
+            break;
+          case PannerChickenId:
+            paneer_chicken_items.push(extra["extraItemId"]);
+            break;
+          default:
+            break;
+        }
+      }
 
+      setPizzaItems({
+        crust: crust_items,
+        flavor: flavor_items,
+        toppings: toppings_items,
+        extra_meat_toppings: extra_meat_toppings_items,
+        extra_cheese: extra_cheese_items,
+        drizzle: drizzle_items,
+        seasonings: seasonings_items,
+        add_dippings: add_dippings_items,
+        paneer_chicken: paneer_chicken_items,
+      });
+    }
+  }, [pizzaData]);
   const handleError = (error) => {
     toast({
       title: error,
@@ -263,14 +356,15 @@ export const AddNewPizza = () => {
         items: [...data.items, ...finalFlavor],
       };
     }
-    dispatch(addNewPizza(data, handleNavigate));
+    console.log(data);
+    // dispatch(addNewPizza(data, handleNavigate));
   };
 
   return (
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
@@ -282,12 +376,21 @@ export const AddNewPizza = () => {
                   templateColumns="repeat(2, 1fr)"
                   gap={1}
                 >
-                  <SelectType values={items?.type} />
-                  <Name />
-                  <Description />
-                  <Image />
-                  <Size values={items?.items["size"]} />
-                  <Crust values={items.items["Crust(Required)"]} />
+                  <SelectType
+                    values={items?.type}
+                    itemValue={pizzaData?.subCategory?.itemTypeId}
+                  />
+                  <Name itemValue={pizzaData?.name} />
+                  <Description itemValue={pizzaData?.description} />
+                  <Image itemValue={pizzaData?.imageUrl} />
+                  <Size
+                    values={items?.items["size"]}
+                    itemValue={pizzaData?.sizes}
+                  />
+                  <Crust
+                    values={items.items["Crust(Required)"]}
+                    itemValue={pizzaItems?.crust}
+                  />
                   <PaneerChicken values={items?.items["Panner/Chicken"]} />
                   <ExtraCheese values={items.items["Extra Cheese"]} />
                   <Toppings values={items?.items["Toppings"]} />
@@ -300,7 +403,7 @@ export const AddNewPizza = () => {
                   />
                 </Grid>
               )}
-              {Object.keys(items).length === 0 && (
+              {Object.keys(items).length === 0 && isLoading === true && (
                 <Grid
                   my={8}
                   w={"100%"}

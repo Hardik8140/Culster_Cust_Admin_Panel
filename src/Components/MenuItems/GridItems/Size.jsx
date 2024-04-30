@@ -11,6 +11,7 @@ import {
 import { dollar } from "../../../assets";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
+import { useState } from "react";
 const sized = [
   {
     title: "Medium (12 inches)",
@@ -30,8 +31,9 @@ const sized = [
     named: "Party Size",
   },
 ];
-export const Size = ({ size = sized }) => {
+export const Size = ({ size = sized, itemValue }) => {
   const [checked, handleChange] = useCheckbox(false);
+  const [item, setItem] = useState(itemValue || []);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -63,53 +65,54 @@ export const Size = ({ size = sized }) => {
             </Text>
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {size.length > 0 && size.map(({ title, named }, ind) => (
-              <Flex
-                key={ind}
-                justifyContent={"space-between"}
-                gap={2}
-                width={"100%"}
-                my={4}
-              >
-                <Flex minW={"50%"}>
-                  <Box>
-                    <label className={style.customCheckbox}>
-                      <input
-                        name={named}
-                        type="checkbox"
-                        id={`${title}_checkbox_size`}
-                        className="checkbox_size"
-                      />
-                      <span className={style.checkmark}></span>
-                    </label>
-                  </Box>
-                  <label
-                    htmlFor={`${title}_checkbox_size`}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {title}
-                  </label>
-                </Flex>
-                <Box justifySelf={"flex-end"}>
-                  <InputGroup size={"sm"}>
-                    <InputLeftAddon
-                      borderRadius={"10px 0 0 10px"}
-                      bgColor={"brand.black"}
+            {size.length > 0 &&
+              size.map(({ title, named }, ind) => (
+                <Flex
+                  key={ind}
+                  justifyContent={"space-between"}
+                  gap={2}
+                  width={"100%"}
+                  my={4}
+                >
+                  <Flex minW={"50%"}>
+                    <Box>
+                      <label className={style.customCheckbox}>
+                        <input
+                          name={named}
+                          type="checkbox"
+                          id={`${title}_checkbox_size`}
+                          className="checkbox_size"
+                        />
+                        <span className={style.checkmark}></span>
+                      </label>
+                    </Box>
+                    <label
+                      htmlFor={`${title}_checkbox_size`}
+                      style={{ cursor: "pointer" }}
                     >
-                      <img src={dollar} />
-                    </InputLeftAddon>
-                    <Input
-                      borderRadius={"0px 10px 10px 0px"}
-                      type="number"
-                      w={"auto"}
-                      placeholder="price"
-                      className="price_size"
-                      id={`${title}_price_size`}
-                    />
-                  </InputGroup>
-                </Box>
-              </Flex>
-            ))}
+                      {title}
+                    </label>
+                  </Flex>
+                  <Box justifySelf={"flex-end"}>
+                    <InputGroup size={"sm"}>
+                      <InputLeftAddon
+                        borderRadius={"10px 0 0 10px"}
+                        bgColor={"brand.black"}
+                      >
+                        <img src={dollar} />
+                      </InputLeftAddon>
+                      <Input
+                        borderRadius={"0px 10px 10px 0px"}
+                        type="number"
+                        w={"auto"}
+                        placeholder="price"
+                        className="price_size"
+                        id={`${title}_price_size`}
+                      />
+                    </InputGroup>
+                  </Box>
+                </Flex>
+              ))}
           </Box>
         </Box>
       </Stack>
