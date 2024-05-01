@@ -11,29 +11,49 @@ import {
 import { dollar } from "../../../assets";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const sized = [
   {
     title: "Medium (12 inches)",
-    named: "medium",
+    named: "Medium",
+    pizzaSizeId: 98,
   },
 
   {
     title: "Large (14 inches)",
-    named: "large",
+    named: "Large",
+    pizzaSizeId: 99,
   },
   {
     title: "Extra Large (16 inches)",
     named: "Extra Large",
+    pizzaSizeId: 100,
   },
   {
     title: "Party Size (15 x 21 inches)",
     named: "Party Size",
+    pizzaSizeId: 101,
   },
 ];
-export const Size = ({ size = sized, itemValue }) => {
+export const Size = ({ size = sized, itemValue = [] }) => {
   const [checked, handleChange] = useCheckbox(false);
-  const [item, setItem] = useState(itemValue || []);
+  useEffect(() => {
+    if (itemValue.length > 0 && size.length > 0) {
+      const main_checkbox = document.querySelector("#checkbox_size");
+      main_checkbox.checked = true;
+      handleChange();
+      for (const obj of itemValue) {
+        const checkbox = document.querySelector(
+          `#checkbox_size_${obj.pizzaSizeId}`
+        );
+        checkbox.checked = true;
+        const pricebox = document.querySelector(
+          `#price_size_${obj.pizzaSizeId}`
+        );
+        pricebox.value = obj.price;
+      }
+    }
+  }, [itemValue]);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -66,7 +86,7 @@ export const Size = ({ size = sized, itemValue }) => {
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
             {size.length > 0 &&
-              size.map(({ title, named }, ind) => (
+              size.map(({ title, named, pizzaSizeId }, ind) => (
                 <Flex
                   key={ind}
                   justifyContent={"space-between"}
@@ -80,14 +100,14 @@ export const Size = ({ size = sized, itemValue }) => {
                         <input
                           name={named}
                           type="checkbox"
-                          id={`${title}_checkbox_size`}
+                          id={`checkbox_size_${pizzaSizeId}`}
                           className="checkbox_size"
                         />
                         <span className={style.checkmark}></span>
                       </label>
                     </Box>
                     <label
-                      htmlFor={`${title}_checkbox_size`}
+                      htmlFor={`checkbox_size_${pizzaSizeId}`}
                       style={{ cursor: "pointer" }}
                     >
                       {title}
@@ -107,7 +127,7 @@ export const Size = ({ size = sized, itemValue }) => {
                         w={"auto"}
                         placeholder="price"
                         className="price_size"
-                        id={`${title}_price_size`}
+                        id={`price_size_${pizzaSizeId}`}
                       />
                     </InputGroup>
                   </Box>
