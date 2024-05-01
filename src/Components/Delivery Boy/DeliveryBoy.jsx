@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import {
   Box,
@@ -20,12 +20,25 @@ import { CiEdit } from "react-icons/ci";
 import { deleteOutline, edit, updown } from "../../assets";
 import CustomeFoodItes from "../CustomeFoodItes";
 import { linkStyle } from "../../data";
+import { useDispatch, useSelector } from "react-redux";
+import ReactPaginate from "react-paginate";
+import { get_delivery_boy } from "../../Redux/Delivery Boy/action";
 
 const DeliveryBoy = () => {
   const [search, setSearch] = useState("");
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const { delivery_boy, assign_boy } = useSelector(
+    (store) => store.delivery_boyReducer
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(get_delivery_boy());
+  }, [dispatch]);
 
   const handleOrderId = () => {};
 
@@ -34,6 +47,15 @@ const DeliveryBoy = () => {
   const handleOrderPrice = () => {};
 
   const handleOrderStatus = () => {};
+
+  const handlePageChange = ({ selected: selectedPage }) => {
+    setCurrentPage(selectedPage);
+  };
+
+  const itemsPerPage = 10;
+  const offset = currentPage * itemsPerPage;
+  const pageCount = Math.ceil(delivery_boy.length / itemsPerPage);
+  const currentPageData = delivery_boy.slice(offset, offset + itemsPerPage);
 
   let status = "Available";
   return (
@@ -102,76 +124,61 @@ const DeliveryBoy = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>#00001</td>
-              <td>John Doe</td>
-              <td>+1 (437) 800-6651</td>
-              <td>john@gmail.com</td>
-              <td>
-                <Text
-                  bgColor={
-                    status === "Available" ? "brand.stock" : "brand.outofstock"
-                  }
-                  p={"4px 2px"}
-                  textAlign={"center"}
-                  borderRadius={"full"}
-                  fontWeight={"700"}
-                  fontSize={"14px"}
-                  color={"brand.white"}
-                >
-                  {status}
-                </Text>
-              </td>
-              <td>
-                <Center>
-                  <Flex gap={8}>
-                    <Link to={``}>
-                      <img src={edit} alt="edit icon" />
-                    </Link>
-                    <Link to={``}>
-                      <img src={deleteOutline} alt="delete icon" />
-                    </Link>
-                  </Flex>
-                </Center>
-              </td>
-            </tr>
-
-            <tr>
-              <td>#00002</td>
-              <td>John Doe</td>
-              <td>+1 (437) 800-6651</td>
-              <td>john@gmail.com</td>
-              <td>
-                <Text
-                  bgColor={
-                    status === "Available" ? "brand.stock" : "brand.outofstock"
-                  }
-                  p={"4px 2px"}
-                  textAlign={"center"}
-                  borderRadius={"full"}
-                  fontWeight={"700"}
-                  fontSize={"14px"}
-                  color={"brand.white"}
-                >
-                  {status}
-                </Text>
-              </td>
-              <td>
-                <Center>
-                  <Flex gap={8}>
-                    <Link to={``}>
-                      <img src={edit} alt="edit icon" />
-                    </Link>
-                    <Link to={``}>
-                      <img src={deleteOutline} alt="delete icon" />
-                    </Link>
-                  </Flex>
-                </Center>
-              </td>
-            </tr>
+            {Array.isArray(currentPageData) &&
+              currentPageData.map((el, i) => (
+                <tr key={i}>
+                  <td>#{el.id}</td>
+                  <td>{el.name}</td>
+                  <td>{el.phoneNumber}</td>
+                  <td>john@gmail.com</td>
+                  <td>
+                    <Text
+                      bgColor={
+                        status === "Available"
+                          ? "brand.stock"
+                          : "brand.outofstock"
+                      }
+                      p={"4px 2px"}
+                      textAlign={"center"}
+                      borderRadius={"full"}
+                      fontWeight={"700"}
+                      fontSize={"14px"}
+                      color={"brand.white"}
+                    >
+                      {status}
+                    </Text>
+                  </td>
+                  <td>
+                    <Center>
+                      <Flex gap={8}>
+                        <Link to={``}>
+                          <img src={edit} alt="edit icon" />
+                        </Link>
+                        <Link to={``}>
+                          <img src={deleteOutline} alt="delete icon" />
+                        </Link>
+                      </Flex>
+                    </Center>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </DIV>
+
+      <PaginationBox>
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          pageCount={Math.ceil(delivery_boy.length / itemsPerPage)}
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          previousLinkClassName={"pagination__link"}
+          nextLinkClassName={"pagination__link"}
+          disabledClassName={"pagination__link--disabled"}
+          activeClassName={"pagination__link--active"}
+        />
+      </PaginationBox>
     </Layout>
   );
 };
@@ -198,5 +205,50 @@ const DIV = styled.div`
 
   tbody > tr {
     background-color: #f3f3f3;
+  }
+`;
+
+const PaginationBox = styled.div`
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  margin-top: 20px;
+
+  .pagination {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pagination__item {
+    margin-right: 10px;
+    font-size: 16px;
+    border: 1px solid red;
+    font-weight: bold;
+  }
+
+  .pagination__link {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+  }
+
+  .pagination__link--active {
+    background-color: red;
+    padding: 0px 8px;
+    border: 1px solid red;
+    color: #fff;
+    border-color: #007bff;
+  }
+
+  .pagination__link--disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 `;

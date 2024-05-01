@@ -44,8 +44,10 @@ const Orders = () => {
     return formattedDate;
   };
 
-  const handleDetails = (id) => {
+  const handleDetails = (id, event) => {
+    event.preventDefault();
     navigate(`/orders/${id}`);
+    console.log("Order ID:", id);
   };
   return (
     <Layout>
@@ -139,7 +141,7 @@ const Orders = () => {
                           variant={"simpleWhite"}
                           fontWeight={"500"}
                           bgColor={"brand.buttonbg"}
-                          onClick={() => handleDetails(el.orderId)}
+                          onClick={(event) => handleDetails(el.orderId, event)}
                         >
                           View Details
                         </Button>
