@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { get_toppings } from "../../Redux/ExtraItems/action";
+import { delete_toppings, get_toppings } from "../../Redux/ExtraItems/action";
 import { CLEANUP } from "../../Redux/actionType";
 import Layout from "../Layout/Layout";
 import { Breadcrumber } from "../MenuItems/Breadcrumber/Breadcrumber";
@@ -50,10 +50,8 @@ const ShowToppings = () => {
     };
   }, [error, toast, dispatch]);
 
-  const handleRemoveTopping = (toppingToRemove) => {
-    setSelectedToppings(
-      selectedToppings.filter((topping) => topping !== toppingToRemove)
-    );
+  const handleRemoveTopping = (id) => {
+    dispatch(delete_toppings(id));
     // Dispatch remove_topping action with the ID or any unique identifier of the topping
     // dispatch(remove_topping(toppingToRemove.id)); // Adjust the argument according to your topping data structure
   };
@@ -109,7 +107,7 @@ const ShowToppings = () => {
                       onClick={() => handleRemoveTopping(el.extraItemId)}
                     />
                   </span>
-                  <Text fontWeight="400" fontSize="16px" color="#1F1F1F">
+                  {/* <Text fontWeight="400" fontSize="16px" color="#1F1F1F">
                     {el.name}
                   </Text>
                   <IconButton
@@ -118,7 +116,7 @@ const ShowToppings = () => {
                     icon={<CloseIcon />}
                     color={"#919191"}
                     onClick={() => handleRemoveTopping(el.extraItemId)}
-                  />
+                  /> */}
                   {/* <CloseIcon onClick={() => handleRemoveTopping(el)} /> */}
                 </Box>
               </Box>

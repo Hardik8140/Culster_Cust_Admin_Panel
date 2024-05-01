@@ -17,7 +17,10 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { get_table_reservation } from "../../Redux/Table Reservation/action";
+import {
+  get_table_reservation,
+  post_table_reservation_status,
+} from "../../Redux/Table Reservation/action";
 import { updown } from "../../assets";
 import Layout from "../Layout/Layout";
 
@@ -52,6 +55,10 @@ const TableReservation = () => {
   const formatTime = (timeString) => {
     const options = { hour: "2-digit", minute: "2-digit" };
     return new Date(timeString).toLocaleTimeString("en-GB", options);
+  };
+
+  const handleOrder = (status, id) => {
+    dispatch(post_table_reservation_status(status, id));
   };
 
   return (
@@ -93,44 +100,46 @@ const TableReservation = () => {
               </tr>
             </thead>
             <tbody>
-              {reserveTable.map((el) => (
-                <tr key={el.reserveTableId}>
-                  <td>{el.reserveTableId}</td>
-                  <td>{el.name}</td>
-                  <td>{el.noOfGuest}</td>
-                  <td>{formatDate(el.dateTime)}</td>
-                  <td>{formatTime(el.dateTime)}</td>
-                  <td>
-                    <Text
-                      bgColor={el.status ? null : "brand.pending"}
-                      p={"4px 4px "}
-                      textAlign={"center"}
-                      borderRadius={"full"}
-                      fontWeight={"700"}
-                      fontSize={"14px"}
-                      color={"brand.white"}
-                    >
-                      {el.status ? "" : "Pending..."}
-                    </Text>
-                  </td>
-                  <td>
-                    {/* <Center> */}
-                    <Button
-                      p={"14px 25px 14px 25px"}
-                      margin={"auto"}
-                      borderRadius={"10px"}
-                      fontSize={"14px"}
-                      variant={"simpleWhite"}
-                      fontWeight={"500"}
-                      bgColor={"brand.buttonbg"}
-                      onClick={() => handleViewDetails(el)}
-                    >
-                      View Details
-                    </Button>
-                    {/* </Center> */}
-                  </td>
-                </tr>
-              ))}
+              {Array.isArray(reserveTable) &&
+                reserveTable.map((el) => (
+                  <tr key={el.reserveTableId}>
+                    <td>{el.reserveTableId}</td>
+                    <td>{el.name}</td>
+                    <td>{el.noOfGuest}</td>
+                    <td>{formatDate(el.dateTime)}</td>
+                    <td>{formatTime(el.dateTime)}</td>
+                    <td>
+                      <Text
+                        bgColor={el.status ? "brand.pending" : "brand.stock"}
+                        w={"fit-content"}
+                        p={"4px 8px"}
+                        textAlign={"center"}
+                        borderRadius={"full"}
+                        fontWeight={"700"}
+                        fontSize={"14px"}
+                        color={"brand.white"}
+                      >
+                        {el.status}{" "}
+                      </Text>
+                    </td>
+                    <td>
+                      {/* <Center> */}
+                      <Button
+                        p={"14px 25px 14px 25px"}
+                        margin={"auto"}
+                        borderRadius={"10px"}
+                        fontSize={"14px"}
+                        variant={"simpleWhite"}
+                        fontWeight={"500"}
+                        bgColor={"brand.buttonbg"}
+                        onClick={() => handleViewDetails(el)}
+                      >
+                        View Details
+                      </Button>
+                      {/* </Center> */}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </DIV>
@@ -183,10 +192,28 @@ const TableReservation = () => {
               np
               <ModalFooter display="flex" justifyContent="center">
                 <Box w="30%" display="flex" justifyContent="space-between">
-                  <Button backgroundColor="brand.primary" color="white">
+                  <Button
+                    backgroundColor="brand.primary"
+                    color="white"
+                    onClick={() =>
+                      handleOrder(
+                        selectedReservation.status,
+                        selectedReservation?.reserveTableId
+                      )
+                    }
+                  >
                     Reject
                   </Button>
-                  <Button backgroundColor="brand.add" color="white">
+                  <Button
+                    backgroundColor="brand.add"
+                    color="white"
+                    onClick={() =>
+                      handleOrder(
+                        selectedReservation.status,
+                        selectedReservation?.reserveTableId
+                      )
+                    }
+                  >
                     Accept
                   </Button>
                 </Box>

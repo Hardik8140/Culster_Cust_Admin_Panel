@@ -1,5 +1,6 @@
 import {
   CLEANUP,
+  DELETE_EXTRA_ITEM_TOPPINGS_SUCCESS,
   ERROR,
   GET_EXTRA_ITEM_DRIZZLE_SUCCESS,
   GET_EXTRA_ITEM_TOPPINGS_SUCCESS,
@@ -41,13 +42,20 @@ export const reducer = (state = initalState, { type, payload }) => {
         isLoading: false,
         drizzles: payload,
       };
+    case DELETE_EXTRA_ITEM_TOPPINGS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        error: "",
+        toppings: payload,
+      };
     case POSTED_TOPPINGS:
       return {
         ...state,
         error: "",
         isLoading: false,
         toppings: payload,
-      }
+      };
     case CLEANUP:
       return {
         ...state,

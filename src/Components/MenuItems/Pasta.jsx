@@ -20,12 +20,14 @@ import { linkStyle } from "../../data";
 import CustomeFoodItes from "../CustomeFoodItes";
 import Layout from "../Layout/Layout";
 import { delete_Added_Pasta } from "../../Redux/Delete_All_MenuItem/action";
+import ReactPaginate from "react-paginate";
 
 const Pasta = () => {
   const [search, setSearch] = useState("");
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
+  const [currentPage, setCurrentPage] = useState(0);
 
   const { loading, error, pasta } = useSelector(
     (store) => store.get_all_menuitem_reducer
@@ -49,6 +51,16 @@ const Pasta = () => {
   const handleOrderPrice = () => {};
 
   const handleOrderStatus = () => {};
+
+  const handlePageChange = ({ selected: selectedPage }) => {
+    setCurrentPage(selectedPage);
+  };
+
+  const itemsPerPage = 10;
+  const offset = currentPage * itemsPerPage;
+  const pageCount = Math.ceil(pasta.length / itemsPerPage);
+  const currentPageData = pasta.slice(offset, offset + itemsPerPage);
+
   return (
     <Layout>
       <Box>
@@ -116,8 +128,8 @@ const Pasta = () => {
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(pasta) &&
-              pasta.map((el, i) => (
+            {Array.isArray(currentPageData) &&
+              currentPageData.map((el, i) => (
                 <tr key={i}>
                   <td>{el.pizzaId}</td>
                   <td>{el.name}</td>
@@ -157,6 +169,20 @@ const Pasta = () => {
           </tbody>
         </table>
       </DIV>
+
+      <PaginationBox>
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          pageCount={Math.ceil(pasta.length / itemsPerPage)}
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          previousLinkClassName={"pagination__link"}
+          nextLinkClassName={"pagination__link"}
+          disabledClassName={"pagination__link--disabled"}
+          activeClassName={"pagination__link--active"}
+        />
+      </PaginationBox>
     </Layout>
   );
 };
@@ -184,5 +210,50 @@ const DIV = styled.div`
     border: 1px solid red;
 
     background-color: #e9e9e9;
+  }
+`;
+
+const PaginationBox = styled.div`
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  margin-top: 20px;
+
+  .pagination {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pagination__item {
+    margin-right: 10px;
+    font-size: 16px;
+    border: 1px solid red;
+    font-weight: bold;
+  }
+
+  .pagination__link {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+  }
+
+  .pagination__link--active {
+    background-color: red;
+    padding: 0px 8px;
+    border: 1px solid red;
+    color: #fff;
+    border-color: #007bff;
+  }
+
+  .pagination__link--disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 `;

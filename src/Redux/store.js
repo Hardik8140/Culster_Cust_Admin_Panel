@@ -10,6 +10,7 @@ import { reducer as timeReducer } from "./TIme Manage/reducer";
 import { reducer as dashboardReducer } from "./Dashboard/reducer";
 import { reducer as get_all_menuitem_reducer } from "./Get_All_MenuItems/reducer";
 import { reducer as orderReducer } from "./Orders/reducer";
+import { reducer as delivery_boyReducer } from "./Delivery Boy/reducer";
 
 const rootReducer = combineReducers({
   menuItemsReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   dashboardReducer,
   get_all_menuitem_reducer,
   orderReducer,
+  delivery_boyReducer,
 });
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
