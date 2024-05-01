@@ -1,6 +1,7 @@
 import { Box, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
+import { useEffect } from "react";
 
 const extraMeat = [
   {
@@ -16,8 +17,19 @@ const extraMeat = [
     title: "Chicken",
   },
 ];
-export const MeatToppings = ({ values = {} }) => {
+export const MeatToppings = ({ values = {}, itemValue = [] }) => {
   const [checked, handleChange] = useCheckbox(false);
+  useEffect(() => {
+    if (itemValue.length > 0 && Object.keys(values).length > 0) {
+      const main_checkbox = document.querySelector("#checkbox_extrameat");
+      main_checkbox.checked = true;
+      handleChange();
+      for (const id of itemValue) {
+        const checkbox = document.querySelector(`#checkbox_meattoppings_${id}`);
+        checkbox.checked = true;
+      }
+    }
+  }, [itemValue]);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -69,14 +81,14 @@ export const MeatToppings = ({ values = {} }) => {
                         <input
                           name={key}
                           type="checkbox"
-                          id={`${key}_checkbox_meattoppings`}
+                          id={`checkbox_meattoppings_${key}`}
                           className="checkbox_meattoppings"
                         />
                         <span className={style.checkmark}></span>
                       </label>
                     </Box>
                     <label
-                      htmlFor={`${values[key]}_checkbox_meattoppings`}
+                      htmlFor={`checkbox_meattoppings_${key}`}
                       style={{ cursor: "pointer" }}
                     >
                       {values[key]}

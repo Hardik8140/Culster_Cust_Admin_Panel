@@ -1,6 +1,7 @@
 import { Box, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import useCheckbox from "../../../Hooks/useCheckbox";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
+import { useEffect } from "react";
 
 const Drizzled = {
   11: "Creamy Garlic",
@@ -11,8 +12,19 @@ const Drizzled = {
 
   14: "Spicy Tandori",
 };
-export const Drizzle = ({ values = {} }) => {
+export const Drizzle = ({ values = {}, itemValue = [] }) => {
   const [checked, handleChange] = useCheckbox(false);
+  useEffect(() => {
+    if (itemValue.length > 0 && Object.keys(values).length > 0) {
+      const main_checkbox = document.querySelector("#checkbox_drizzle");
+      main_checkbox.checked = true;
+      handleChange();
+      for (const id of itemValue) {
+        const checkbox = document.querySelector(`#checkbox_drizzle_${id}`);
+        checkbox.checked = true;
+      }
+    }
+  }, [itemValue]);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -45,34 +57,35 @@ export const Drizzle = ({ values = {} }) => {
             pointerEvents={!checked && "none"}
             opacity={!checked && "0.6"}
           >
-            {Object.keys(values).length > 0 && Object.keys(values).map((key, ind) => (
-              <Flex
-                key={ind}
-                justifyContent={"space-between"}
-                width={"100%"}
-                my={4}
-              >
-                <Flex minW={"50%"}>
-                  <Box>
-                    <label className={style.customCheckbox}>
-                      <input
-                        name={key}
-                        type="checkbox"
-                        id={`${values[key]}_checkbox_drizzle`}
-                        className="checkbox_drizzle"
-                      />
-                      <span className={style.checkmark}></span>
+            {Object.keys(values).length > 0 &&
+              Object.keys(values).map((key, ind) => (
+                <Flex
+                  key={ind}
+                  justifyContent={"space-between"}
+                  width={"100%"}
+                  my={4}
+                >
+                  <Flex minW={"50%"}>
+                    <Box>
+                      <label className={style.customCheckbox}>
+                        <input
+                          name={key}
+                          type="checkbox"
+                          id={`checkbox_drizzle_${key}`}
+                          className="checkbox_drizzle"
+                        />
+                        <span className={style.checkmark}></span>
+                      </label>
+                    </Box>
+                    <label
+                      htmlFor={`checkbox_drizzle_${key}`}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {values[key]}
                     </label>
-                  </Box>
-                  <label
-                    htmlFor={`${values[key]}_checkbox_drizzle`}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {values[key]}
-                  </label>
+                  </Flex>
                 </Flex>
-              </Flex>
-            ))}
+              ))}
           </Box>
         </Box>
       </Stack>

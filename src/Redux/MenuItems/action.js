@@ -34,6 +34,20 @@ export const getMenuItem = () => async (dispatch) => {
   }
 };
 
+export const uploadImage = (imageData, handleNavigate) => async (dispatch) => {
+  dispatch({ type: LOADING });
+  try {
+    let res = await axios.post(`${backendAPI}admin/uploadImage`, imageData);
+    res = await res.data;
+    if (res.success) {
+      handleNavigate();
+    } else {
+      dispatch({ type: ERROR, payload: res.message });
+    }
+  } catch (error) {
+    dispatch({ type: ERROR, payload: error.message });
+  }
+};
 export const addNewPizza = (pizzaData, handleNavigate) => async (dispatch) => {
   dispatch({ type: LOADING });
   try {
@@ -49,23 +63,24 @@ export const addNewPizza = (pizzaData, handleNavigate) => async (dispatch) => {
   }
 };
 
-export const updatePizza = (pizzaData) => async (dispatch) => {
-  dispatch({ type: LOADING });
-  try {
-    let res = await axios.post(
-      `${backendAPI}admin/updateitem?itemId=${pizzaData.id}`,
-      pizzaData
-    );
-    res = await res.data;
-    if (res.success) {
-      // dispatch({ type: ADDED_NEW_PIZZA, payload: res.data });
-    } else {
-      dispatch({ type: ERROR, payload: res.message });
+export const updatePizza =
+  (pizzaData, pizzaId, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.patch(
+        `${backendAPI}admin/updateitem?itemId=${pizzaId}`,
+        pizzaData
+      );
+      res = await res.data;
+      if (res.success) {
+        handleNavigate();
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
     }
-  } catch (error) {
-    dispatch({ type: ERROR, payload: error.message });
-  }
-};
+  };
 
 export const deletePizza = (id) => async (dispatch) => {
   dispatch({ type: LOADING });

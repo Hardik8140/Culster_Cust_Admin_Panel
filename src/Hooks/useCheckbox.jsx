@@ -4,7 +4,11 @@ const useCheckbox = (initialValue = false) => {
   const [checked, setChecked] = useState(initialValue);
 
   const handleChange = (event) => {
-    setChecked(event.target.checked);
+    if (event) {
+      setChecked(event.target.checked);
+    } else {
+      setChecked(true);
+    }
   };
 
   return [checked, handleChange];

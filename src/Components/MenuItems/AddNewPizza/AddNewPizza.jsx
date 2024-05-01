@@ -17,7 +17,11 @@ import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
-import { addNewPizza, get_Ingrediants } from "../../../Redux/MenuItems/action";
+import {
+  addNewPizza,
+  get_Ingrediants,
+  updatePizza,
+} from "../../../Redux/MenuItems/action";
 import {
   AddDippingsId,
   CrustId,
@@ -132,6 +136,15 @@ export const AddNewPizza = () => {
         }
       }
 
+      // if (paneer_chicken_items.length > 0) {
+      //   const main_checkbox = document.querySelector("#checkbox_paneer");
+      //   main_checkbox.checked = true;
+      //   for (const id of paneer_chicken_items) {
+      //     const checkbox = document.querySelector(`#checkbox_panner_${id}`);
+      //     checkbox.checked = true;
+      //   }
+      // }
+
       setPizzaItems({
         crust: crust_items,
         flavor: flavor_items,
@@ -220,6 +233,7 @@ export const AddNewPizza = () => {
       pizzaName: name.value,
       description: description.value,
       categoryId: 180002,
+      imageName: name.value + ".png",
       items: [],
     };
     if (size.checked) {
@@ -250,7 +264,7 @@ export const AddNewPizza = () => {
       const curstCheckbox = form.querySelectorAll(".checkbox_crust");
       for (let i = 0; i < curstCheckbox.length; i++) {
         if (curstCheckbox[i].checked) {
-          finalCrust.push(curstCheckbox[i].name);
+          finalCrust.push(+curstCheckbox[i].name);
         }
       }
       data = {
@@ -265,9 +279,9 @@ export const AddNewPizza = () => {
       const paneerPrice = form.querySelectorAll(".price_paneer");
       for (let i = 0; i < paneerCheckbox.length; i++) {
         if (paneerCheckbox[i].checked) {
-          finalPaneer.push(paneerCheckbox[i].name);
+          finalPaneer.push(+paneerCheckbox[i].name);
 
-          // finalPaneer.push({
+          // finalPaneer.push(+{
           //   title: paneerCheckbox[i].name,
           //   price: +paneerPrice[i].value,
           // });
@@ -285,9 +299,9 @@ export const AddNewPizza = () => {
       const cheesePrice = form.querySelectorAll(".price_cheese");
       for (let i = 0; i < cheeseCheckbox.length; i++) {
         if (cheeseCheckbox[i].checked) {
-          finalCheese.push(cheeseCheckbox[i].name);
+          finalCheese.push(+cheeseCheckbox[i].name);
 
-          // finalCheese.push({
+          // finalCheese.push(+{
           //   title: cheeseCheckbox[i].name,
           //   price: +cheesePrice[i].value,
           // });
@@ -304,7 +318,7 @@ export const AddNewPizza = () => {
       const toppingsCheckbox = form.querySelectorAll(".checkbox_toppings");
       for (let i = 0; i < toppingsCheckbox.length; i++) {
         if (toppingsCheckbox[i].checked) {
-          finalToppings.push(toppingsCheckbox[i].name);
+          finalToppings.push(+toppingsCheckbox[i].name);
         }
       }
       data = {
@@ -318,7 +332,7 @@ export const AddNewPizza = () => {
       const drizzleCheckbox = form.querySelectorAll(".checkbox_drizzle");
       for (let i = 0; i < drizzleCheckbox.length; i++) {
         if (drizzleCheckbox[i].checked) {
-          finalDrizzle.push(drizzleCheckbox[i].name);
+          finalDrizzle.push(+drizzleCheckbox[i].name);
         }
       }
       data = {
@@ -334,7 +348,7 @@ export const AddNewPizza = () => {
       );
       for (let i = 0; i < meatToppingsCheckbox.length; i++) {
         if (meatToppingsCheckbox[i].checked) {
-          finalMeatToppings.push(meatToppingsCheckbox[i].name);
+          finalMeatToppings.push(+meatToppingsCheckbox[i].name);
         }
       }
       data = {
@@ -348,7 +362,7 @@ export const AddNewPizza = () => {
       const flavorCheckbox = form.querySelectorAll(".checkbox_flavor");
       for (let i = 0; i < flavorCheckbox.length; i++) {
         if (flavorCheckbox[i].checked) {
-          finalFlavor.push(flavorCheckbox[i].name);
+          finalFlavor.push(+flavorCheckbox[i].name);
         }
       }
       data = {
@@ -356,8 +370,11 @@ export const AddNewPizza = () => {
         items: [...data.items, ...finalFlavor],
       };
     }
-    console.log(data);
-    // dispatch(addNewPizza(data, handleNavigate));
+    if (pizzaData["pizzaId"]) {
+      dispatch(updatePizza(data, pizzaData["pizzaId"], handleNavigate));
+    } else {
+      dispatch(addNewPizza(data, handleNavigate));
+    }
   };
 
   return (
@@ -382,7 +399,11 @@ export const AddNewPizza = () => {
                   />
                   <Name itemValue={pizzaData?.name} />
                   <Description itemValue={pizzaData?.description} />
-                  <Image itemValue={pizzaData?.imageUrl} />
+                  <Image
+                    itemValue={pizzaData?.imageUrl}
+                    categoryId={pizzaData?.category?.categoryId}
+                    name={pizzaData?.name}
+                  />
                   <Size
                     values={items?.items["size"]}
                     itemValue={pizzaData?.sizes}
@@ -391,15 +412,31 @@ export const AddNewPizza = () => {
                     values={items.items["Crust(Required)"]}
                     itemValue={pizzaItems?.crust}
                   />
-                  <PaneerChicken values={items?.items["Panner/Chicken"]} />
-                  <ExtraCheese values={items.items["Extra Cheese"]} />
-                  <Toppings values={items?.items["Toppings"]} />
-                  <Drizzle values={items?.items["Drizzle It Up!"]} />
-                  <MeatToppings values={items?.items["Extra Meat Topping"]} />
+                  <PaneerChicken
+                    values={items?.items["Panner/Chicken"]}
+                    itemValue={pizzaItems?.paneer_chicken}
+                  />
+                  <ExtraCheese
+                    values={items.items["Extra Cheese"]}
+                    itemValue={pizzaItems?.extra_cheese}
+                  />
+                  <Toppings
+                    values={items?.items["Toppings"]}
+                    itemValue={pizzaItems?.toppings}
+                  />
+                  <Drizzle
+                    values={items?.items["Drizzle It Up!"]}
+                    itemValue={pizzaItems?.drizzle}
+                  />
+                  <MeatToppings
+                    values={items?.items["Extra Meat Topping"]}
+                    itemValue={pizzaItems?.extra_meat_toppings}
+                  />
                   <Flavor
                     values={
                       items?.items["Flavour (Base sauce & Top Seasonings)"]
                     }
+                    itemValue={pizzaItems?.flavor}
                   />
                 </Grid>
               )}
