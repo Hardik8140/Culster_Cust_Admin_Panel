@@ -10,8 +10,16 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { dollar } from "../../../assets";
+import { useState } from "react";
 
-export const Detail = () => {
+export const Detail = ({ itemValue }) => {
+  const [state, setState] = useState(itemValue);
+  const handleChange = (event) => {
+    setState({
+      ...state,
+      [event.target.id]: event.target.value,
+    });
+  };
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -25,7 +33,13 @@ export const Detail = () => {
             <Text size={"18px"} fontWeight={"500"}>
               NAME
             </Text>
-            <Input type="text" placeholder="Enter food name" id="name" />
+            <Input
+              type="text"
+              placeholder="Enter food name"
+              id="name"
+              value={state.name}
+              onChange={handleChange}
+            />
           </Stack>
           <Stack>
             <Text size={"18px"} fontWeight={"500"}>
@@ -60,6 +74,8 @@ export const Detail = () => {
             type="text"
             placeholder="Enter the description"
             id="description"
+            value={state.description}
+            onChange={handleChange}
           />
         </Box>
       </Stack>

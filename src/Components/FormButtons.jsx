@@ -1,6 +1,8 @@
 import { Button, Flex } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
-export const FormButtons = () => {
+export const FormButtons = ({ canceling = "/" }) => {
+  const navigate = useNavigate();
   return (
     <Flex gap={"20px"}>
       <Button
@@ -9,6 +11,7 @@ export const FormButtons = () => {
         py={"18px"}
         variant={"simple"}
         bgColor={"brand.grey200"}
+        onClick={() => navigate(canceling)}
       >
         Cancel
       </Button>

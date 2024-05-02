@@ -9,9 +9,8 @@ export const linkStyle = {
 };
 export const CheesyFunId = "180008";
 export const NanzaId = "180007";
-export const BurgerId = "180004";
-export const newPizzaId = "180002";
-
+export const BurgerId = 180004;
+export const newPizzaId = 180002;
 // ingredients Id
 export const CrustId = 220001;
 export const FlavorId = 220002;
@@ -22,7 +21,8 @@ export const DrizzleitupId = 220006;
 export const SeasoningsId = 220007;
 export const AddDippingsId = 220008;
 export const PannerChickenId = 220009;
-
+export const BurgerFlavorId = 220010;
+export const ExtraPattyId = 220011;
 // items by Id
 // {
 //     "success": true,

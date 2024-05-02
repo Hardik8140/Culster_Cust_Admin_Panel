@@ -57,19 +57,22 @@ const links = [
 export const AddNewPizza = () => {
   const dispatch = useDispatch();
   const [link, setLink] = useState(links);
-  const { pizzaId } = useParams();
+  const { pizzaParam } = useParams();
   const toast = useToast();
   const [pizzaData, setPizzaData] = useState({});
   const [pizzaItems, setPizzaItems] = useState({});
+  const [imgName, setImageName] = useState("");
   const navigate = useNavigate();
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
-
+  const handleImageName = (name) => {
+    setImageName(name);
+  };
   const { pizza } = useSelector((store) => store.get_all_menuitem_reducer);
   useEffect(() => {
-    if (pizzaId) {
-      const currentPizza = pizza.filter((item) => item.pizzaId === +pizzaId);
+    if (pizzaParam) {
+      const currentPizza = pizza.filter((item) => item.pizzaId === +pizzaParam);
       setPizzaData(currentPizza[0]);
       let updated = link.map((item) => {
         if (item.title === "Add New Pizza") {
@@ -83,7 +86,7 @@ export const AddNewPizza = () => {
       });
       setLink(updated);
     }
-  }, [pizzaId]);
+  }, [pizzaParam]);
 
   useEffect(() => {
     if (items === undefined || Object.keys(items).length === 0) {
@@ -183,9 +186,9 @@ export const AddNewPizza = () => {
     };
   }, [isLoading, error, toast]);
 
-  const handleNavigate = () => {
+  const handleNavigate = (msg) => {
     toast({
-      title: "Pizza added successfully!",
+      title: msg,
       status: "success",
       duration: 5000,
       isClosable: true,
@@ -232,8 +235,8 @@ export const AddNewPizza = () => {
       subCategoryId: +type.value,
       pizzaName: name.value,
       description: description.value,
-      categoryId: 180002,
-      imageName: name.value + ".png",
+      categoryId: newPizzaId,
+      imageName: newPizzaId + "/" + imgName,
       items: [],
     };
     if (size.checked) {
@@ -401,8 +404,9 @@ export const AddNewPizza = () => {
                   <Description itemValue={pizzaData?.description} />
                   <Image
                     itemValue={pizzaData?.imageUrl}
-                    categoryId={pizzaData?.category?.categoryId}
-                    name={pizzaData?.name}
+                    categoryId={newPizzaId}
+                    name={imgName}
+                    handleImageName={handleImageName}
                   />
                   <Size
                     values={items?.items["size"]}

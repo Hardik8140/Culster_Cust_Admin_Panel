@@ -91,7 +91,8 @@ const AllRoutes = () => {
       <Route path="/add/drinks" element={<AddDrinks />} />
 
       {/* EditMenuItems */}
-      <Route path="/edit/pizza/:pizzaId" element={<AddNewPizza />} />
+      <Route path="/edit/pizza/:pizzaParam" element={<AddNewPizza />} />
+      <Route path="/edit/burger/:burgerParam" element={<AddNewBurger />} />
 
       {/* ExtraItems */}
       <Route path="/toppings" element={<ShowToppings />} />
