@@ -1,9 +1,11 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { ChevronRightIcon } from "lucide-react";
 import { linkStyle } from "../../../data";
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 export const Breadcrumber = ({ links }) => {
+  const navigate = useNavigate();
   return (
     <Breadcrumb
       spacing="8px"
@@ -17,7 +19,8 @@ export const Breadcrumber = ({ links }) => {
         <BreadcrumbItem key={ind}>
           <BreadcrumbLink
             fontWeight={!item.isCurrent && "700"}
-            href={item.link}
+            // href={item.link}
+            onClick={() => navigate(item.link)}
             isCurrentPage={item.isCurrent}
             style={linkStyle}
             color={item.isCurrent && "brand.black !important"}

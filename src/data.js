@@ -7,10 +7,21 @@ export const linkStyle = {
   textDecoration: "none",
   color: "inherit",
 };
-export const CheesyFunId = "180008";
-export const NanzaId = "180007";
-export const BurgerId = "180004";
-export const newPizzaId = "180002";
+// category Id
+export const newPizzaId = 180002;
+export const createOwnPizzaId = 180003;
+export const BurgerId = 180004;
+export const HouseWingsId = 180005;
+export const pastaId = 180006;
+export const NanzaId = 180007;
+export const CheesyFunId = 180008;
+export const SidesId = 180009;
+export const SaladId = 180010;
+export const SweetTreatId = 180011;
+export const DippingSaucesId = 180012;
+export const ThickShakesId = 180013;
+export const DriksCanPopId = 180014;
+export const HomeMadeDriskId = 180015;
 
 // ingredients Id
 export const CrustId = 220001;
@@ -22,7 +33,11 @@ export const DrizzleitupId = 220006;
 export const SeasoningsId = 220007;
 export const AddDippingsId = 220008;
 export const PannerChickenId = 220009;
-
+export const BurgerFlavorId = 220010;
+export const ExtraPattyId = 220011;
+export const TypeOfServingId = 220012;
+export const SizeOfWingBoxId = 220013;
+export const WingsSaucesId = 220014;
 // items by Id
 // {
 //     "success": true,

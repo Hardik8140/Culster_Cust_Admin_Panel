@@ -1,10 +1,19 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Grid, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
 import { Detail } from "../GridItems/Detail";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ThickShakesId } from "../../../data";
+import { CLEANUP } from "../../../Redux/actionType";
+import {
+  addNewThickShakes,
+  updateThickShakes,
+} from "../../../Redux/MenuItems/action";
 
 const links = [
   {
@@ -14,7 +23,7 @@ const links = [
   },
   {
     title: "Culture Crust Special Think Shakes!!!",
-    link: "#",
+    link: "/culturecurstspecialthickshakes!!!",
     isCurrent: false,
   },
   {
@@ -24,6 +33,81 @@ const links = [
   },
 ];
 export const AddCultureCrustSpecialThinkShakes = () => {
+  const dispatch = useDispatch();
+  const [link, setLink] = useState(links);
+  const { thickShakesParam } = useParams();
+  const toast = useToast();
+  const [thinkShakesData, setThinkShakesData] = useState({});
+  const [thinkShakesItems, setThinkShakesItems] = useState({});
+  const [imgName, setImageName] = useState("");
+  const navigate = useNavigate();
+  const { isLoading, error, items } = useSelector(
+    (store) => store.menuItemsReducer
+  );
+  const handleImageName = (name) => {
+    setImageName(name);
+  };
+  const { theek_shake } = useSelector(
+    (store) => store.get_all_menuitem_reducer
+  );
+  useEffect(() => {
+    if (thickShakesParam && theek_shake.length > 0) {
+      const currentPizza = theek_shake.filter(
+        (item) => item.pizzaId === +thickShakesParam
+      );
+      setThinkShakesData(currentPizza[0]);
+      let updated = link.map((item) => {
+        if (item.title === "Add Culture Crust Special Think Shakes!!!") {
+          return {
+            title: "Edit Culture Crust Special Think Shakes!!!",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
+    }
+  }, [thickShakesParam]);
+
+  useEffect(() => {
+    // dispatch(get_Ingrediants(ThickShakesId));
+  }, []);
+
+  const handleError = (error) => {
+    toast({
+      title: error,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  };
+  useEffect(() => {
+    if (isLoading) {
+      toast({
+        title: "Loading...",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    if (!isLoading && error) {
+      handleError(error);
+    }
+    return () => {
+      dispatch({ type: CLEANUP });
+    };
+  }, [isLoading, error, toast]);
+
+  const handleNavigate = (msg) => {
+    toast({
+      title: msg,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/culturecurstspecialthickshakes!!!");
+  };
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -34,36 +118,68 @@ export const AddCultureCrustSpecialThinkShakes = () => {
     const thikshakes = form.querySelector("#checkbox_thikshakes");
     const finalthikshakes = [];
 
-    if (thikshakes.checked) {
-      // get all values of thikshakes
-      const thikshakesCheckbox = form.querySelectorAll(".checkbox_thikshakes");
-      for (let i = 0; i < thikshakesCheckbox.length; i++) {
-        if (thikshakesCheckbox[i].checked) {
-          finalthikshakes.push(thikshakesCheckbox[i].name);
-        }
-      }
+    // if (thikshakes.checked) {
+    //   // get all values of thikshakes
+    //   const thikshakesCheckbox = form.querySelectorAll(".checkbox_thikshakes");
+    //   for (let i = 0; i < thikshakesCheckbox.length; i++) {
+    //     if (thikshakesCheckbox[i].checked) {
+    //       finalthikshakes.push(thikshakesCheckbox[i].name);
+    //     }
+    //   }
+    // }
+
+    if (!name.value) {
+      handleError("Please enter name");
+      return;
     }
-    const data = {
-      name: name.value,
-      price: +price.value,
+    if (!description.value) {
+      handleError("Please enter description");
+      return;
+    }
+
+    if (!price.value) {
+      handleError("Please enter price");
+      return;
+    }
+    let data = {
+      pizzaName: name.value,
       description: description.value,
-      image: image ? image.src : "",
-      thikshakes: finalthikshakes,
+      categoryId: ThickShakesId,
+      imageName: ThickShakesId + "/" + imgName,
+      items: [],
+      pizzaSize: { Medium: +price.value },
     };
 
-    console.log(data);
+    if (thinkShakesData["pizzaId"]) {
+      dispatch(
+        updateThickShakes(data, thinkShakesData["pizzaId"], handleNavigate)
+      );
+    } else {
+      dispatch(addNewThickShakes(data, handleNavigate));
+    }
   };
+
   return (
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
-              <Image />
+              <Detail
+                itemValue={{
+                  name: thinkShakesData?.name,
+                  description: thinkShakesData?.description,
+                }}
+              />
+              <Image
+                itemValue={thinkShakesData?.imageUrl}
+                handleImageName={handleImageName}
+                name={imgName}
+                categoryId={ThickShakesId}
+              />
             </Grid>
             <FormButtons />
           </form>

@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
@@ -6,6 +6,11 @@ import { Detail } from "../GridItems/Detail";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
 import { SaladToppings } from "../GridItems/SaladToppings";
+import { useEffect, useState } from "react";
+import { get_Ingrediants } from "../../../Redux/MenuItems/action";
+import { useDispatch, useSelector } from "react-redux";
+import { SaladId } from "../../../data";
+import { useNavigate } from "react-router-dom";
 
 const links = [
   {
@@ -15,7 +20,7 @@ const links = [
   },
   {
     title: "Salads",
-    link: "#",
+    link: "/salads",
     isCurrent: false,
   },
   {
@@ -25,6 +30,19 @@ const links = [
   },
 ];
 export const AddSalads = () => {
+  const [link, setLink] = useState(links);
+  const toast = useToast();
+  const [imgName, setImgName] = useState("");
+  const [saladData, setSaladData] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading, error, items } = useSelector(
+    (store) => store.menuItemsReducer
+  );
+  useEffect(() => {
+    dispatch(get_Ingrediants(SaladId));
+  }, []);
+  console.log(items);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -65,9 +83,7 @@ export const AddSalads = () => {
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
               <Detail />
               <Image />
-              <GridItem colSpan={2}>
-                <SaladToppings />
-              </GridItem>
+              <GridItem colSpan={2}>{/* <SaladToppings /> */}</GridItem>
             </Grid>
             <FormButtons />
           </form>

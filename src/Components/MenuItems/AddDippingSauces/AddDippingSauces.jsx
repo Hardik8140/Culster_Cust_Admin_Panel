@@ -1,10 +1,19 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Grid, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
 import { Detail } from "../GridItems/Detail";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { DippingSaucesId } from "../../../data";
+import {
+  addNewDippingSauces,
+  updateDippingSauces,
+} from "../../../Redux/MenuItems/action";
+import { CLEANUP } from "../../../Redux/actionType";
 
 const links = [
   {
@@ -14,7 +23,7 @@ const links = [
   },
   {
     title: "Dipping Sauces",
-    link: "#",
+    link: "/dippingsauces",
     isCurrent: false,
   },
   {
@@ -24,6 +33,70 @@ const links = [
   },
 ];
 export const AddDippingSauces = () => {
+  const [link, setLink] = useState(links);
+  const toast = useToast();
+  const { dippingSaucesParam } = useParams();
+  const [imgName, setImgName] = useState("");
+  const [dippingSaucesData, setDippingSaucesData] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading, error, items } = useSelector(
+    (store) => store.menuItemsReducer
+  );
+  const { deeping_sauce } = useSelector(
+    (store) => store.get_all_menuitem_reducer
+  );
+  useEffect(() => {
+    // dispatch(get_Ingrediants(DippingSaucesId));
+  }, []);
+  useEffect(() => {
+    if (dippingSaucesParam && deeping_sauce.length > 0) {
+      const current = deeping_sauce.filter(
+        (item) => item.pizzaId === +dippingSaucesParam
+      );
+      setDippingSaucesData(current[0]);
+      let updated = link.map((item) => {
+        if (item.title === "Add Dipping Sauces") {
+          return {
+            title: "Edit Dipping Sauces",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
+    }
+  }, [dippingSaucesParam]);
+  const handleImageName = (name) => {
+    setImgName(name);
+  };
+  useEffect(() => {
+    if (isLoading) {
+      toast({
+        title: "Loading...",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    if (!isLoading && error) {
+      handleError(error);
+    }
+    return () => {
+      dispatch({ type: CLEANUP });
+    };
+  }, [isLoading, error, toast]);
+
+  const handleNavigate = (msg) => {
+    toast({
+      title: msg,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/dippingsauces");
+  };
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -32,26 +105,58 @@ export const AddDippingSauces = () => {
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
 
-    const data = {
-      name: name.value,
-      price: +price.value,
+    if (!name.value) {
+      handleError("Please enter name");
+      return;
+    }
+    if (!description.value) {
+      handleError("Please enter description");
+      return;
+    }
+
+    if (!price.value) {
+      handleError("Please enter price");
+      return;
+    }
+    let data = {
+      pizzaName: name.value,
       description: description.value,
-      image: image ? image.src : "",
+      categoryId: DippingSaucesId,
+      imageName: DippingSaucesId + "/" + imgName,
+      items: [],
+      pizzaSize: { Medium: +price.value },
     };
 
-    console.log(data);
+    if (dippingSaucesData["pizzaId"]) {
+      dispatch(
+        updateDippingSauces(data, dippingSaucesData["pizzaId"], handleNavigate)
+      );
+    } else {
+      dispatch(addNewDippingSauces(data, handleNavigate));
+    }
   };
+
   return (
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
-              <Image />
+              <Detail
+                itemValue={{
+                  name: dippingSaucesData?.name,
+                  description: dippingSaucesData?.description,
+                }}
+              />
+              <Image
+                itemValue={dippingSaucesData?.imageUrl}
+                handleImageName={handleImageName}
+                categoryId={DippingSaucesId}
+                name={imgName}
+              />
             </Grid>
             <FormButtons />
           </form>

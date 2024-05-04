@@ -159,7 +159,7 @@ const Sweet = () => {
                   <td>
                     <Center>
                       <Flex gap={8}>
-                        <Link to={``}>
+                        <Link to={`/edit/sweettreat/${el.pizzaId}`}>
                           <img src={edit} alt="edit icon" />
                         </Link>
                         <Link onClick={() => handleDelete(el.pizzaId)}>

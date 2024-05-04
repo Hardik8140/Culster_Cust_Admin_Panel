@@ -45,7 +45,7 @@ export const SaladToppings = () => {
             </Text>
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {saladtoppings.map(({ title }, ind) => (
+            {saladtoppings.map((item, ind) => (
               <Flex
                 key={ind}
                 justifyContent={"space-between"}
@@ -57,19 +57,19 @@ export const SaladToppings = () => {
                   <Box>
                     <label className={style.customCheckbox}>
                       <input
-                        name={title}
+                        name={item}
                         type="checkbox"
                         className="checkbox_saladtoppings"
-                        id={`${title}_checkbox_panner`}
+                        id={`${item}_checkbox_panner`}
                       />
                       <span className={style.checkmark}></span>
                     </label>
                   </Box>
                   <label
                     style={{ cursor: "pointer" }}
-                    htmlFor={`${title}_checkbox_panner`}
+                    htmlFor={`${item}_checkbox_panner`}
                   >
-                    {title}
+                    {values[item]}
                   </label>
                 </Flex>
               </Flex>

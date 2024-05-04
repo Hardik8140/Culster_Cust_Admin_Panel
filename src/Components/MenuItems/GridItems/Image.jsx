@@ -7,7 +7,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { Upload } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { uploadImage } from "../../../Redux/MenuItems/action";
 
@@ -15,12 +15,16 @@ export const Image = ({
   itemValue,
   categoryId = "00000",
   name = "unknown",
+  handleImageName,
 }) => {
   const inputRef = useRef();
   const [imagePrev, setImagePrev] = useState(itemValue || "");
   const binRef = useRef("");
   const dispatch = useDispatch();
   const toast = useToast();
+  useEffect(() => {
+    setImagePrev(itemValue);
+  }, [itemValue]);
   const handleFileChange = (event) => {
     const fileObj = event.target.files[0];
     if (!fileObj) {
@@ -28,7 +32,7 @@ export const Image = ({
     }
     const imageLocation = URL.createObjectURL(fileObj);
     setImagePrev(imageLocation);
-
+    handleImageName(fileObj.name);
     const reader = new FileReader();
     reader.readAsDataURL(fileObj);
     reader.onload = () => {

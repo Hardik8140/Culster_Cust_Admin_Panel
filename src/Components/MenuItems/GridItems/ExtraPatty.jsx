@@ -11,14 +11,25 @@ import {
 import { dollar } from "../../../assets";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
+import { useEffect, useState } from "react";
 const patty = {
   11: "Cripy Chiken",
   12: "Tandoori Paneer",
   13: "Original Burger Patty",
 };
-export const ExtraPatty = ({ values = {} }) => {
+export const ExtraPatty = ({ values = {}, itemValue = [] }) => {
   const [checked, handleChange] = useCheckbox(false);
-
+  useEffect(() => {
+    if (itemValue.length > 0 && Object.keys(values).length > 0) {
+      const main_checkbox = document.querySelector("#checkbox_patty");
+      main_checkbox.checked = true;
+      handleChange();
+      for (const id of itemValue) {
+        const checkbox = document.querySelector(`#checkbox_patty_${id}`);
+        checkbox.checked = true;
+      }
+    }
+  }, [itemValue]);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -62,22 +73,22 @@ export const ExtraPatty = ({ values = {} }) => {
                   <Box>
                     <label className={style.customCheckbox}>
                       <input
-                        name={values[key]}
+                        name={key}
                         type="checkbox"
                         className="checkbox_patty"
-                        id={`${key}_checkbox_patty`}
+                        id={`checkbox_patty_${key}`}
                       />
                       <span className={style.checkmark}></span>
                     </label>
                   </Box>
                   <label
-                    htmlFor={`${key}_checkbox_patty`}
+                    htmlFor={`checkbox_patty_${key}`}
                     style={{ cursor: "pointer" }}
                   >
                     {values[key]}
                   </label>
                 </Flex>
-                <Box justifySelf={"flex-end"}>
+                {/* <Box justifySelf={"flex-end"}>
                   <InputGroup size={"sm"}>
                     <InputLeftAddon
                       borderRadius={"10px 0 0 10px"}
@@ -90,10 +101,10 @@ export const ExtraPatty = ({ values = {} }) => {
                       type="number"
                       w={"auto"}
                       placeholder="price"
-                      className={`price_patty`}
+                      className={`price_patty_${key}`}
                     />
                   </InputGroup>
-                </Box>
+                </Box> */}
               </Flex>
             ))}
           </Box>
