@@ -287,3 +287,164 @@ export const updateSides =
       dispatch({ type: ERROR, payload: error.message });
     }
   };
+
+// sweet Treat action
+export const addNewSweetTreat =
+  (sweetTreatData, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.post(`${backendAPI}admin/add/item`, sweetTreatData);
+      res = await res.data;
+      if (res.success) {
+        dispatch({ type: CLEANUP });
+        handleNavigate("New Sweet Treat added successfully!");
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
+    }
+  };
+
+export const updateSweetTreat =
+  (sweetTreatData, sweetTreatId, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.post(
+        `${backendAPI}admin/updateitem?itemId=${sweetTreatId}`,
+        sweetTreatData
+      );
+      res = await res.data;
+      if (res.success) {
+        handleNavigate("Sweet Treat updated successfully!");
+        dispatch({ type: CLEANUP });
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
+    }
+  };
+
+// dippingsauces action
+
+export const addNewDippingSauces =
+  (dippingSauceData, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.post(
+        `${backendAPI}admin/add/item`,
+        dippingSauceData
+      );
+      res = await res.data;
+      if (res.success) {
+        dispatch({ type: CLEANUP });
+        handleNavigate("New Dipping Sauces added successfully!");
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
+    }
+  };
+
+export const updateDippingSauces =
+  (dippingSauceData, dippingSaucesId, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.post(
+        `${backendAPI}admin/updateitem?itemId=${dippingSaucesId}`,
+        dippingSauceData
+      );
+      res = await res.data;
+      if (res.success) {
+        handleNavigate("Dipping Sauces updated successfully!");
+        dispatch({ type: CLEANUP });
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
+    }
+  };
+
+// thick shakes action
+
+export const addNewThickShakes =
+  (thickShakeData, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.post(`${backendAPI}admin/add/item`, thickShakeData);
+      res = await res.data;
+      if (res.success) {
+        dispatch({ type: CLEANUP });
+        handleNavigate("New Thick Shake added successfully!");
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
+    }
+  };
+
+export const updateThickShakes =
+  (ThickShakeData, ThickShakeId, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.post(
+        `${backendAPI}admin/updateitem?itemId=${ThickShakeId}`,
+        ThickShakeData
+      );
+      res = await res.data;
+      if (res.success) {
+        handleNavigate("Thick Shakes updated successfully!");
+        dispatch({ type: CLEANUP });
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
+    }
+  };
+
+// drinks can pop action
+
+export const addNewDrinksCanPop =
+  (drinksCanPopData, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.post(
+        `${backendAPI}admin/add/item`,
+        drinksCanPopData
+      );
+      res = await res.data;
+      if (res.success) {
+        dispatch({ type: CLEANUP });
+        handleNavigate("New Drinks Can Pop added successfully!");
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
+    }
+  };
+
+export const updateDrinksCanPop =
+  (drinksCanPopData, DrinkscanId, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.post(
+        `${backendAPI}admin/updateitem?itemId=${DrinkscanId}`,
+        drinksCanPopData
+      );
+      res = await res.data;
+      if (res.success) {
+        handleNavigate("Drinks Can Pop updated successfully!");
+        dispatch({ type: CLEANUP });
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
+    }
+  };

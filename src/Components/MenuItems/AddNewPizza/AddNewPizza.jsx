@@ -89,9 +89,7 @@ export const AddNewPizza = () => {
   }, [pizzaParam]);
 
   useEffect(() => {
-    if (items === undefined || Object.keys(items).length === 0) {
-      dispatch(get_Ingrediants(newPizzaId));
-    }
+    dispatch(get_Ingrediants(newPizzaId));
   }, []);
   useEffect(() => {
     if (pizzaData["pizzaId"]) {

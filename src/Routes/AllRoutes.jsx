@@ -103,6 +103,24 @@ const AllRoutes = () => {
         element={<AddCheesyFun />}
       />
       <Route path="/edit/sides/:sidesParam" element={<AddSides />} />
+      <Route path="/edit/salads/:saladsParam" element={<AddSalads />} />
+      <Route
+        path="/edit/sweettreat/:sweetTreatParam"
+        element={<AddSweetTreat />}
+      />
+      <Route
+        path="/edit/dippingsauces/:dippingSaucesParam"
+        element={<AddDippingSauces />}
+      />
+      <Route
+        path="/edit/thickshakes/:thickShakesParam"
+        element={<AddCultureCrustSpecialThinkShakes />}
+      />
+      <Route
+        path="/edit/drinkscan/:drinkscanParam"
+        element={<AddDrinksCanPop />}
+      />
+      <Route path="/edit/drinks/:drinksParam" element={<AddDrinks />} />
 
       {/* ExtraItems */}
       <Route path="/toppings" element={<ShowToppings />} />

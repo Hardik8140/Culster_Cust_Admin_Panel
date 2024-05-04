@@ -1,10 +1,18 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Grid, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
 import { Detail } from "../GridItems/Detail";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { SweetTreatId } from "../../../data";
+import {
+  addNewSweetTreat,
+  updateSweetTreat,
+} from "../../../Redux/MenuItems/action";
 
 const links = [
   {
@@ -14,16 +22,65 @@ const links = [
   },
   {
     title: "Sweet Treat",
-    link: "#",
+    link: "/sweettreat!",
     isCurrent: false,
   },
   {
-    title: "Add Sweat Treat",
+    title: "Add New Sweat Treat",
     link: "#",
     isCurrent: true,
   },
 ];
 export const AddSweetTreat = () => {
+  const [link, setLink] = useState(links);
+  const toast = useToast();
+  const { sweetTreatParam } = useParams();
+  const [imgName, setImgName] = useState("");
+  const [sweetTreatData, setSweetTreatData] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading, error, items } = useSelector(
+    (store) => store.menuItemsReducer
+  );
+  const { sweet_treet } = useSelector(
+    (store) => store.get_all_menuitem_reducer
+  );
+
+  useEffect(() => {
+    // dispatch(get_Ingrediants(SweetTreatId));
+  }, []);
+  useEffect(() => {
+    if (sweetTreatParam && sweet_treet.length > 0) {
+      const current = sweet_treet.filter(
+        (item) => item.pizzaId === +sweetTreatParam
+      );
+      setSweetTreatData(current[0]);
+      let updated = link.map((item) => {
+        if (item.title === "Add New Sweet Treat") {
+          return {
+            title: "Edit Sweet Treat",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
+    }
+  }, [sweetTreatParam]);
+  const handleImageName = (name) => {
+    setImgName(name);
+  };
+
+  const handleNavigate = (msg) => {
+    toast({
+      title: msg,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/sweettreat!");
+  };
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -31,39 +88,68 @@ export const AddSweetTreat = () => {
     const price = form.querySelector("#price");
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
-    const sweattreat = form.querySelector("#checkbox_sweattreat");
-    const finalsweattreat = [];
+    // const sweattreat = form.querySelector("#checkbox_sweattreat");
+    // const finalsweattreat = [];
 
-    if (sweattreat.checked) {
-      // get all values of sweattreat
-      const toppingsCheckbox = form.querySelectorAll(".checkbox_sweattreat");
-      for (let i = 0; i < toppingsCheckbox.length; i++) {
-        if (toppingsCheckbox[i].checked) {
-          finalsweattreat.push(toppingsCheckbox[i].name);
-        }
-      }
+    // if (sweattreat.checked) {
+    //   // get all values of sweattreat
+    //   const toppingsCheckbox = form.querySelectorAll(".checkbox_sweattreat");
+    //   for (let i = 0; i < toppingsCheckbox.length; i++) {
+    //     if (toppingsCheckbox[i].checked) {
+    //       finalsweattreat.push(toppingsCheckbox[i].name);
+    //     }
+    //   }
+    // }
+
+    if (!name.value) {
+      handleError("Please enter name");
+      return;
+    }
+    if (!description.value) {
+      handleError("Please enter description");
+      return;
+    }
+
+    if (!price.value) {
+      handleError("Please enter price");
+      return;
     }
     const data = {
-      name: name.value,
-      price: +price.value,
+      pizzaName: name.value,
       description: description.value,
-      image: image ? image.src : "",
-      sweattreat: finalsweattreat,
+      categoryId: SweetTreatId,
+      imageName: SweetTreatId + "/" + imgName,
+      items: [],
+      pizzaSize: { Medium: +price.value },
     };
 
+    if (sweetTreatData["pizzaId"]) {
+      dispatch(updateSweetTreat(data, SweetTreatId, handleNavigate));
+    } else {
+      dispatch(addNewSweetTreat(data, handleNavigate));
+    }
     console.log(data);
   };
   return (
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
-              <Image />
+              <Detail
+                itemValue={{
+                  name: sweetTreatData?.name,
+                  description: sweetTreatData?.description,
+                }}
+              />
+              <Image
+                handleImageName={handleImageName}
+                categoryId={SweetTreatId}
+                itemValue={sweetTreatData?.imageUrl}
+              />
             </Grid>
             <FormButtons />
           </form>
