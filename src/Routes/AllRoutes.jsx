@@ -98,6 +98,11 @@ const AllRoutes = () => {
         element={<HouseOfWings />}
       />
       <Route path="/edit/nanza/:nanzaParam" element={<AddNanza />} />
+      <Route
+        path="/edit/cheesyfun/:cheesyfunParam"
+        element={<AddCheesyFun />}
+      />
+      <Route path="/edit/sides/:sidesParam" element={<AddSides />} />
 
       {/* ExtraItems */}
       <Route path="/toppings" element={<ShowToppings />} />

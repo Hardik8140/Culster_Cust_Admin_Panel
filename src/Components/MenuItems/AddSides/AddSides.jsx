@@ -5,10 +5,11 @@ import { Image } from "../GridItems/Image";
 import { Detail } from "../GridItems/Detail";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SidesId } from "../../../data";
-import { useDispatch } from "react-redux";
-import { addNewSides } from "../../../Redux/MenuItems/action";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewSides, updateSides } from "../../../Redux/MenuItems/action";
+import { useParams } from "react-router-dom";
 
 const links = [
   {
@@ -18,11 +19,11 @@ const links = [
   },
   {
     title: "Sides",
-    link: "#",
+    link: "/sides",
     isCurrent: false,
   },
   {
-    title: "Add Sides",
+    title: "Add New Sides",
     link: "#",
     isCurrent: true,
   },
@@ -30,7 +31,12 @@ const links = [
 export const AddSides = () => {
   const [imgName, setImgName] = useState();
   const dispatch = useDispatch();
+  const { sidesParam } = useParams();
   const toast = useToast();
+  const [link, setLink] = useState(links);
+  const [sidesData, setSideData] = useState({});
+  const { sides } = useSelector((store) => store.get_all_menuitem_reducer);
+
   const handleNavigate = (msg) => {
     toast({
       title: msg,
@@ -43,6 +49,23 @@ export const AddSides = () => {
   const handleImageName = (event) => {
     setImgName(event.target.value);
   };
+  useEffect(() => {
+    if (sidesParam) {
+      const current = sides.filter((item) => item.pizzaId === +sidesParam);
+      setSideData(current[0]);
+      let updated = link.map((item) => {
+        if (item.title === "Add New Sides") {
+          return {
+            title: "Edit Sides",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
+    }
+  }, [sidesParam]);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -72,10 +95,12 @@ export const AddSides = () => {
       items: [],
       pizzaSize: { Medium: +price.value },
     };
-    console.log(data);
-    dispatch(addNewSides(data, handleNavigate));
+    if (sidesData["pizzaId"]) {
+      dispatch(updateSides(data, sidesData["pizzaId"], handleNavigate));
+    } else {
+      dispatch(addNewSides(data, handleNavigate));
+    }
   };
-
   return (
     <Layout>
       <Box>
@@ -85,11 +110,17 @@ export const AddSides = () => {
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
+              <Detail
+                itemValue={{
+                  name: sidesData?.name,
+                  description: sidesData?.description,
+                }}
+              />
               <Image
                 handleImageName={handleImageName}
                 name={imgName}
                 categoryId={SidesId}
+                itemValue={sidesData?.imageUrl}
               />
             </Grid>
             <FormButtons />

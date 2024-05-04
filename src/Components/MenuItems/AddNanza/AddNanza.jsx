@@ -41,6 +41,8 @@ export const AddNanza = () => {
   const [link, setLink] = useState(links);
   const [nanzaData, setNanzaData] = useState({});
   const [nanzaItem, setNanzaItem] = useState([]);
+  const [imgName, setImgName] = useState("");
+
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
@@ -202,6 +204,9 @@ export const AddNanza = () => {
     }
   };
 
+  const handleImageName = (name) => {
+    setImageName(name);
+  };
   return (
     <Layout>
       <Box>
@@ -217,7 +222,12 @@ export const AddNanza = () => {
                   description: nanzaData?.description,
                 }}
               />
-              <Image itemValue={nanzaData?.imageUrl} />
+              <Image
+                itemValue={nanzaData?.imageUrl}
+                categoryId={NanzaId}
+                name={imgName}
+                handleImageName={handleImageName}
+              />
               <GridItem colSpan={2}>
                 <PaneerChicken
                   values={items?.items?.["Panner/Chicken"]}
