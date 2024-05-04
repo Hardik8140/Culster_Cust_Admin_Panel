@@ -1,10 +1,14 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Grid, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
 import { Detail } from "../GridItems/Detail";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
+import { useState } from "react";
+import { SidesId } from "../../../data";
+import { useDispatch } from "react-redux";
+import { addNewSides } from "../../../Redux/MenuItems/action";
 
 const links = [
   {
@@ -24,6 +28,21 @@ const links = [
   },
 ];
 export const AddSides = () => {
+  const [imgName, setImgName] = useState();
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const handleNavigate = (msg) => {
+    toast({
+      title: msg,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/sides");
+  };
+  const handleImageName = (event) => {
+    setImgName(event.target.value);
+  };
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -32,15 +51,31 @@ export const AddSides = () => {
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
 
-    const data = {
-      name: name.value,
-      price: +price.value,
-      description: description.value,
-      image: image ? image.src : "",
-    };
+    if (!name.value) {
+      handleError("Please enter name");
+      return;
+    }
+    if (!description.value) {
+      handleError("Please enter description");
+      return;
+    }
 
+    if (!price.value) {
+      handleError("Please enter price");
+      return;
+    }
+    let data = {
+      pizzaName: name.value,
+      description: description.value,
+      categoryId: SidesId,
+      imageName: SidesId + "/" + imgName,
+      items: [],
+      pizzaSize: { Medium: +price.value },
+    };
     console.log(data);
+    dispatch(addNewSides(data, handleNavigate));
   };
+
   return (
     <Layout>
       <Box>
@@ -51,7 +86,11 @@ export const AddSides = () => {
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
               <Detail />
-              <Image />
+              <Image
+                handleImageName={handleImageName}
+                name={imgName}
+                categoryId={SidesId}
+              />
             </Grid>
             <FormButtons />
           </form>

@@ -10,16 +10,20 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { dollar } from "../../../assets";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export const Detail = ({ itemValue }) => {
-  const [state, setState] = useState(itemValue);
+export const Detail = ({ itemValue = { name: "", description: "" } }) => {
+  const [state, setState] = useState({ ...itemValue });
   const handleChange = (event) => {
     setState({
-      ...state,
       [event.target.id]: event.target.value,
+      ...state,
     });
   };
+  useEffect(() => {
+    setState(itemValue);
+  }, [itemValue]);
+
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}

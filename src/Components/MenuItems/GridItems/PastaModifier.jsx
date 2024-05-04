@@ -83,7 +83,7 @@ export const PastaModifier = () => {
                     {title}
                   </label>
                 </Flex>
-                {isPrice && (
+                {/* {isPrice && (
                   <Box justifySelf={"flex-end"}>
                     <InputGroup pastamodifier={"sm"}>
                       <InputLeftAddon
@@ -102,7 +102,7 @@ export const PastaModifier = () => {
                       />
                     </InputGroup>
                   </Box>
-                )}
+                )} */}
               </Flex>
             ))}
           </Box>

@@ -11,6 +11,7 @@ import {
 import { dollar } from "../../../assets";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
+import { useEffect } from "react";
 const serving = [
   {
     title: "Sauce on wings",
@@ -26,8 +27,19 @@ const serving = [
     isPrice: true,
   },
 ];
-export const TypeOfServings = () => {
+export const TypeOfServings = ({ values = {}, itemValue = [] }) => {
   const [checked, handleChange] = useCheckbox(false);
+  useEffect(() => {
+    if (itemValue.length > 0 && Object.keys(values).length > 0) {
+      const main_checkbox = document.querySelector("#checkbox_servings");
+      main_checkbox.checked = true;
+      handleChange();
+      for (const id of itemValue) {
+        const checkbox = document.querySelector(`#checkbox_servings_${id}`);
+        checkbox.checked = true;
+      }
+    }
+  }, [itemValue]);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -54,40 +66,41 @@ export const TypeOfServings = () => {
         <Box>
           <Flex my={2} justifyContent={"space-between"}>
             <Text color={"brand.grey"}>Select Servings</Text>
-            <Text color={"brand.grey"} textAlign={"end"}>
+            {/* <Text color={"brand.grey"} textAlign={"end"}>
               Add Price
-            </Text>
+            </Text> */}
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {serving.map(({ title, isPrice }, ind) => (
-              <Flex
-                key={ind}
-                justifyContent={"space-between"}
-                gap={2}
-                alignItems={"center"}
-                width={"100%"}
-                my={4}
-              >
-                <Flex minW={"50%"}>
-                  <Box>
-                    <label className={style.customCheckbox}>
-                      <input
-                        name={title}
-                        type="checkbox"
-                        id={`${title}_checkbox_servings`}
-                        className={`checkbox_servings_price_${isPrice}`}
-                      />
-                      <span className={style.checkmark}></span>
+            {Object.keys(values).length > 0 &&
+              Object.keys(values).map((item, ind) => (
+                <Flex
+                  key={ind}
+                  justifyContent={"space-between"}
+                  gap={2}
+                  alignItems={"center"}
+                  width={"100%"}
+                  my={4}
+                >
+                  <Flex minW={"50%"}>
+                    <Box>
+                      <label className={style.customCheckbox}>
+                        <input
+                          name={item}
+                          type="checkbox"
+                          id={`checkbox_servings_${item}`}
+                          className={`checkbox_type_of_servings`}
+                        />
+                        <span className={style.checkmark}></span>
+                      </label>
+                    </Box>
+                    <label
+                      htmlFor={`checkbox_servings_${item}`}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {values[item]}
                     </label>
-                  </Box>
-                  <label
-                    htmlFor={`${title}_checkbox_servings`}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {title}
-                  </label>
-                </Flex>
-                {isPrice && (
+                  </Flex>
+                  {/* {isPrice && (
                   <Box justifySelf={"flex-end"}>
                     <InputGroup servings={"sm"}>
                       <InputLeftAddon
@@ -106,9 +119,9 @@ export const TypeOfServings = () => {
                       />
                     </InputGroup>
                   </Box>
-                )}
-              </Flex>
-            ))}
+                )} */}
+                </Flex>
+              ))}
           </Box>
         </Box>
       </Stack>

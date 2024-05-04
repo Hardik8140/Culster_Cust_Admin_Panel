@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { get_Ingrediants } from "../../../Redux/MenuItems/action";
 import { CLEANUP } from "../../../Redux/actionType";
+import { pastaId } from "../../../data";
 
 const links = [
   {
@@ -37,7 +38,7 @@ export const AddPastas = () => {
   );
   useEffect(() => {
     if (items === undefined || Object.keys(items).length === 0) {
-      dispatch(get_Ingrediants());
+      dispatch(get_Ingrediants(pastaId));
     }
   }, []);
 
