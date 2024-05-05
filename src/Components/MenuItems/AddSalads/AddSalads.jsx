@@ -7,10 +7,15 @@ import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
 import { SaladToppings } from "../GridItems/SaladToppings";
 import { useEffect, useState } from "react";
-import { get_Ingrediants } from "../../../Redux/MenuItems/action";
+import {
+  addNewSalads,
+  get_Ingrediants,
+  updateSalads,
+} from "../../../Redux/MenuItems/action";
 import { useDispatch, useSelector } from "react-redux";
-import { SaladId } from "../../../data";
-import { useNavigate } from "react-router-dom";
+import { SaladId, SaladToppingsId } from "../../../data";
+import { useNavigate, useParams } from "react-router-dom";
+import { CLEANUP } from "../../../Redux/actionType";
 
 const links = [
   {
@@ -32,16 +37,92 @@ const links = [
 export const AddSalads = () => {
   const [link, setLink] = useState(links);
   const toast = useToast();
+  const { saladParam } = useParams();
   const [imgName, setImgName] = useState("");
   const [saladData, setSaladData] = useState({});
+  const [saladItem, setSaladItem] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
+  const { salads } = useSelector((store) => store.get_all_menuitem_reducer);
+
   useEffect(() => {
     dispatch(get_Ingrediants(SaladId));
   }, []);
+
+  useEffect(() => {
+    if (saladParam && salads.length > 0) {
+      let current = salads.filter((item) => item.pizzaId === +saladParam);
+      setSaladData(current[0]);
+      let updated = link.map((item) => {
+        if (item.title === "Add Salads") {
+          return {
+            title: "Edit Salads",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
+      current = current[0];
+      if (current["pizzaId"]) {
+        let extra_items = current["extraItems"];
+        let salad_topping_item = [];
+        for (const extra of extra_items) {
+          switch (extra["extraItem"]["extraItemId"]) {
+            case SaladToppingsId:
+              salad_topping_item.push(extra["extraItemId"]);
+              break;
+            default:
+              break;
+          }
+        }
+
+        setSaladItem({
+          salad_toppings: salad_topping_item,
+        });
+      } else {
+        navigate("/salads");
+      }
+    }
+  }, [saladParam]);
+  useEffect(() => {
+    if (!isLoading && error) {
+      toast({
+        title: error,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    return () => {
+      dispatch({ type: CLEANUP });
+    };
+  }, [isLoading, error, toast]);
+
+  const handleNavigate = (msg) => {
+    toast({
+      title: msg,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/salads");
+  };
+  const handleImageName = (name) => {
+    setImgName(name);
+  };
+  const handleError = (error) => {
+    toast({
+      title: error,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  };
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -52,24 +133,43 @@ export const AddSalads = () => {
     const saladtoppings = form.querySelector("#checkbox_saladtoppings");
     const finalSaladToppings = [];
 
+    if (!name.value) {
+      handleError("Please enter name");
+      return;
+    }
+    if (!description.value) {
+      handleError("Please enter description");
+      return;
+    }
+
+    if (!price.value) {
+      handleError("Please enter price");
+      return;
+    }
+    let data = {
+      items: [],
+      pizzaName: name.value,
+      description: description.value,
+      categoryId: SaladId,
+      imageName: SaladId + "/" + imgName,
+      pizzaSize: { Medium: +price.value },
+    };
     if (saladtoppings.checked) {
       // get all values of saladtoppings
       const toppingsCheckbox = form.querySelectorAll(".checkbox_saladtoppings");
       for (let i = 0; i < toppingsCheckbox.length; i++) {
         if (toppingsCheckbox[i].checked) {
-          finalSaladToppings.push(toppingsCheckbox[i].name);
+          finalSaladToppings.push(+toppingsCheckbox[i].name);
         }
       }
     }
-    const data = {
-      name: name.value,
-      price: +price.value,
-      description: description.value,
-      image: image ? image.src : "",
-      saladtoppings: finalSaladToppings,
-    };
-
     console.log(data);
+
+    if (saladParam) {
+      dispatch(updateSalads(data, saladData["pizzaId"], handleNavigate));
+    } else {
+      dispatch(addNewSalads(data, handleNavigate));
+    }
   };
   return (
     <Layout>
@@ -80,9 +180,20 @@ export const AddSalads = () => {
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
-              <Image />
-              <GridItem colSpan={2}>{/* <SaladToppings /> */}</GridItem>
+              <Detail
+                itemValues={{
+                  name: saladData?.name,
+                  description: saladData?.description,
+                }}
+              />
+              <Image
+                handleImageName={handleImageName}
+                categoryId={SaladId}
+                name={imgName}
+              />
+              <GridItem colSpan={2}>
+                <SaladToppings itemValues={saladItem?.salad_toppings} />
+              </GridItem>
             </Grid>
             <FormButtons />
           </form>

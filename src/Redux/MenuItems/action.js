@@ -483,3 +483,41 @@ export const updateDrinksCanPop =
       dispatch({ type: ERROR, payload: error.message });
     }
   };
+
+// salads action
+
+export const addNewSalads = (saladData, handleNavigate) => async (dispatch) => {
+  dispatch({ type: LOADING });
+  try {
+    let res = await axios.post(`${backendAPI}admin/add/item`, saladData);
+    res = await res.data;
+    if (res.success) {
+      dispatch({ type: CLEANUP });
+      handleNavigate("New Salads added successfully!");
+    } else {
+      dispatch({ type: ERROR, payload: res.message });
+    }
+  } catch (error) {
+    dispatch({ type: ERROR, payload: error.message });
+  }
+};
+
+export const updateSalads =
+  (saladData, saladId, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.post(
+        `${backendAPI}admin/updateitem?itemId=${saladId}`,
+        saladData
+      );
+      res = await res.data;
+      if (res.success) {
+        handleNavigate("Salad updated successfully!");
+        dispatch({ type: CLEANUP });
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
+    }
+  };

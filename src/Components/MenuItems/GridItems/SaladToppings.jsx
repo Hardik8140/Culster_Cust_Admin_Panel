@@ -2,14 +2,10 @@ import { Box, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
 
-const saladtoppings = [
-  {
-    title: "Paneer",
-  },
-  {
-    title: "Chiken",
-  },
-];
+const saladtoppings = {
+  11: "Paneer",
+  12: "Chiken",
+};
 
 export const SaladToppings = () => {
   const [checked, handleChange] = useCheckbox(false);
@@ -45,35 +41,36 @@ export const SaladToppings = () => {
             </Text>
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {saladtoppings.map((item, ind) => (
-              <Flex
-                key={ind}
-                justifyContent={"space-between"}
-                gap={2}
-                width={"100%"}
-                my={4}
-              >
-                <Flex minW={"50%"}>
-                  <Box>
-                    <label className={style.customCheckbox}>
-                      <input
-                        name={item}
-                        type="checkbox"
-                        className="checkbox_saladtoppings"
-                        id={`${item}_checkbox_panner`}
-                      />
-                      <span className={style.checkmark}></span>
+            {Object.keys(saladtoppings).length > 0 &&
+              Object.keys(saladtoppings).map((item, ind) => (
+                <Flex
+                  key={ind}
+                  justifyContent={"space-between"}
+                  gap={2}
+                  width={"100%"}
+                  my={4}
+                >
+                  <Flex minW={"50%"}>
+                    <Box>
+                      <label className={style.customCheckbox}>
+                        <input
+                          name={item}
+                          type="checkbox"
+                          className="checkbox_saladtoppings"
+                          id={`${item}_checkbox_panner`}
+                        />
+                        <span className={style.checkmark}></span>
+                      </label>
+                    </Box>
+                    <label
+                      style={{ cursor: "pointer" }}
+                      htmlFor={`${item}_checkbox_panner`}
+                    >
+                      {saladtoppings[item]}
                     </label>
-                  </Box>
-                  <label
-                    style={{ cursor: "pointer" }}
-                    htmlFor={`${item}_checkbox_panner`}
-                  >
-                    {values[item]}
-                  </label>
+                  </Flex>
                 </Flex>
-              </Flex>
-            ))}
+              ))}
           </Box>
         </Box>
       </Stack>
