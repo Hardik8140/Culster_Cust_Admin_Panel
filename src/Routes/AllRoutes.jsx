@@ -46,6 +46,7 @@ import { AddNewOffer } from "../Components/Offers/AddNewOffer.jsx";
 import ShowToppings from "../Components/ExtraItems/ShowToppings.jsx";
 import ShowDizzleitUp from "../Components/ExtraItems/ShowDizzleitUp.jsx";
 import CustomerSupport from "../Components/Customer Support/CustomerSupport.jsx";
+import { AddDeliveryBoy } from "../Components/Delivery Boy/AddDeliveryBoy.jsx";
 
 const AllRoutes = () => {
   return (
@@ -104,6 +105,7 @@ const AllRoutes = () => {
       <Route path="/offers/add" element={<AddNewOffer />} />
 
       <Route path="/boy" element={<DeliveryBoy />} />
+      <Route path="/adddelivery" element={<AddDeliveryBoy />} />
       <Route path="/orders" element={<Orders />} />
       <Route path="/orders/:id" element={<OrderDetails />} />
       <Route path="/time" element={<TImeManage />} />

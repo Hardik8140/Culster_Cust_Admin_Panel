@@ -111,7 +111,8 @@ const SidebarMenu = () => {
             button: ({ active, isHovered }) => ({
               borderRadius: "10px",
               color: active ? "white" : "#424242",
-              backgroundColor: active || isHovered ? "#D60024" : "white",
+              backgroundColor:
+                active || isHovered ? "#D60024 !important" : "transparent",
             }),
             icon: ({ active }) => ({
               color: active ? "white" : "#D60024",
@@ -307,6 +308,8 @@ const SidebarMenu = () => {
     </DIV>
   );
 };
+export default SidebarMenu;
+
 const DIV = styled.div`
   .ps-sidebar-container::-webkit-scrollbar {
     display: none;
@@ -316,5 +319,3 @@ const DIV = styled.div`
     scrollbar-width: none;
   }
 `;
-
-export default SidebarMenu;

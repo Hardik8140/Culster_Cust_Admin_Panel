@@ -57,6 +57,7 @@ export const Toppings = () => {
     const form = e.target;
     const price = form.querySelector("#price");
     const top = list.map((item) => item.name);
+    console.log(top);
 
     const obj = {
       toppings: top,

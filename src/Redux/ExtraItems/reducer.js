@@ -47,7 +47,7 @@ export const reducer = (state = initalState, { type, payload }) => {
         ...state,
         isLoading: false,
         error: "",
-        toppings: payload,
+        toppings: state.toppings.filter((topping) => topping.id !== payload),
       };
     case POSTED_TOPPINGS:
       return {

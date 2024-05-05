@@ -357,7 +357,7 @@ export const AddNewPizza = () => {
       };
     }
     console.log(data);
-    // dispatch(addNewPizza(data, handleNavigate));
+    dispatch(addNewPizza(data, handleNavigate));
   };
 
   return (

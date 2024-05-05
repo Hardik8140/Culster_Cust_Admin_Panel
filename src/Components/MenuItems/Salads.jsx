@@ -231,19 +231,19 @@ const PaginationBox = styled.div`
     gap: 10px;
     padding: 0;
     margin: 0;
+    background-color: white;
+    border-radius: 10px;
   }
 
   .pagination__item {
     margin-right: 10px;
     font-size: 16px;
-    border: 1px solid red;
     font-weight: bold;
   }
 
   .pagination__link {
     cursor: pointer;
     padding: 5px 10px;
-    border: 1px solid red;
     border-radius: 5px;
     background-color: #fff;
     color: #333;
@@ -253,9 +253,9 @@ const PaginationBox = styled.div`
   .pagination__link--active {
     background-color: red;
     padding: 0px 8px;
+    border-radius: 8px;
     border: 1px solid red;
     color: #fff;
-    border-color: #007bff;
   }
 
   .pagination__link--disabled {
