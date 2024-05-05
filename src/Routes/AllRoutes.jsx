@@ -101,6 +101,7 @@ const AllRoutes = () => {
         element={<HouseOfWings />}
       />
       <Route path="/edit/pasta/:pastaParam" element={<AddPastas />} />
+      <Route path="/edit/salads/:saladParam" element={<AddSalads />} />
       <Route path="/edit/nanza/:nanzaParam" element={<AddNanza />} />
       <Route
         path="/edit/cheesyfun/:cheesyfunParam"
