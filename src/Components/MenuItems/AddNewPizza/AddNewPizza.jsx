@@ -71,7 +71,7 @@ export const AddNewPizza = () => {
   };
   const { pizza } = useSelector((store) => store.get_all_menuitem_reducer);
   useEffect(() => {
-    if (pizzaParam) {
+    if (pizzaParam && pizza.length > 0) {
       const currentPizza = pizza.filter((item) => item.pizzaId === +pizzaParam);
       setPizzaData(currentPizza[0]);
       let updated = link.map((item) => {

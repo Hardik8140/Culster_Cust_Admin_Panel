@@ -210,7 +210,7 @@ export const AddNanza = () => {
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
