@@ -19,12 +19,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { linkStyle } from "../../data";
 import { useDispatch, useSelector } from "react-redux";
 import { get_All_Orders } from "../../Redux/Orders/action";
+import ReactPaginate from "react-paginate";
 
 const Orders = () => {
   const [search, setSearch] = useState("");
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
+  const [currentPage, setCurrentPage] = useState(0);
+  const [orderStatus, setOrderStatuts] = useState("");
 
   const { loading, error, orders } = useSelector((store) => store.orderReducer);
 
@@ -44,9 +47,24 @@ const Orders = () => {
     return formattedDate;
   };
 
-  const handleDetails = (id) => {
+  const handleDetails = (id, event) => {
+    event.preventDefault();
     navigate(`/orders/${id}`);
+    console.log("Order ID:", id);
   };
+
+  const handlePageChange = ({ selected: selectedPage }) => {
+    setCurrentPage(selectedPage);
+  };
+
+  const itemsPerPage = 10;
+  const offset = currentPage * itemsPerPage;
+  const pageCount = Math.ceil(orders.length / itemsPerPage);
+  const filteredOrders = orderStatus
+    ? orders.filter((order) => order.status === orderStatus)
+    : orders;
+  const currentPageData = filteredOrders.slice(offset, offset + itemsPerPage);
+
   return (
     <Layout>
       {/* <ActiveOrders /> */}
@@ -68,8 +86,16 @@ const Orders = () => {
               w="90%"
             />
           </InputGroup>
-          <Select w="50%">
+          <Select
+            w="50%"
+            onChange={(e) => setOrderStatuts(e.target.value)}
+            cursor={"pointer"}
+            bg={"white"}
+          >
             <option value="">All Orders</option>
+            <option value="ACCEPTED">Accepted</option>
+            <option value="PENDING">Pending</option>
+            <option value="PICKUP">Pickup</option>
           </Select>
         </Box>
 
@@ -105,8 +131,8 @@ const Orders = () => {
               </tr>
             </thead>
             <tbody>
-              {Array.isArray(orders) &&
-                orders.map((el, i) => (
+              {Array.isArray(currentPageData) &&
+                currentPageData.map((el, i) => (
                   <tr key={i}>
                     <td>{el.orderId}</td>
                     <td style={{ textWrap: "nowrap" }}>{el.customerName}</td>
@@ -117,7 +143,17 @@ const Orders = () => {
                     <td>{el.transferType}</td>
                     <td>
                       <Text
-                        bgColor={"brand.pending"}
+                        bgColor={
+                          el.status === "PENDING"
+                            ? "brand.pending"
+                            : el.status === "PICKEDUP"
+                            ? "brand.pending"
+                            : el.status === "ACCEPTED"
+                            ? "brand.add"
+                            : el.status === "REJECTED"
+                            ? "brand.primary"
+                            : "transparent"
+                        }
                         color={"white"}
                         borderRadius={"44px"}
                         p={"4px 10px"}
@@ -125,7 +161,8 @@ const Orders = () => {
                         fontWeight={"700"}
                         fontSize={"14px"}
                       >
-                        {el.status}
+                        {el.status.charAt(0).toUpperCase() +
+                          el.status.slice(1).toLowerCase()}
                       </Text>
                     </td>
                     <td>{formatDate(el.orderDate)}</td>
@@ -139,7 +176,7 @@ const Orders = () => {
                           variant={"simpleWhite"}
                           fontWeight={"500"}
                           bgColor={"brand.buttonbg"}
-                          onClick={() => handleDetails(el.orderId)}
+                          onClick={(event) => handleDetails(el.orderId, event)}
                         >
                           View Details
                         </Button>
@@ -151,6 +188,21 @@ const Orders = () => {
           </table>
         </DIV>
       </Stack>
+      <Box pr={10}>
+        <PaginationBox>
+          <ReactPaginate
+            previousLabel={"<"}
+            nextLabel={">"}
+            pageCount={Math.ceil(orders.length / itemsPerPage)}
+            onPageChange={handlePageChange}
+            containerClassName={"pagination"}
+            previousLinkClassName={"pagination__link"}
+            nextLinkClassName={"pagination__link"}
+            disabledClassName={"pagination__link--disabled"}
+            activeClassName={"pagination__link--active"}
+          />
+        </PaginationBox>
+      </Box>
     </Layout>
   );
 };
@@ -173,5 +225,50 @@ const DIV = styled.div`
 
   tbody > tr {
     background-color: #e9e9e9;
+  }
+`;
+
+const PaginationBox = styled.div`
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  margin-top: 20px;
+
+  .pagination {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  .pagination__item {
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .pagination__link {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+  }
+
+  .pagination__link--active {
+    background-color: red;
+    padding: 0px 8px;
+    border-radius: 8px;
+    border: 1px solid red;
+    color: #fff;
+  }
+
+  .pagination__link--disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 `;

@@ -17,16 +17,20 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchOutletTimeSlots,
   get_all_outlets,
+  saveOutletTimeSlots,
 } from "../../Redux/TIme Manage/action";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const TImeManage = () => {
   const [openingHour, setOpeningHour] = useState("");
   const [openingMinute, setOpeningMinute] = useState("");
   const [closingHour, setClosingHour] = useState("");
   const [closingMinute, setClosingMinute] = useState("");
+  const [isAllDayClose, setIsAllDayClose] = useState(false);
 
   const [selectedDay, setSelectedDay] = useState("");
+  const [editMode, setEditMode] = useState(false);
 
   const dispatch = useDispatch();
   const outlets = useSelector((store) => store.timeReducer.outlets);
@@ -39,6 +43,7 @@ const TImeManage = () => {
   const handleOutletChange = (e) => {
     let outletId = e.target.value;
     dispatch(fetchOutletTimeSlots(outletId));
+    Cookies.set("outletId", outletId);
   };
 
   useEffect(() => {
@@ -61,6 +66,33 @@ const TImeManage = () => {
       setClosingMinute("");
     }
   }, [outletOnId, selectedDay]);
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
+
+  const handleSave = () => {
+    const timeSlots = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+      (day, i) => ({
+        outletTimeId: i + 1,
+        weekDay: day,
+        isAllDayClose,
+        status: "open",
+        startTime: openingHour + ":" + openingMinute,
+        endTime: closingHour + ":" + closingMinute,
+      })
+    );
+
+    const requestData = {
+      outletId: Cookies.get("outletId"),
+      timeSlots: timeSlots,
+    };
+
+    // console.log(requestData);
+    // let id = ;
+
+    dispatch(saveOutletTimeSlots(requestData));
+  };
   return (
     <Layout>
       <Box p={2}>
@@ -97,20 +129,31 @@ const TImeManage = () => {
             <Text fontWeight="600" pb="10px">
               Restaurant Time
             </Text>
-            <Button
-              leftIcon={<CiEdit color="white" size="20px" />}
-              backgroundColor="brand.primary"
-              color="white"
-            >
-              Edit
-            </Button>
+            {editMode ? (
+              <Button
+                leftIcon={<CiEdit color="white" size="20px" />}
+                backgroundColor="brand.primary"
+                color="white"
+                onClick={handleSave}
+              >
+                Save
+              </Button>
+            ) : (
+              <Button
+                leftIcon={<CiEdit color="white" size="20px" />}
+                backgroundColor="brand.primary"
+                color="white"
+                onClick={toggleEditMode}
+              >
+                Edit
+              </Button>
+            )}
           </Box>
 
           <Box boxShadow="base" p="15px" borderRadius="3px">
             <Text>Organization Business Hours</Text>
           </Box>
 
-          {}
           <Box mt={5} boxShadow="base" p="15px" borderRadius="3px" mb={10}>
             <ButtonGroup>
               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
@@ -119,6 +162,7 @@ const TImeManage = () => {
                   backgroundColor={selectedDay === day ? "dark" : "lightgray"}
                   borderRadius="none"
                   onClick={() => setSelectedDay(day)}
+                  disabled={!editMode}
                 >
                   {day}
                 </Button>
@@ -127,11 +171,21 @@ const TImeManage = () => {
           </Box>
 
           <Box display="flex">
-            <Checkbox defaultChecked mr={10}>
+            <Checkbox
+              mr={10}
+              defaultChecked={isAllDayClose}
+              onChange={(e) => setIsAllDayClose(e.target.checked)}
+              disabled={!editMode}
+            >
               All Day Close
             </Checkbox>
             <Text>From:</Text>
-            <Select w="10%" value={openingHour}>
+            <Select
+              w="10%"
+              value={openingHour}
+              onChange={(e) => setOpeningHour(e.target.value)}
+              disabled={!editMode}
+            >
               {Array.from({ length: 24 }, (_, i) => (
                 <option
                   key={i}
@@ -140,7 +194,12 @@ const TImeManage = () => {
               ))}
             </Select>
             <Text mx={1}>:</Text>
-            <Select w="10%" value={openingMinute}>
+            <Select
+              w="10%"
+              value={openingMinute}
+              onChange={(e) => setOpeningMinute(e.target.value)}
+              disabled={!editMode}
+            >
               {Array.from({ length: 60 }, (_, i) => (
                 <option
                   key={i}
@@ -149,7 +208,12 @@ const TImeManage = () => {
               ))}
             </Select>
             <Text mx={2}>to</Text>
-            <Select w="10%" value={closingHour}>
+            <Select
+              w="10%"
+              value={closingHour}
+              onChange={(e) => setClosingHour(e.target.value)}
+              disabled={!editMode}
+            >
               {Array.from({ length: 24 }, (_, i) => (
                 <option
                   key={i}
@@ -158,7 +222,12 @@ const TImeManage = () => {
               ))}
             </Select>
             <Text mx={1}>:</Text>
-            <Select w="10%" value={closingMinute}>
+            <Select
+              w="10%"
+              value={closingMinute}
+              onChange={(e) => setClosingMinute(e.target.value)}
+              disabled={!editMode}
+            >
               {Array.from({ length: 60 }, (_, i) => (
                 <option
                   key={i}

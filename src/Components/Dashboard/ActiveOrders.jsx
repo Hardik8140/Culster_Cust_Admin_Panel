@@ -12,7 +12,7 @@ import { SearchIcon } from "lucide-react";
 import styled from "styled-components";
 import { updown } from "../../assets";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { linkStyle } from "../../data";
 import { useSelector } from "react-redux";
 
@@ -24,6 +24,7 @@ export const ActiveOrders = () => {
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
+  const navigate = useNavigate();
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -32,6 +33,13 @@ export const ActiveOrders = () => {
     }/${date.getDate()}/${date.getFullYear()}`;
     return formattedDate;
   };
+
+  const handleDetails = (id, event) => {
+    event.preventDefault();
+    navigate(`/orders/${id}`);
+    console.log("Order ID:", id);
+  };
+
   return (
     <Stack my={12} p={4} gap={4} bgColor={"#FFFFFF"}>
       <Text fontSize={"24px"} fontWeight={"bold"}>
@@ -96,7 +104,15 @@ export const ActiveOrders = () => {
                   <td>{el.transferType}</td>
                   <td>
                     <Text
-                      bgColor={"brand.pending"}
+                      bgColor={
+                        el.status === "PENDING"
+                          ? "brand.pending"
+                          : el.status === "ACCEPTED"
+                          ? "brand.add"
+                          : el.status === "REJECTED"
+                          ? "brand.primary"
+                          : "transparent"
+                      }
                       color={"white"}
                       borderRadius={"44px"}
                       p={"4px 10px"}
@@ -118,6 +134,7 @@ export const ActiveOrders = () => {
                         variant={"simpleWhite"}
                         fontWeight={"500"}
                         bgColor={"brand.buttonbg"}
+                        onClick={(event) => handleDetails(el.orderId, event)}
                       >
                         View Details
                       </Button>

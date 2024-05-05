@@ -20,12 +20,14 @@ import Layout from "../Layout/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { get_Added_Sides } from "../../Redux/Get_All_MenuItems/action";
 import { delete_Added_Sides } from "../../Redux/Delete_All_MenuItem/action";
+import ReactPaginate from "react-paginate";
 
 const Slides = () => {
   const [search, setSearch] = useState("");
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
+  const [currentPage, setCurrentPage] = useState(0);
 
   const { loading, error, sides } = useSelector(
     (store) => store.get_all_menuitem_reducer
@@ -49,6 +51,16 @@ const Slides = () => {
   const handleOrderPrice = () => {};
 
   const handleOrderStatus = () => {};
+
+  const handlePageChange = ({ selected: selectedPage }) => {
+    setCurrentPage(selectedPage);
+  };
+
+  const itemsPerPage = 10;
+  const offset = currentPage * itemsPerPage;
+  const pageCount = Math.ceil(sides.length / itemsPerPage);
+  const currentPageData = sides.slice(offset, offset + itemsPerPage);
+
   return (
     <Layout>
       <Box>
@@ -115,12 +127,17 @@ const Slides = () => {
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(sides) &&
-              sides.map((el, i) => (
+            {Array.isArray(currentPageData) &&
+              currentPageData.map((el, i) => (
                 <tr key={i}>
                   <td>{el.pizzaId}</td>
                   <td>{el.name}</td>
-                  <td>$ 5.00</td>
+                  <td>
+                    ${" "}
+                    {el.sizes.find((siz) => siz.size === "Medium")
+                      ? el.sizes.find((siz) => siz.size === "Medium").price
+                      : "N/A"}
+                  </td>
                   <td>
                     <Text
                       bgColor={
@@ -156,6 +173,20 @@ const Slides = () => {
           </tbody>
         </table>
       </DIV>
+
+      <PaginationBox>
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          pageCount={Math.ceil(sides.length / itemsPerPage)}
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          previousLinkClassName={"pagination__link"}
+          nextLinkClassName={"pagination__link"}
+          disabledClassName={"pagination__link--disabled"}
+          activeClassName={"pagination__link--active"}
+        />
+      </PaginationBox>
     </Layout>
   );
 };
@@ -183,5 +214,50 @@ const DIV = styled.div`
     border: 1px solid red;
 
     background-color: #e9e9e9;
+  }
+`;
+
+const PaginationBox = styled.div`
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  margin-top: 20px;
+
+  .pagination {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  .pagination__item {
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .pagination__link {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+  }
+
+  .pagination__link--active {
+    background-color: red;
+    padding: 0px 8px;
+    border-radius: 8px;
+    border: 1px solid red;
+    color: #fff;
+  }
+
+  .pagination__link--disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 `;
