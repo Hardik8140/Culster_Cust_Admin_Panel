@@ -137,7 +137,12 @@ const Dipping = () => {
                 <tr key={i}>
                   <td>{el.pizzaId}</td>
                   <td>{el.name}</td>
-                  <td>$ 5.00</td>
+                  <td>
+                    ${" "}
+                    {el.sizes.find((siz) => siz.size === "Medium")
+                      ? el.sizes.find((siz) => siz.size === "Medium").price
+                      : "N/A"}
+                  </td>
                   <td>
                     <Text
                       bgColor={

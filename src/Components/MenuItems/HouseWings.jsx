@@ -132,7 +132,12 @@ const HouseWings = () => {
                 <tr key={i}>
                   <td>{el.pizzaId}</td>
                   <td>{el.name}</td>
-                  <td>$ </td>
+                  <td>
+                    ${" "}
+                    {el.sizes.find((siz) => siz.size === "Medium")
+                      ? el.sizes.find((siz) => siz.size === "Medium").price
+                      : "N/A"}
+                  </td>
                   <td>
                     <Text
                       bgColor={
