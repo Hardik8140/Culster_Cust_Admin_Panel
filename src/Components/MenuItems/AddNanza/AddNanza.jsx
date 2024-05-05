@@ -15,7 +15,7 @@ import {
 } from "../../../Redux/MenuItems/action";
 import { CLEANUP } from "../../../Redux/actionType";
 import { NanzaId, PannerChickenId } from "../../../data";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const links = [
   {
@@ -42,7 +42,7 @@ export const AddNanza = () => {
   const [nanzaData, setNanzaData] = useState({});
   const [nanzaItem, setNanzaItem] = useState([]);
   const [imgName, setImgName] = useState("");
-
+  const navigate = useNavigate();
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
@@ -51,10 +51,10 @@ export const AddNanza = () => {
   useEffect(() => {
     dispatch(get_Ingrediants(NanzaId));
   }, []);
-  console.log(nanzaData);
   useEffect(() => {
     if (nanzaParam) {
       const currentNanza = nanza.filter((item) => item.pizzaId === +nanzaParam);
+      handleImageName(currentNanza[0]?.imageUrl);
       setNanzaData(currentNanza[0]);
       let updated = link.map((item) => {
         if (item.title === "Add New Nanza") {
@@ -137,7 +137,7 @@ export const AddNanza = () => {
       pizzaSize: { Medium: +price.value },
       description: description.value,
       imageName: NanzaId + "/" + imgName,
-      categoryId: newPizzaId,
+      categoryId: NanzaId,
       items: [],
     };
 
@@ -196,8 +196,7 @@ export const AddNanza = () => {
     //   }
     // }
 
-    console.log(data);
-    if (nanzaData["pizzaId"]) {
+    if (nanzaParam) {
       dispatch(updateNanza(data, nanzaData["pizzaId"], handleNavigate));
     } else {
       dispatch(addNewNanza(data, handleNavigate));
@@ -205,7 +204,7 @@ export const AddNanza = () => {
   };
 
   const handleImageName = (name) => {
-    setImageName(name);
+    setImgName(name);
   };
   return (
     <Layout>

@@ -99,6 +99,7 @@ const AllRoutes = () => {
         path="/edit/housewings/:housewingsParam"
         element={<HouseOfWings />}
       />
+      <Route path="/edit/pasta/:pastaParam" element={<AddPastas />} />
       <Route path="/edit/nanza/:nanzaParam" element={<AddNanza />} />
       <Route
         path="/edit/cheesyfun/:cheesyfunParam"

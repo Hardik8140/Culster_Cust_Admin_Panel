@@ -225,6 +225,7 @@ const SidebarMenu = () => {
                 color={activeMenu !== "offers" ? "#4a4a4b" : "white"}
               />
             }
+            component={<Link to="/offers" />}
           >
             Offers
           </MenuItem>

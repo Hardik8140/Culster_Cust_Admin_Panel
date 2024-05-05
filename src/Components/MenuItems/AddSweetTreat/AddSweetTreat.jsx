@@ -123,8 +123,10 @@ export const AddSweetTreat = () => {
       pizzaSize: { Medium: +price.value },
     };
 
-    if (sweetTreatData["pizzaId"]) {
-      dispatch(updateSweetTreat(data, SweetTreatId, handleNavigate));
+    if (SweetTreatId) {
+      dispatch(
+        updateSweetTreat(data, sweetTreatData["pizzaId"], handleNavigate)
+      );
     } else {
       dispatch(addNewSweetTreat(data, handleNavigate));
     }

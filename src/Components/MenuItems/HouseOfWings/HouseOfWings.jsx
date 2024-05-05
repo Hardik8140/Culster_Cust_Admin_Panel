@@ -22,7 +22,7 @@ import {
   get_Ingrediants,
   updateHouseOfWings,
 } from "../../../Redux/MenuItems/action";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const links = [
   {
@@ -45,6 +45,7 @@ export const HouseOfWings = () => {
   const toast = useToast();
   const dispatch = useDispatch();
   const { housewingsParam } = useParams();
+  const navigate = useNavigate();
   const [link, setLink] = useState(links);
   const [houseWingsData, setHouseWingsData] = useState({});
   const [houseWingsItem, setHouseWingsItem] = useState({});
@@ -56,9 +57,7 @@ export const HouseOfWings = () => {
   const { hos } = useSelector((store) => store.get_all_menuitem_reducer);
 
   useEffect(() => {
-    if (items === undefined || Object.keys(items).length === 0) {
-      dispatch(get_Ingrediants(HouseWingsId));
-    }
+    dispatch(get_Ingrediants(HouseWingsId));
   }, []);
   useEffect(() => {
     if (housewingsParam) {
@@ -76,7 +75,7 @@ export const HouseOfWings = () => {
       });
       setLink(updated);
       currenthos = currenthos[0];
-      if (currenthos["pizzaId"]) {
+      if (currenthos.pizzaId) {
         let extra_items = currenthos["extraItems"];
         let typeofservings_item = [],
           sizeofwingbox_item = [],
@@ -102,6 +101,8 @@ export const HouseOfWings = () => {
           sizeofwingbox: sizeofwingbox_item,
           wingsSauces: wingsSauces_item,
         });
+      } else {
+        navigate("/houseofwings");
       }
     }
   }, [housewingsParam]);
@@ -231,13 +232,12 @@ export const HouseOfWings = () => {
       };
     }
 
-    if (houseWingsData?.pizzaId) {
-      dispatch(addNewHouseOfWings(data, handleNavigate));
-    } else {
+    if (housewingsParam) {
       dispatch(updateHouseOfWings(data, HouseWingsId, handleNavigate));
+    } else {
+      dispatch(addNewHouseOfWings(data, handleNavigate));
     }
   };
-
   return (
     <Layout>
       <Box>

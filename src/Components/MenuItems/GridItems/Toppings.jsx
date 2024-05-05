@@ -18,7 +18,6 @@ const toppings = {
 };
 export const Toppings = ({ values = {}, itemValue = [] }) => {
   const [checked, handleChange] = useCheckbox(false);
-
   useEffect(() => {
     if (itemValue.length > 0 && Object.keys(values).length > 0) {
       const main_checkbox = document.querySelector("#checkbox_toppings");

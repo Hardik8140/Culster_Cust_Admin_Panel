@@ -150,7 +150,7 @@ export const AddCultureCrustSpecialThinkShakes = () => {
       pizzaSize: { Medium: +price.value },
     };
 
-    if (thinkShakesData["pizzaId"]) {
+    if (thickShakesParam) {
       dispatch(
         updateThickShakes(data, thinkShakesData["pizzaId"], handleNavigate)
       );

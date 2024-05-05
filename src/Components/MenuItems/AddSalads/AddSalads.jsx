@@ -42,7 +42,6 @@ export const AddSalads = () => {
   useEffect(() => {
     dispatch(get_Ingrediants(SaladId));
   }, []);
-  console.log(items);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
