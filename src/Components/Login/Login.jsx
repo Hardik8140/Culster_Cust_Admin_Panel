@@ -11,24 +11,40 @@ import {
   Checkbox,
   Button,
   InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
 import { Eye, EyeOff } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { doLogin } from "../../Redux/Auth/action";
+import { useNavigate } from "react-router-dom";
 export const Login = () => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    toast({
+      title: "Login Successfull",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/");
+  };
   const handleForm = (event) => {
     event.preventDefault();
     const formData = event.target;
     const email = formData.querySelector("#email").value;
     const password = formData.querySelector("#password").value;
-
     const rememberMe = formData.querySelector("#remember").checked;
-
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Remember me:", rememberMe);
+    const data = {
+      userName: email,
+      password: password,
+    };
+    dispatch(doLogin(data, handleNavigate));
   };
+
   return (
     <Stack justifyContent={"center"} alignItems={"center"} height={"100vh"}>
       <Box>
@@ -59,10 +75,11 @@ export const Login = () => {
             <FormControl>
               <FormLabel color={"brand.primary"}>Email:</FormLabel>
               <Input
-                type="email"
+                type="text"
                 placeholder={"email@example.com"}
                 width={"352px"}
                 id={"email"}
+                value={"HMP"}
               />
             </FormControl>
 
@@ -74,6 +91,7 @@ export const Login = () => {
                   width={"352px"}
                   id={"password"}
                   type={show ? "text" : "password"}
+                  value={"123456"}
                 />
                 <InputRightElement width="4.5rem" mt={"2rem"}>
                   <Button h="1.75rem" size="sm" onClick={handleClick}>

@@ -23,7 +23,7 @@ import {
   ExtraPattyId,
   FlavorId,
 } from "../../../data";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const links = [
   {
@@ -47,6 +47,7 @@ export const AddNewBurger = () => {
   const [link, setLink] = useState(links);
   const toast = useToast();
   const { burgerParam } = useParams();
+  const navigate = useNavigate();
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
@@ -77,9 +78,7 @@ export const AddNewBurger = () => {
     }
   }, [burgerParam]);
   useEffect(() => {
-    if (items === undefined || Object.keys(items).length === 0) {
-      dispatch(get_Ingrediants(BurgerId));
-    }
+    dispatch(get_Ingrediants(BurgerId));
   }, []);
   useEffect(() => {
     if (!isLoading && error) {
@@ -183,8 +182,7 @@ export const AddNewBurger = () => {
       };
     }
 
-    // console.log("data", data);
-    if (burgerData["pizzaId"]) {
+    if (burgerParam) {
       dispatch(updateBurger(data, burgerData["pizzaId"], handleNavigate));
     } else {
       dispatch(addNewBurger(data, handleNavigate));

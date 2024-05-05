@@ -46,6 +46,7 @@ import { AddNewOffer } from "../Components/Offers/AddNewOffer.jsx";
 import ShowToppings from "../Components/ExtraItems/ShowToppings.jsx";
 import ShowDizzleitUp from "../Components/ExtraItems/ShowDizzleitUp.jsx";
 import CustomerSupport from "../Components/Customer Support/CustomerSupport.jsx";
+import Notification from "../Components/Notification/Notification.jsx";
 import { AddDeliveryBoy } from "../Components/Delivery Boy/AddDeliveryBoy.jsx";
 
 const AllRoutes = () => {
@@ -54,6 +55,7 @@ const AllRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Dashboard />} />
 
+      <Route path="/notifications" element={<Notification />} />
       <Route path="/pizza" element={<Pizza />} />
       <Route path="/createownpizza" element={<Cyop />} />
       <Route path="/Burger" element={<Burger />} />
@@ -98,6 +100,7 @@ const AllRoutes = () => {
         path="/edit/housewings/:housewingsParam"
         element={<HouseOfWings />}
       />
+      <Route path="/edit/pasta/:pastaParam" element={<AddPastas />} />
       <Route path="/edit/nanza/:nanzaParam" element={<AddNanza />} />
       <Route
         path="/edit/cheesyfun/:cheesyfunParam"

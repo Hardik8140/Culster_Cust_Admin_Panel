@@ -127,7 +127,7 @@ export const AddDippingSauces = () => {
       pizzaSize: { Medium: +price.value },
     };
 
-    if (dippingSaucesData["pizzaId"]) {
+    if (dippingSaucesParam) {
       dispatch(
         updateDippingSauces(data, dippingSaucesData["pizzaId"], handleNavigate)
       );

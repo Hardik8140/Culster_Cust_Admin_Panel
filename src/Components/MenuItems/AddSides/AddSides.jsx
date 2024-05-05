@@ -95,7 +95,7 @@ export const AddSides = () => {
       items: [],
       pizzaSize: { Medium: +price.value },
     };
-    if (sidesData["pizzaId"]) {
+    if (sidesParam) {
       dispatch(updateSides(data, sidesData["pizzaId"], handleNavigate));
     } else {
       dispatch(addNewSides(data, handleNavigate));

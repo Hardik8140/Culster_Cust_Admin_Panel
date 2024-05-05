@@ -127,7 +127,7 @@ export const AddDrinksCanPop = () => {
       pizzaSize: { Medium: +price.value },
     };
 
-    if (drinksCanPopData["pizzaId"]) {
+    if (drinkscanParam) {
       dispatch(
         updateDrinksCanPop(data, drinksCanPopData["pizzaId"], handleNavigate)
       );

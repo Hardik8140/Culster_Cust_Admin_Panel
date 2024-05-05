@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { GridItem, Input, Stack, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Name = ({
   name = "Name",
@@ -9,6 +9,11 @@ export const Name = ({
   itemValue,
 }) => {
   const [item, setItem] = useState(itemValue || "");
+  useEffect(() => {
+    if (itemValue) {
+      setItem(itemValue);
+    }
+  }, [itemValue]);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}

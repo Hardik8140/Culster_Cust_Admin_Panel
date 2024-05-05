@@ -11,6 +11,7 @@ import {
 import { dollar } from "../../../assets";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
+import { useEffect, useState } from "react";
 const size = [
   {
     title: "Spice it up",
@@ -22,8 +23,21 @@ const size = [
     isPrice: true,
   },
 ];
-export const PastaModifier = () => {
+export const PastaModifier = ({ values = {}, itemValue = [] }) => {
   const [checked, handleChange] = useCheckbox(false);
+  useEffect(() => {
+    if (itemValue.length > 0 && Object.keys(values).length > 0) {
+      const main_checkbox = document.querySelector("#checkbox_pastamodifier");
+      main_checkbox.checked = true;
+      handleChange();
+      for (const id of itemValue) {
+        const checkbox = document.querySelector(
+          `#checkbox_pastamodifier_${id}`
+        );
+        checkbox.checked = true;
+      }
+    }
+  }, [itemValue]);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -50,40 +64,41 @@ export const PastaModifier = () => {
         <Box>
           <Flex my={2} justifyContent={"space-between"}>
             <Text color={"brand.grey"}>Select Size</Text>
-            <Text color={"brand.grey"} textAlign={"end"}>
+            {/* <Text color={"brand.grey"} textAlign={"end"}>
               Add Price
-            </Text>
+            </Text> */}
           </Flex>
           <Box pointerEvents={!checked && "none"} opacity={!checked && "0.6"}>
-            {size.map(({ title, isPrice }, ind) => (
-              <Flex
-                key={ind}
-                justifyContent={"space-between"}
-                alignItems={"center"}
-                gap={2}
-                width={"100%"}
-                my={4}
-              >
-                <Flex minW={"50%"}>
-                  <Box>
-                    <label className={style.customCheckbox}>
-                      <input
-                        name={title}
-                        type="checkbox"
-                        id={`${title}_checkbox_pastamodifier`}
-                        className={`checkbox_pastamodifier_price_${isPrice}`}
-                      />
-                      <span className={style.checkmark}></span>
+            {Object.keys(values).length > 0 &&
+              Object.keys(values).map((key, ind) => (
+                <Flex
+                  key={ind}
+                  justifyContent={"space-between"}
+                  alignItems={"center"}
+                  gap={2}
+                  width={"100%"}
+                  my={4}
+                >
+                  <Flex minW={"50%"}>
+                    <Box>
+                      <label className={style.customCheckbox}>
+                        <input
+                          name={key}
+                          type="checkbox"
+                          id={`checkbox_pastamodifier_${key}`}
+                          className={`checkbox_pastamodifier`}
+                        />
+                        <span className={style.checkmark}></span>
+                      </label>
+                    </Box>
+                    <label
+                      htmlFor={`checkbox_pastamodifier_${key}`}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {values[key]}
                     </label>
-                  </Box>
-                  <label
-                    htmlFor={`${title}_checkbox_pastamodifier`}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {title}
-                  </label>
-                </Flex>
-                {/* {isPrice && (
+                  </Flex>
+                  {/* {isPrice && (
                   <Box justifySelf={"flex-end"}>
                     <InputGroup pastamodifier={"sm"}>
                       <InputLeftAddon
@@ -103,8 +118,8 @@ export const PastaModifier = () => {
                     </InputGroup>
                   </Box>
                 )} */}
-              </Flex>
-            ))}
+                </Flex>
+              ))}
           </Box>
         </Box>
       </Stack>

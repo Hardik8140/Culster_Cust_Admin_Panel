@@ -16,8 +16,8 @@ export const Detail = ({ itemValue = { name: "", description: "" } }) => {
   const [state, setState] = useState({ ...itemValue });
   const handleChange = (event) => {
     setState({
-      [event.target.id]: event.target.value,
       ...state,
+      [event.target.id]: event.target.value,
     });
   };
   useEffect(() => {

@@ -103,6 +103,7 @@ export const AddNewPizza = () => {
         seasonings_items = [],
         add_dippings_items = [],
         paneer_chicken_items = [];
+
       for (const extra of extra_items) {
         switch (extra["extraItem"]["extraItemId"]) {
           case CrustId:
@@ -371,13 +372,12 @@ export const AddNewPizza = () => {
         items: [...data.items, ...finalFlavor],
       };
     }
-    if (pizzaData["pizzaId"]) {
+    if (pizzaParam) {
       dispatch(updatePizza(data, pizzaData["pizzaId"], handleNavigate));
     } else {
       dispatch(addNewPizza(data, handleNavigate));
     }
   };
-
   return (
     <Layout>
       <Box>

@@ -178,6 +178,41 @@ export const updateHouseOfWings =
   };
 
 // pasta action
+export const addNewPasta = (pastaData, handleNavigate) => async (dispatch) => {
+  dispatch({ type: LOADING });
+  try {
+    let res = await axios.post(`${backendAPI}admin/add/item`, pastaData);
+    res = await res.data;
+    if (res.success) {
+      dispatch({ type: CLEANUP });
+      handleNavigate("New Pasta added successfully!");
+    } else {
+      dispatch({ type: ERROR, payload: res.message });
+    }
+  } catch (error) {
+    dispatch({ type: ERROR, payload: error.message });
+  }
+};
+
+export const updatePasta =
+  (pastaData, pastaId, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.post(
+        `${backendAPI}admin/updateitem?itemId=${pastaId}`,
+        pastaData
+      );
+      res = await res.data;
+      if (res.success) {
+        handleNavigate("Pasta updated successfully!");
+        dispatch({ type: CLEANUP });
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
+    }
+  };
 // nanza action
 export const addNewNanza = (nanzaData, handleNavigate) => async (dispatch) => {
   dispatch({ type: LOADING });

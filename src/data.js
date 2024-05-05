@@ -38,6 +38,7 @@ export const ExtraPattyId = 220011;
 export const TypeOfServingId = 220012;
 export const SizeOfWingBoxId = 220013;
 export const WingsSaucesId = 220014;
+export const PastaModifierId = 220015;
 // items by Id
 // {
 //     "success": true,
