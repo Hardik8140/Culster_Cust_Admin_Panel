@@ -43,11 +43,9 @@ export const AddCheesyFun = () => {
   );
 
   useEffect(() => {
-    if (items === undefined || Object.keys(items).length === 0) {
-      dispatch(get_Ingrediants(CheesyFunId));
-    }
+    dispatch(get_Ingrediants(CheesyFunId));
   }, []);
-
+  console.log(items);
   useEffect(() => {
     if (!isLoading && error) {
       toast({

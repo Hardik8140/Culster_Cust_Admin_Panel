@@ -1,6 +1,7 @@
 import { Box, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
+import { useEffect } from "react";
 
 const wings = [
   {
@@ -21,9 +22,19 @@ const wings = [
   },
 ];
 
-export const WingsSauces = () => {
+export const WingsSauces = ({ values = {}, itemValue = [] }) => {
   const [checked, handleChange] = useCheckbox(false);
-
+  useEffect(() => {
+    if (itemValue.length > 0 && Object.keys(values).length > 0) {
+      const main_checkbox = document.querySelector("#checkbox_wingsSauces");
+      main_checkbox.checked = true;
+      handleChange();
+      for (const id of itemValue) {
+        const checkbox = document.querySelector(`#checkbox_wingsSauces_${id}`);
+        checkbox.checked = true;
+      }
+    }
+  }, [itemValue]);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -56,34 +67,35 @@ export const WingsSauces = () => {
             pointerEvents={!checked && "none"}
             opacity={!checked && "0.6"}
           >
-            {wings.map(({ title }, ind) => (
-              <Flex
-                key={ind}
-                justifyContent={"space-between"}
-                width={"100%"}
-                my={4}
-              >
-                <Flex minW={"50%"}>
-                  <Box>
-                    <label className={style.customCheckbox}>
-                      <input
-                        name={title}
-                        type="checkbox"
-                        id={`${title}_checkbox_wingsSauces`}
-                        className="checkbox_wingsSauces"
-                      />
-                      <span className={style.checkmark}></span>
+            {Object.keys(values).length > 0 &&
+              Object.keys(values).map((item, ind) => (
+                <Flex
+                  key={ind}
+                  justifyContent={"space-between"}
+                  width={"100%"}
+                  my={4}
+                >
+                  <Flex minW={"50%"}>
+                    <Box>
+                      <label className={style.customCheckbox}>
+                        <input
+                          name={item}
+                          type="checkbox"
+                          id={`checkbox_wingsSauces_${item}`}
+                          className="checkbox_wingsSauces"
+                        />
+                        <span className={style.checkmark}></span>
+                      </label>
+                    </Box>
+                    <label
+                      htmlFor={`checkbox_wingsSauces_${item}`}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {values[item]}
                     </label>
-                  </Box>
-                  <label
-                    htmlFor={`${title}_checkbox_wingsSauces`}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {title}
-                  </label>
+                  </Flex>
                 </Flex>
-              </Flex>
-            ))}
+              ))}
           </Box>
         </Box>
       </Stack>

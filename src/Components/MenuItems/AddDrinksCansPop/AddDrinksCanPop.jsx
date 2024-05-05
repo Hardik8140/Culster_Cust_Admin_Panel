@@ -1,10 +1,19 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Grid, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
 import { Detail } from "../GridItems/Detail";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { DriksCanPopId } from "../../../data";
+import { CLEANUP } from "../../../Redux/actionType";
+import {
+  addNewDrinksCanPop,
+  updateDrinksCanPop,
+} from "../../../Redux/MenuItems/action";
 
 const links = [
   {
@@ -14,7 +23,7 @@ const links = [
   },
   {
     title: "Drinks-can pop",
-    link: "#",
+    link: "/drinks-canpop",
     isCurrent: false,
   },
   {
@@ -24,6 +33,70 @@ const links = [
   },
 ];
 export const AddDrinksCanPop = () => {
+  const [link, setLink] = useState(links);
+  const toast = useToast();
+  const { drinkscanParam } = useParams();
+  const [imgName, setImgName] = useState("");
+  const [drinksCanPopData, setDrinksCanPopData] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading, error, items } = useSelector(
+    (store) => store.menuItemsReducer
+  );
+  const { drinks_can_pop } = useSelector(
+    (store) => store.get_all_menuitem_reducer
+  );
+  useEffect(() => {
+    // dispatch(get_Ingrediants(DriksCanPopId));
+  }, []);
+  useEffect(() => {
+    if (drinkscanParam && drinks_can_pop.length > 0) {
+      const current = drinks_can_pop.filter(
+        (item) => item.pizzaId === +drinkscanParam
+      );
+      setDrinksCanPopData(current[0]);
+      let updated = link.map((item) => {
+        if (item.title === "Add Drinks-can pop") {
+          return {
+            title: "Edit Dricks-can pop",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
+    }
+  }, [drinkscanParam]);
+  const handleImageName = (name) => {
+    setImgName(name);
+  };
+  useEffect(() => {
+    if (isLoading) {
+      toast({
+        title: "Loading...",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    if (!isLoading && error) {
+      handleError(error);
+    }
+    return () => {
+      dispatch({ type: CLEANUP });
+    };
+  }, [isLoading, error, toast]);
+
+  const handleNavigate = (msg) => {
+    toast({
+      title: msg,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/drinks-canpop");
+  };
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -31,39 +104,58 @@ export const AddDrinksCanPop = () => {
     const price = form.querySelector("#price");
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
-    const drinkCan = form.querySelector("#checkbox_drinkCan");
-    const finaldrinkCan = [];
 
-    if (drinkCan.checked) {
-      // get all values of drinkCan
-      const drinkCanCheckbox = form.querySelectorAll(".checkbox_drinkCan");
-      for (let i = 0; i < drinkCanCheckbox.length; i++) {
-        if (drinkCanCheckbox[i].checked) {
-          finaldrinkCan.push(drinkCanCheckbox[i].name);
-        }
-      }
+    if (!name.value) {
+      handleError("Please enter name");
+      return;
     }
-    const data = {
-      name: name.value,
-      price: +price.value,
+    if (!description.value) {
+      handleError("Please enter description");
+      return;
+    }
+
+    if (!price.value) {
+      handleError("Please enter price");
+      return;
+    }
+    let data = {
+      pizzaName: name.value,
       description: description.value,
-      image: image ? image.src : "",
-      drinkCan: finaldrinkCan,
+      categoryId: DriksCanPopId,
+      imageName: DriksCanPopId + "/" + imgName,
+      items: [],
+      pizzaSize: { Medium: +price.value },
     };
 
-    console.log(data);
+    if (drinksCanPopData["pizzaId"]) {
+      dispatch(
+        updateDrinksCanPop(data, drinksCanPopData["pizzaId"], handleNavigate)
+      );
+    } else {
+      dispatch(addNewDrinksCanPop(data, handleNavigate));
+    }
   };
   return (
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
-              <Image />
+              <Detail
+                itemValue={{
+                  name: drinksCanPopData?.name,
+                  description: drinksCanPopData?.description,
+                }}
+              />
+              <Image
+                itemValue={drinksCanPopData?.imageUrl}
+                handleImageName={handleImageName}
+                categoryId={DriksCanPopId}
+                name={imgName}
+              />
             </Grid>
             <FormButtons />
           </form>

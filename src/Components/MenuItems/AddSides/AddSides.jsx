@@ -1,10 +1,15 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Grid, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
 import { Detail } from "../GridItems/Detail";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
+import { useEffect, useState } from "react";
+import { SidesId } from "../../../data";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewSides, updateSides } from "../../../Redux/MenuItems/action";
+import { useParams } from "react-router-dom";
 
 const links = [
   {
@@ -14,16 +19,53 @@ const links = [
   },
   {
     title: "Sides",
-    link: "#",
+    link: "/sides",
     isCurrent: false,
   },
   {
-    title: "Add Sides",
+    title: "Add New Sides",
     link: "#",
     isCurrent: true,
   },
 ];
 export const AddSides = () => {
+  const [imgName, setImgName] = useState();
+  const dispatch = useDispatch();
+  const { sidesParam } = useParams();
+  const toast = useToast();
+  const [link, setLink] = useState(links);
+  const [sidesData, setSideData] = useState({});
+  const { sides } = useSelector((store) => store.get_all_menuitem_reducer);
+
+  const handleNavigate = (msg) => {
+    toast({
+      title: msg,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/sides");
+  };
+  const handleImageName = (event) => {
+    setImgName(event.target.value);
+  };
+  useEffect(() => {
+    if (sidesParam) {
+      const current = sides.filter((item) => item.pizzaId === +sidesParam);
+      setSideData(current[0]);
+      let updated = link.map((item) => {
+        if (item.title === "Add New Sides") {
+          return {
+            title: "Edit Sides",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
+    }
+  }, [sidesParam]);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -32,14 +74,32 @@ export const AddSides = () => {
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
 
-    const data = {
-      name: name.value,
-      price: +price.value,
-      description: description.value,
-      image: image ? image.src : "",
-    };
+    if (!name.value) {
+      handleError("Please enter name");
+      return;
+    }
+    if (!description.value) {
+      handleError("Please enter description");
+      return;
+    }
 
-    console.log(data);
+    if (!price.value) {
+      handleError("Please enter price");
+      return;
+    }
+    let data = {
+      pizzaName: name.value,
+      description: description.value,
+      categoryId: SidesId,
+      imageName: SidesId + "/" + imgName,
+      items: [],
+      pizzaSize: { Medium: +price.value },
+    };
+    if (sidesData["pizzaId"]) {
+      dispatch(updateSides(data, sidesData["pizzaId"], handleNavigate));
+    } else {
+      dispatch(addNewSides(data, handleNavigate));
+    }
   };
   return (
     <Layout>
@@ -50,8 +110,18 @@ export const AddSides = () => {
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
-              <Image />
+              <Detail
+                itemValue={{
+                  name: sidesData?.name,
+                  description: sidesData?.description,
+                }}
+              />
+              <Image
+                handleImageName={handleImageName}
+                name={imgName}
+                categoryId={SidesId}
+                itemValue={sidesData?.imageUrl}
+              />
             </Grid>
             <FormButtons />
           </form>

@@ -42,6 +42,7 @@ export const reducer = (state = initalState, { type, payload }) => {
         error: "",
         // items: {},
       };
+
     case FETCH_MENU_ITEM_REQUEST:
       return { ...state, loading: true, error: payload };
     case FETCH_MENU_ITEM_SUCCESS:

@@ -7,10 +7,15 @@ import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
 import { PaneerChicken } from "../GridItems/PaneerChicken";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { get_Ingrediants } from "../../../Redux/MenuItems/action";
+import { useEffect, useState } from "react";
+import {
+  addNewNanza,
+  get_Ingrediants,
+  updateNanza,
+} from "../../../Redux/MenuItems/action";
 import { CLEANUP } from "../../../Redux/actionType";
-import { NanzaId } from "../../../data";
+import { NanzaId, PannerChickenId } from "../../../data";
+import { useParams } from "react-router-dom";
 
 const links = [
   {
@@ -20,27 +25,69 @@ const links = [
   },
   {
     title: "Nanza",
-    link: "#",
+    link: "/nanza",
     isCurrent: false,
   },
   {
-    title: "Add Nanza",
+    title: "Add New Nanza",
     link: "#",
     isCurrent: true,
   },
 ];
 export const AddNanza = () => {
   const dispatch = useDispatch();
+  const { nanzaParam } = useParams();
   const toast = useToast();
+  const [link, setLink] = useState(links);
+  const [nanzaData, setNanzaData] = useState({});
+  const [nanzaItem, setNanzaItem] = useState([]);
+  const [imgName, setImgName] = useState("");
+
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
-  useEffect(() => {
-    if (items === undefined || Object.keys(items).length === 0) {
-      dispatch(get_Ingrediants(NanzaId));
-    }
-  }, []);
+  const { nanza } = useSelector((store) => store.get_all_menuitem_reducer);
 
+  useEffect(() => {
+    dispatch(get_Ingrediants(NanzaId));
+  }, []);
+  console.log(nanzaData);
+  useEffect(() => {
+    if (nanzaParam) {
+      const currentNanza = nanza.filter((item) => item.pizzaId === +nanzaParam);
+      setNanzaData(currentNanza[0]);
+      let updated = link.map((item) => {
+        if (item.title === "Add New Nanza") {
+          return {
+            title: "Edit Nanza",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
+    }
+  }, [nanzaParam]);
+  useEffect(() => {
+    if (nanzaData["pizzaId"]) {
+      let extra_items = nanzaData["extraItems"];
+      let paneer_chicken_items = [];
+      for (const extra of extra_items) {
+        switch (extra["extraItem"]["extraItemId"]) {
+          case PannerChickenId:
+            paneer_chicken_items.push(extra["extraItemId"]);
+            break;
+          default:
+            break;
+        }
+      }
+
+      setNanzaItem({
+        panner_chicken: paneer_chicken_items,
+      });
+    }
+  }, [nanzaData]);
   useEffect(() => {
     if (!isLoading && error) {
       toast({
@@ -54,6 +101,15 @@ export const AddNanza = () => {
       dispatch({ type: CLEANUP });
     };
   }, [isLoading, error, toast]);
+  const handleNavigate = (msg) => {
+    toast({
+      title: msg,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/nanza");
+  };
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -61,56 +117,95 @@ export const AddNanza = () => {
     const price = form.querySelector("#price");
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
-    const toppings = form.querySelector("#checkbox_toppings");
-    const finalToppings = [];
-    const pastamodifier = form.querySelector("#checkbox_pastamodifier");
-    const finalPastaModifier = [];
-    if (pastamodifier.checked) {
-      // get all values of pastamodifier
-      const pastamodifierCheckboxTrue = form.querySelectorAll(
-        ".checkbox_pastamodifier_price_true"
-      );
-      const pastamodifierPrice = form.querySelectorAll(".price_pastamodifier");
-      for (let i = 0; i < pastamodifierCheckboxTrue.length; i++) {
-        if (pastamodifierCheckboxTrue[i].checked) {
-          finalPastaModifier.push({
-            title: pastamodifierCheckboxTrue[i].name,
-            price: +pastamodifierPrice[i].value,
-          });
-        }
-      }
-
-      const pastamodifierCheckboxFalse = form.querySelectorAll(
-        ".checkbox_pastamodifier_price_false"
-      );
-      for (let i = 0; i < pastamodifierCheckboxFalse.length; i++) {
-        if (pastamodifierCheckboxFalse[i].checked) {
-          finalPastaModifier.push({
-            title: pastamodifierCheckboxFalse[i].name,
-          });
-        }
-      }
+    const paneer = form.querySelector("#checkbox_paneer");
+    const finalPaneer = [];
+    // const toppings = form.querySelector("#checkbox_toppings");
+    // const finalToppings = [];
+    // const pastamodifier = form.querySelector("#checkbox_pastamodifier");
+    // const finalPastaModifier = [];
+    if (!name.value) {
+      handleError("Please enter name");
+      return;
     }
-    if (toppings.checked) {
-      // get all values of toppings
-      const toppingsCheckbox = form.querySelectorAll(".checkbox_toppings");
-      for (let i = 0; i < toppingsCheckbox.length; i++) {
-        if (toppingsCheckbox[i].checked) {
-          finalToppings.push(toppingsCheckbox[i].name);
-        }
-      }
+    if (!description.value) {
+      handleError("Please enter description");
+      return;
     }
-
-    const data = {
-      name: name.value,
-      price: +price.value,
+    let data = {
+      pizzaName: name.value,
+      // price: +price.value,
+      pizzaSize: { Medium: +price.value },
       description: description.value,
-      image: image ? image.src : "",
-      toppings: finalToppings,
-      pastamodifier: finalPastaModifier,
+      imageName: NanzaId + "/" + imgName,
+      categoryId: newPizzaId,
+      items: [],
     };
 
+    if (paneer.checked) {
+      // get all values of paneer
+      const paneerCheckbox = form.querySelectorAll(".checkbox_paneer");
+      // const paneerPrice = form.querySelectorAll(".price_paneer");
+      for (let i = 0; i < paneerCheckbox.length; i++) {
+        if (paneerCheckbox[i].checked) {
+          finalPaneer.push(+paneerCheckbox[i].name);
+
+          // finalPaneer.push(+{
+          //   title: paneerCheckbox[i].name,
+          //   price: +paneerPrice[i].value,
+          // });
+        }
+      }
+      data = {
+        ...data,
+        items: [...data.items, ...finalPaneer],
+      };
+    }
+    // if (pastamodifier.checked) {
+    //   // get all values of pastamodifier
+    //   const pastamodifierCheckboxTrue = form.querySelectorAll(
+    //     ".checkbox_pastamodifier_price_true"
+    //   );
+    //   const pastamodifierPrice = form.querySelectorAll(".price_pastamodifier");
+    //   for (let i = 0; i < pastamodifierCheckboxTrue.length; i++) {
+    //     if (pastamodifierCheckboxTrue[i].checked) {
+    //       finalPastaModifier.push({
+    //         title: pastamodifierCheckboxTrue[i].name,
+    //         price: +pastamodifierPrice[i].value,
+    //       });
+    //     }
+    //   }
+
+    //   // const pastamodifierCheckboxFalse = form.querySelectorAll(
+    //   //   ".checkbox_pastamodifier_price_false"
+    //   // );
+    //   // for (let i = 0; i < pastamodifierCheckboxFalse.length; i++) {
+    //   //   if (pastamodifierCheckboxFalse[i].checked) {
+    //   //     finalPastaModifier.push({
+    //   //       title: pastamodifierCheckboxFalse[i].name,
+    //   //     });
+    //   //   }
+    //   // }
+    // }
+    // if (toppings.checked) {
+    //   // get all values of toppings
+    //   const toppingsCheckbox = form.querySelectorAll(".checkbox_toppings");
+    //   for (let i = 0; i < toppingsCheckbox.length; i++) {
+    //     if (toppingsCheckbox[i].checked) {
+    //       finalToppings.push(toppingsCheckbox[i].name);
+    //     }
+    //   }
+    // }
+
     console.log(data);
+    if (nanzaData["pizzaId"]) {
+      dispatch(updateNanza(data, nanzaData["pizzaId"], handleNavigate));
+    } else {
+      dispatch(addNewNanza(data, handleNavigate));
+    }
+  };
+
+  const handleImageName = (name) => {
+    setImageName(name);
   };
   return (
     <Layout>
@@ -121,14 +216,22 @@ export const AddNanza = () => {
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
-              <Image />
+              <Detail
+                itemValue={{
+                  name: nanzaData?.name,
+                  description: nanzaData?.description,
+                }}
+              />
+              <Image
+                itemValue={nanzaData?.imageUrl}
+                categoryId={NanzaId}
+                name={imgName}
+                handleImageName={handleImageName}
+              />
               <GridItem colSpan={2}>
                 <PaneerChicken
-                  values={
-                    Object.keys(items).length > 0 &&
-                    items.items["Panner/Chicken"]
-                  }
+                  values={items?.items?.["Panner/Chicken"]}
+                  itemValue={nanzaItem?.panner_chicken}
                 />
               </GridItem>
             </Grid>

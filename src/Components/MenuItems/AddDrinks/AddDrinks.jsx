@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem, useToast } from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
@@ -6,6 +6,11 @@ import { Detail } from "../GridItems/Detail";
 import { Breadcrumber } from "../Breadcrumber/Breadcrumber";
 import { FormButtons } from "../../FormButtons";
 import { RegMasala } from "../GridItems/RegMasala";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { CLEANUP } from "../../../Redux/actionType";
+import { HomeMadeDriskId } from "../../../data";
 
 const links = [
   {
@@ -15,7 +20,7 @@ const links = [
   },
   {
     title: "Drinks",
-    link: "#",
+    link: "/homemadedrinks",
     isCurrent: false,
   },
   {
@@ -25,6 +30,66 @@ const links = [
   },
 ];
 export const AddDrinks = () => {
+  const [link, setLink] = useState(links);
+  const toast = useToast();
+  const { drinksParam } = useParams();
+  const [imgName, setImgName] = useState("");
+  const [drinksData, setDrinksData] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading, error, items } = useSelector(
+    (store) => store.menuItemsReducer
+  );
+  const { home_made } = useSelector((store) => store.get_all_menuitem_reducer);
+  useEffect(() => {
+    // dispatch(get_Ingrediants(HomeMadeDriskId));
+  }, []);
+  useEffect(() => {
+    if (drinksParam && home_made.length > 0) {
+      const current = home_made.filter((item) => item.pizzaId === +drinksParam);
+      setDrinksData(current[0]);
+      let updated = link.map((item) => {
+        if (item.title === "Add Drinks") {
+          return {
+            title: "Edit Drinks",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
+    }
+  }, [drinksParam]);
+  const handleImageName = (name) => {
+    setImgName(name);
+  };
+  useEffect(() => {
+    if (isLoading) {
+      toast({
+        title: "Loading...",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    if (!isLoading && error) {
+      handleError(error);
+    }
+    return () => {
+      dispatch({ type: CLEANUP });
+    };
+  }, [isLoading, error, toast]);
+
+  const handleNavigate = (msg) => {
+    toast({
+      title: msg,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/homemadedrinks");
+  };
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -32,27 +97,34 @@ export const AddDrinks = () => {
     const price = form.querySelector("#price");
     const description = form.querySelector("#description");
     const image = form.querySelector("#image");
-    const drinkCan = form.querySelector("#checkbox_drinkCan");
-    const finaldrinkCan = [];
 
-    if (drinkCan.checked) {
-      // get all values of drinkCan
-      const drinkCanCheckbox = form.querySelectorAll(".checkbox_drinkCan");
-      for (let i = 0; i < drinkCanCheckbox.length; i++) {
-        if (drinkCanCheckbox[i].checked) {
-          finaldrinkCan.push(drinkCanCheckbox[i].name);
-        }
-      }
+    if (!name.value) {
+      handleError("Please enter name");
+      return;
     }
-    const data = {
-      name: name.value,
-      price: +price.value,
+    if (!description.value) {
+      handleError("Please enter description");
+      return;
+    }
+
+    if (!price.value) {
+      handleError("Please enter price");
+      return;
+    }
+    let data = {
+      pizzaName: name.value,
       description: description.value,
-      image: image ? image.src : "",
-      drinkCan: finaldrinkCan,
+      categoryId: HomeMadeDriskId,
+      imageName: HomeMadeDriskId + "/" + imgName,
+      items: [],
+      pizzaSize: { Medium: +price.value },
     };
 
-    console.log(data);
+    if (drinksData["pizzaId"]) {
+      dispatch(updateDrinksCanPop(data, drinksData["pizzaId"], handleNavigate));
+    } else {
+      dispatch(addNewDrinksCanPop(data, handleNavigate));
+    }
   };
   return (
     <Layout>
@@ -63,8 +135,18 @@ export const AddDrinks = () => {
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
-              <Image />
+              <Detail
+                itemValue={{
+                  name: drinksData?.name,
+                  description: drinksData?.description,
+                }}
+              />
+              <Image
+                itemValue={drinksData?.imageUrl}
+                handleImageName={handleImageName}
+                categoryId={HomeMadeDriskId}
+                name={imgName}
+              />
               <GridItem colSpan={2}>
                 <RegMasala />
               </GridItem>

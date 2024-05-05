@@ -92,7 +92,36 @@ const AllRoutes = () => {
       <Route path="/add/drinks" element={<AddDrinks />} />
 
       {/* EditMenuItems */}
-      <Route path="/edit/pizza/:pizzaId" element={<AddNewPizza />} />
+      <Route path="/edit/pizza/:pizzaParam" element={<AddNewPizza />} />
+      <Route path="/edit/burger/:burgerParam" element={<AddNewBurger />} />
+      <Route
+        path="/edit/housewings/:housewingsParam"
+        element={<HouseOfWings />}
+      />
+      <Route path="/edit/nanza/:nanzaParam" element={<AddNanza />} />
+      <Route
+        path="/edit/cheesyfun/:cheesyfunParam"
+        element={<AddCheesyFun />}
+      />
+      <Route path="/edit/sides/:sidesParam" element={<AddSides />} />
+      <Route path="/edit/salads/:saladsParam" element={<AddSalads />} />
+      <Route
+        path="/edit/sweettreat/:sweetTreatParam"
+        element={<AddSweetTreat />}
+      />
+      <Route
+        path="/edit/dippingsauces/:dippingSaucesParam"
+        element={<AddDippingSauces />}
+      />
+      <Route
+        path="/edit/thickshakes/:thickShakesParam"
+        element={<AddCultureCrustSpecialThinkShakes />}
+      />
+      <Route
+        path="/edit/drinkscan/:drinkscanParam"
+        element={<AddDrinksCanPop />}
+      />
+      <Route path="/edit/drinks/:drinksParam" element={<AddDrinks />} />
 
       {/* ExtraItems */}
       <Route path="/toppings" element={<ShowToppings />} />

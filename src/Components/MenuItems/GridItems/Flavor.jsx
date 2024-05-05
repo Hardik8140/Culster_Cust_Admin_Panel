@@ -1,6 +1,7 @@
 import { Box, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import useCheckbox from "../../../Hooks/useCheckbox";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
+import { useEffect } from "react";
 const Drizzled = {
   11: "Creamy Garlic",
 
@@ -13,8 +14,20 @@ const Drizzled = {
 export const Flavor = ({
   title = "FLAVOR (BASE SAUCE AND TOP SEASONINGS)",
   values = {},
+  itemValue = [],
 }) => {
   const [checked, handleChange] = useCheckbox(false);
+  useEffect(() => {
+    if (itemValue.length > 0 && Object.keys(values).length > 0) {
+      const main_checkbox = document.querySelector("#checkbox_flavor");
+      main_checkbox.checked = true;
+      handleChange();
+      for (const id of itemValue) {
+        const checkbox = document.querySelector(`#checkbox_flavor_${id}`);
+        checkbox.checked = true;
+      }
+    }
+  }, [itemValue]);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
@@ -61,14 +74,14 @@ export const Flavor = ({
                         <input
                           name={key}
                           type="checkbox"
-                          id={`${values[key]}_checkbox_flavor`}
+                          id={`checkbox_flavor_${key}`}
                           className="checkbox_flavor"
                         />
                         <span className={style.checkmark}></span>
                       </label>
                     </Box>
                     <label
-                      htmlFor={`${values[key]}_checkbox_flavor`}
+                      htmlFor={`checkbox_flavor_${key}`}
                       style={{ cursor: "pointer" }}
                     >
                       {values[key]}

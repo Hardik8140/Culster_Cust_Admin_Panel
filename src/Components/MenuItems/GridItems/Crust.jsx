@@ -1,7 +1,7 @@
 import { Box, Flex, GridItem, Stack, Text } from "@chakra-ui/react";
 import style from "../AddNewPizza/AddNewPIzza.module.css";
 import useCheckbox from "../../../Hooks/useCheckbox";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const crusted = {
   11: "Regular",
@@ -11,12 +11,11 @@ const crusted = {
 };
 export const Crust = ({ values = {}, itemValue = [] }) => {
   const [checked, handleChange] = useCheckbox(false);
-  const [item, setItem] = useState(itemValue || []);
   useEffect(() => {
     if (itemValue.length > 0 && Object.keys(values).length > 0) {
       const main_checkbox = document.querySelector("#checkbox_crust");
       main_checkbox.checked = true;
-      // handleChange(main_checkbox);
+      handleChange();
       for (const id of itemValue) {
         const checkbox = document.querySelector(`#checkbox_crust_${id}`);
         checkbox.checked = true;
