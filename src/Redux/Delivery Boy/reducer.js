@@ -1,16 +1,15 @@
 import {
-  CLEANUP,
+  ASSIGN_DELIVERY_BOY,
   ERROR,
-  GET_REVIEW_SUCCESS,
-  GET_TABLE_RESERVATION_SUCCESS,
+  GET_DELIVERY_BOY,
   LOADING,
-  POST_TABLE_RESERVATION_SUCCESS,
 } from "../actionType";
 
 const initalState = {
   loading: false,
   error: "",
-  reserveTable: [],
+  delivery_boy: [],
+  assign_boy: [],
 };
 
 export const reducer = (state = initalState, { type, payload }) => {
@@ -26,27 +25,20 @@ export const reducer = (state = initalState, { type, payload }) => {
         isLoading: false,
         error: payload,
       };
-    case GET_TABLE_RESERVATION_SUCCESS:
-      return {
-        ...state,
-        error: "",
-        isLoading: false,
-        reserveTable: payload,
-      };
-    case POST_TABLE_RESERVATION_SUCCESS:
-      return {
-        ...state,
-        error: "",
-        isLoading: false,
-        reserveTable: payload,
-      };
-    case CLEANUP:
+    case GET_DELIVERY_BOY:
       return {
         ...state,
         isLoading: false,
         error: "",
+        delivery_boy: payload,
       };
-
+    case ASSIGN_DELIVERY_BOY:
+      return {
+        ...state,
+        isLoading: false,
+        error: "",
+        assign_boy: payload,
+      };
     default:
       return state;
   }

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { get_toppings } from "../../Redux/ExtraItems/action";
+import { delete_toppings, get_toppings } from "../../Redux/ExtraItems/action";
 import { CLEANUP } from "../../Redux/actionType";
 import Layout from "../Layout/Layout";
 import { Breadcrumber } from "../MenuItems/Breadcrumber/Breadcrumber";
@@ -50,12 +50,9 @@ const ShowToppings = () => {
     };
   }, [error, toast, dispatch]);
 
-  const handleRemoveTopping = (toppingToRemove) => {
-    setSelectedToppings(
-      selectedToppings.filter((topping) => topping !== toppingToRemove)
-    );
-    // Dispatch remove_topping action with the ID or any unique identifier of the topping
-    // dispatch(remove_topping(toppingToRemove.id)); // Adjust the argument according to your topping data structure
+  const handleRemoveTopping = (id, e) => {
+    e.preventDefault();
+    dispatch(delete_toppings(id));
   };
   return (
     <Layout>
@@ -85,31 +82,32 @@ const ShowToppings = () => {
           </div>
 
           <div className="inner-box-2">
-            {toppings.map((el, i) => (
-              <Box
-                key={i}
-                bgColor="brand.background"
-                borderRadius={"8px"}
-                // p={2}
-                p={"4px"}
-              >
+            {Array.isArray(toppings) &&
+              toppings.map((el, i) => (
                 <Box
-                  display="flex"
-                  gap={4}
+                  key={i}
+                  bgColor="brand.background"
+                  borderRadius={"8px"}
+                  // p={2}
                   p={"4px"}
-                  alignItems="center"
-                  height={"100%"}
                 >
-                  <span>
-                    {el.name}
-                    <IconButton
-                      bg="none"
-                      _hover={{ bg: "none" }}
-                      icon={<CloseIcon />}
-                      onClick={() => handleRemoveTopping(el.extraItemId)}
-                    />
-                  </span>
-                  <Text fontWeight="400" fontSize="16px" color="#1F1F1F">
+                  <Box
+                    display="flex"
+                    gap={4}
+                    p={"4px"}
+                    alignItems="center"
+                    height={"100%"}
+                  >
+                    <span>
+                      {el.name}
+                      <IconButton
+                        bg="none"
+                        _hover={{ bg: "none" }}
+                        icon={<CloseIcon />}
+                        onClick={(e) => handleRemoveTopping(el.extraItemId, e)}
+                      />
+                    </span>
+                    {/* <Text fontWeight="400" fontSize="16px" color="#1F1F1F">
                     {el.name}
                   </Text>
                   <IconButton
@@ -118,11 +116,11 @@ const ShowToppings = () => {
                     icon={<CloseIcon />}
                     color={"#919191"}
                     onClick={() => handleRemoveTopping(el.extraItemId)}
-                  />
-                  {/* <CloseIcon onClick={() => handleRemoveTopping(el)} /> */}
+                  /> */}
+                    {/* <CloseIcon onClick={() => handleRemoveTopping(el)} /> */}
+                  </Box>
                 </Box>
-              </Box>
-            ))}
+              ))}
           </div>
         </DIV>
       </Box>

@@ -5,12 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { get_reviews } from "../../Redux/Customer Review/action";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
+import ReactPaginate from "react-paginate";
+import styled from "styled-components";
 
 const CustomerReview = () => {
   const dispatch = useDispatch();
   const reviews = useSelector((store) => store.reviewReducer.reviews);
   console.log(reviews);
   const [filterOption, setFilterOption] = useState("latest");
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     dispatch(get_reviews());
@@ -32,6 +35,15 @@ const CustomerReview = () => {
       return new Date(a.createdDate) - new Date(b.createdDate);
     }
   });
+
+  const handlePageChange = ({ selected: selectedPage }) => {
+    setCurrentPage(selectedPage);
+  };
+
+  const itemsPerPage = 10;
+  const offset = currentPage * itemsPerPage;
+  const pageCount = Math.ceil(reviews.length / itemsPerPage);
+  const currentPageData = reviews.slice(offset, offset + itemsPerPage);
 
   // const [rating, setRating] = useState(reviews.rating);
 
@@ -103,26 +115,68 @@ const CustomerReview = () => {
               </Center>
             </Box>
           ))}
-          {/* <Box display="flex" backgroundColor="white" p={4} borderRadius={4}>
-            <Box>
-              <Text>Hardik Gajera</Text>
-              <Text color="lightgray">24 Jan 2024</Text>
-              <Text fontSize="16px">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Id
-                commodi iure eveniet molestiae dicta! Autem dolore architecto
-                porro ad quisquam nostrum possimus sint delectus incidunt,
-                cupiditate dolorum recusandae quibusdam aperiam.
-              </Text>
-            </Box>
-            <Box w="15rem" textAlign="center">
-              <Text fontSize="2rem">4.2</Text>
-              <Text></Text>
-            </Box>
-          </Box> */}
         </Stack>
+        <PaginationBox>
+          <ReactPaginate
+            previousLabel={"<"}
+            nextLabel={">"}
+            pageCount={Math.ceil(reviews.length / itemsPerPage)}
+            onPageChange={handlePageChange}
+            containerClassName={"pagination"}
+            previousLinkClassName={"pagination__link"}
+            nextLinkClassName={"pagination__link"}
+            disabledClassName={"pagination__link--disabled"}
+            activeClassName={"pagination__link--active"}
+          />
+        </PaginationBox>
       </Box>
     </Layout>
   );
 };
 
 export default CustomerReview;
+
+const PaginationBox = styled.div`
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  margin-top: 20px;
+
+  .pagination {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    background: white;
+  }
+
+  .pagination__item {
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .pagination__link {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    /* color: #333; */
+    text-decoration: none;
+  }
+
+  .pagination__link--active {
+    background-color: red;
+    border-radius: 8px;
+    padding: 0px 8px;
+    border: 1px solid red;
+    color: #fff;
+    /* border-color: #007bff; */
+  }
+
+  .pagination__link--disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+`;

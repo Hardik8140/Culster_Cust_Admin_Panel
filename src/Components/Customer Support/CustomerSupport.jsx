@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout/Layout";
 import {
   Box,
@@ -19,15 +19,26 @@ import { deleteOutline, edit, updown } from "../../assets";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { get_support } from "../../Redux/Customer_Support/action";
+import ReactPaginate from "react-paginate";
 
 const CustomerSupport = () => {
   const dispatch = useDispatch();
   const support = useSelector((store) => store.supportReducer.support);
-  console.log(support);
+  // console.log(support);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     dispatch(get_support());
   }, [dispatch]);
+
+  const handlePageChange = ({ selected: selectedPage }) => {
+    setCurrentPage(selectedPage);
+  };
+
+  const itemsPerPage = 10;
+  const offset = currentPage * itemsPerPage;
+  const pageCount = Math.ceil(support.length / itemsPerPage);
+  const currentPageData = support.slice(offset, offset + itemsPerPage);
   return (
     <Layout>
       <Box>
@@ -79,7 +90,7 @@ const CustomerSupport = () => {
               backgroundColor: "#F3F3F3",
             }}
           >
-            {support.map((item, index) => (
+            {currentPageData.map((item, index) => (
               <tr key={index}>
                 <td style={{ textAlign: "center" }}>{item.customerName}</td>
                 <td style={{ textAlign: "center" }}>{item.customerEmail}</td>
@@ -89,6 +100,19 @@ const CustomerSupport = () => {
           </tbody>
         </table>
       </DIV>
+      <PaginationBox>
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          pageCount={Math.ceil(support.length / itemsPerPage)}
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          previousLinkClassName={"pagination__link"}
+          nextLinkClassName={"pagination__link"}
+          disabledClassName={"pagination__link--disabled"}
+          activeClassName={"pagination__link--active"}
+        />
+      </PaginationBox>
     </Layout>
   );
 };
@@ -116,5 +140,49 @@ const DIV = styled.div`
     border: 1px solid red;
 
     background-color: #f3f3f3;
+  }
+`;
+const PaginationBox = styled.div`
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  margin-top: 20px;
+
+  .pagination {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    background: white;
+  }
+
+  .pagination__item {
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .pagination__link {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    /* color: #333; */
+    text-decoration: none;
+  }
+
+  .pagination__link--active {
+    background-color: red;
+    border-radius: 8px;
+    padding: 0px 8px;
+    border: 1px solid red;
+    color: #fff;
+    /* border-color: #007bff; */
+  }
+
+  .pagination__link--disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 `;

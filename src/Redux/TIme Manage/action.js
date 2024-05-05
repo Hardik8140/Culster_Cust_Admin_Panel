@@ -47,20 +47,17 @@ export const fetchOutletTimeSlots = (outletId) => {
   };
 };
 
-export const saveOutletTimeSlots = (outletId, timeSlots) => {
+export const saveOutletTimeSlots = (requestData) => {
   return async (dispatch) => {
     dispatch({ type: LOADING });
     try {
       const response = await axios.post(
         `https://ec2-54-172-26-24.compute-1.amazonaws/api/outlet/save/time/slot`,
-        {
-          outletId,
-          timeSlots,
-        }
+        requestData
       );
       dispatch({
         type: POST_OUTLET_TIME_SLOTS_SUCCESS,
-        payload: response.data.data.timeSlots,
+        payload: response.data,
       });
     } catch (error) {
       dispatch({
