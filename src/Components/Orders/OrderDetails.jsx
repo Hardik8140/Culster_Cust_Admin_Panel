@@ -24,6 +24,7 @@ import {
   ModalOverlay,
   Select,
   Step,
+  Progress,
   StepDescription,
   StepIcon,
   StepIndicator,
@@ -40,7 +41,6 @@ import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { logo, updown } from "../../assets";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
-import { Progress } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { accept_Orders, get_Details_Orders } from "../../Redux/Orders/action";
 import { array } from "i/lib/util";
@@ -75,14 +75,21 @@ const OrderDetails = () => {
   useEffect(() => {
     dispatch(get_Details_Orders(id));
     dispatch(get_delivery_boy());
-    const newOrderStatus = Cookies.get("orderStatus");
-    setOrderAccepted(newOrderStatus);
   }, [dispatch, id]);
 
   const handleAcceptOrder = (id, status, e) => {
     e.preventDefault();
+    console.log(status);
     dispatch(accept_Orders(id, status));
+    setOrderAccepted(true);
+    Cookies.set(`orderStatus_${id}`, orderStatus);
   };
+
+  useEffect(() => {
+    const newOrderStatus = Cookies.get(`orderStatus_${id}`);
+    setOrderAccepted(newOrderStatus);
+    console.log(newOrderStatus);
+  }, [id, orderStatus]);
 
   const handleAssign = () => {
     dispatch(assign_delivery_boy(delivery, id));
@@ -91,17 +98,25 @@ const OrderDetails = () => {
 
   // console.log(orderStatus.success);
 
-  const activeStep = orderAccepted ? 1 : 0;
+  const { activeStep, setActiveStep } = useSteps({
+    index: 1,
+    count: steps.length,
+  });
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (orderAccepted) {
+        if (activeStep < steps.length - 1) {
+          setActiveStep((prevStep) => prevStep + 1);
+        }
+      }
+    }, 12000); // 2 minutes interval
+    return () => clearInterval(timer);
+  }, [activeStep, orderAccepted, setActiveStep]);
   const activeStepText = steps[activeStep].description;
 
   const max = steps.length - 1;
-  const progressPercent = (activeStep / max) * 100;
-
-  //   const activeStepText = steps[activeStep].description;
-
-  //   const max = steps.length - 1;
-  //   const progressPercent = (activeStep / max) * 100;
+  const progressPercent = (activeStep / (steps.length - 1)) * 100;
 
   return (
     <Layout>
@@ -147,12 +162,18 @@ const OrderDetails = () => {
                       bg="brand.add"
                       color="white"
                       onClick={(e) =>
-                        handleAcceptOrder(el.orderId, el.status, e)
+                        handleAcceptOrder(el.orderId, "ACCEPTED", e)
                       }
                     >
                       Accept
                     </Button>
-                    <Button bg="brand.primary" color="white">
+                    <Button
+                      bg="brand.primary"
+                      color="white"
+                      onClick={(e) =>
+                        handleAcceptOrder(el.orderId, "REJECTED", e)
+                      }
+                    >
                       Reject
                     </Button>
                   </Box>
@@ -306,7 +327,7 @@ const OrderDetails = () => {
                                   w={"100%"}
                                   h={"100%"}
                                   borderRadius={"10px"}
-                                  objectFit={"cover"} // Ensure the image maintains aspect ratio and fills the container
+                                  objectFit={"cover"}
                                 />
                               </div>
                               <Box flex="1">
@@ -352,27 +373,55 @@ const OrderDetails = () => {
                 </Box>
 
                 <Box w="30%">
-                  <Box backgroundColor="white" borderRadius={6} p={4}>
-                    <Text>Heading</Text>
+                  <Box
+                    backgroundColor="white"
+                    borderRadius={6}
+                    p={4}
+                    position="relative"
+                    zIndex={111}
+                  >
+                    <Text>History</Text>
 
-                    <Stepper
-                      size="xs"
+                    <Box backgroundColor="white" borderRadius={6} p={4}>
+                      <Stepper
+                        index={activeStep}
+                        orientation="vertical"
+                        height="150px"
+                        gap="0"
+                      >
+                        {steps.map((step, index) => (
+                          <Step
+                            key={index}
+                            textAlign="center"
+                            zIndex={1}
+                            border="none"
+                          >
+                            <StepIndicator
+                              bg={index === activeStep ? "green" : "gray"}
+                              width="17px"
+                              height="17px"
+                              border="none"
+                            >
+                              <StepStatus />
+                            </StepIndicator>
+
+                            <Text fontSize="16px">{step.description}</Text>
+                          </Step>
+                        ))}
+                      </Stepper>
+                    </Box>
+                    <Progress
                       orientation="vertical"
-                      index={activeStep}
-                      gap="0"
-                    >
-                      {steps.map((step, index) => (
-                        <Step key={index} alignItems="center" gap="0">
-                          <StepIndicator bg="white">
-                            <StepStatus complete={<StepIcon />} />
-                          </StepIndicator>
-                          <Text pl={3}>{step.description}</Text>
-                          {index < steps.length - 1 && (
-                            <StepSeparator borderColor="gray" />
-                          )}
-                        </Step>
-                      ))}
-                    </Stepper>
+                      height="130px"
+                      value={progressPercent}
+                      position="absolute"
+                      bg={activeStep ? "gray" : "green"}
+                      border="1px solid gray"
+                      width="2px"
+                      top="60px"
+                      left="2.45em"
+                      zIndex={0}
+                    />
                     {/* <Progress value={progressPercent} size="small" /> */}
                   </Box>
 

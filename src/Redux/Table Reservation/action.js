@@ -32,7 +32,7 @@ export const post_table_reservation_status =
         `https://ec2-54-172-26-24.compute-1.amazonaws.com:8443/api/reservetable/update/status?reserveTableId=${id}&status=${status}`
       );
       res = res.data;
-      console.log(res.data);
+      console.log(res);
       if (res.success) {
         dispatch({ type: POST_TABLE_RESERVATION_SUCCESS, payload: res.data });
         dispatch(get_table_reservation());

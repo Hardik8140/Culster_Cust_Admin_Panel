@@ -1,3 +1,9 @@
 .sidebar {
   color: #ffffff;
 }
+a:hover {
+  background-color: #d60024 !important;
+}
+.menu-anchor:hover {
+  background-color: #d60024 !important;
+}

@@ -56,7 +56,7 @@ export const accept_Orders = (id, status) => async (dispatch) => {
     if (res.data.success) {
       dispatch({ type: ACCEPT_ORDERS, payload: { id, status } });
       if (res.data.data === "success") {
-        Cookies.set("orderStatus", res.data.success);
+        Cookies.set(`orderStatus_${id}`, res.data.success);
       }
     } else {
       dispatch({ type: ERROR, payload: res.message });

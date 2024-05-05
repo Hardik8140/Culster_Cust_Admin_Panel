@@ -17,7 +17,11 @@ import { Breadcrumber } from "../MenuItems/Breadcrumber/Breadcrumber";
 import { Add } from "./GridItems/Add";
 import { Price } from "./GridItems/Price";
 import { View } from "lucide-react";
-import { get_drizzles, get_toppings } from "../../Redux/ExtraItems/action";
+import {
+  delete_drizzles,
+  get_drizzles,
+  get_toppings,
+} from "../../Redux/ExtraItems/action";
 import { CloseIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 
@@ -61,12 +65,9 @@ const ShowDizzleitUp = () => {
     }
   }, [error, toast]);
 
-  const handleRemoveTopping = (toppingToRemove) => {
-    setSelectedToppings(
-      selectedToppings.filter((topping) => topping !== toppingToRemove)
-    );
-    // Dispatch remove_topping action with the ID or any unique identifier of the topping
-    // dispatch(remove_topping(toppingToRemove.id)); // Adjust the argument according to your topping data structure
+  const handleRemoveDrizzles = (id, e) => {
+    e.preventDefault();
+    dispatch(delete_drizzles(id));
   };
   return (
     <Layout>
@@ -115,7 +116,7 @@ const ShowDizzleitUp = () => {
                     bg="none"
                     _hover={{ bg: "none" }}
                     icon={<CloseIcon />}
-                    onClick={() => handleRemoveTopping(el.extraItemId)}
+                    onClick={(e) => handleRemoveDrizzles(el.extraItemId, e)}
                   />
                   {/* <CloseIcon onClick={() => handleRemoveTopping(el)} /> */}
                 </Box>

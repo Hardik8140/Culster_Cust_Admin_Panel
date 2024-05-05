@@ -59,6 +59,7 @@ const TableReservation = () => {
 
   const handleOrder = (status, id) => {
     dispatch(post_table_reservation_status(status, id));
+    onClose();
   };
 
   return (
@@ -110,7 +111,15 @@ const TableReservation = () => {
                     <td>{formatTime(el.dateTime)}</td>
                     <td>
                       <Text
-                        bgColor={el.status ? "brand.pending" : "brand.stock"}
+                        bgColor={
+                          el.status === "PENDING"
+                            ? "brand.pending"
+                            : el.status === "ACCEPTED"
+                            ? "brand.add"
+                            : el.status === "REJECTED"
+                            ? "brand.primary"
+                            : "transparent"
+                        }
                         w={"fit-content"}
                         p={"4px 8px"}
                         textAlign={"center"}
@@ -197,7 +206,7 @@ const TableReservation = () => {
                     color="white"
                     onClick={() =>
                       handleOrder(
-                        selectedReservation.status,
+                        "REJECTED",
                         selectedReservation?.reserveTableId
                       )
                     }
@@ -209,7 +218,7 @@ const TableReservation = () => {
                     color="white"
                     onClick={() =>
                       handleOrder(
-                        selectedReservation.status,
+                        "ACCEPTED",
                         selectedReservation?.reserveTableId
                       )
                     }
