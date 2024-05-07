@@ -7,6 +7,7 @@ import {
   Input,
   Stack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import styled from "styled-components";
 import Layout from "../Layout/Layout";
@@ -14,8 +15,12 @@ import { Breadcrumber } from "../MenuItems/Breadcrumber/Breadcrumber";
 import { Detail } from "../MenuItems/GridItems/Detail";
 import { Image } from "../MenuItems/GridItems/Image";
 import { FormButtons } from "../FormButtons";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Upload } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewDeliveryBoy } from "../../Redux/Delivery Boy/action";
+import { uploadImage } from "../../Redux/MenuItems/action";
 
 const links = [
   {
@@ -30,61 +35,102 @@ const links = [
   },
 ];
 export const AddDeliveryBoy = () => {
+  const inputRef = useRef();
+  const [imagePrev, setImagePrev] = useState("");
+  const [imgName, setImgName] = useState("");
+  const toast = useToast();
+  const { boyParam } = useParams();
+  const binRef = useRef("");
+  const { delivery_boy } = useSelector((store) => store.delivery_boyReducer);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleError = (msg) => {
+    toast({
+      title: msg,
+      duration: 5000,
+      isClosable: true,
+      status: "error",
+    });
+  };
+  const handleNavigate = () => {
+    toast({
+      title: "Driver Added Successfully",
+      duration: 5000,
+      isClosable: true,
+      status: "success",
+    });
+    navigate("/boy");
+  };
+  const handleImgName = (name) => {
+    setImgName(name);
+  };
+  useEffect(() => {
+    if (boyParam && delivery_boy.length > 0) {
+    }
+  }, [boyParam]);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.querySelector("#name");
-    const price = form.querySelector("#price");
-    const description = form.querySelector("#description");
+    const email = form.querySelector("#email");
+    const phone = form.querySelector("#phone");
     const image = form.querySelector("#image");
-    const drinkCan = form.querySelector("#checkbox_drinkCan");
-    const finaldrinkCan = [];
 
-    if (drinkCan.checked) {
-      // get all values of drinkCan
-      const drinkCanCheckbox = form.querySelectorAll(".checkbox_drinkCan");
-      for (let i = 0; i < drinkCanCheckbox.length; i++) {
-        if (drinkCanCheckbox[i].checked) {
-          finaldrinkCan.push(drinkCanCheckbox[i].name);
-        }
-      }
+    if (!name.value) {
+      handleError("please enter driver name");
+      return;
+    }
+    if (!email.value) {
+      handleError("please enter driver email");
+      return;
+    }
+    if (!phone.value) {
+      handleError("please enter driver phone");
+      return;
     }
     const data = {
-      name: name.value,
-      price: +price.value,
-      description: description.value,
-      image: image ? image.src : "",
-      drinkCan: finaldrinkCan,
+      username: name.value,
+      email: email.value,
+      mobilenumber: phone.value,
+      image: "delivery/" + imgName,
     };
 
-    console.log(data);
+    // console.log(data);
+    dispatch(addNewDeliveryBoy(data, handleNavigate));
   };
 
-  const inputRef = useRef();
-  const [imagePrev, setImagePrev] = useState("");
   const handleFileChange = (event) => {
     const fileObj = event.target.files[0];
     if (!fileObj) {
       return;
     }
-
-    let formData = new FormData();
-    formData.append("file", fileObj);
-    formData.append("upload_preset", "rdy1h4fu");
-    formData.append("cloud_name", "dpspgsvks");
-
-    fetch("https://api.cloudinary.com/v1_1/dpspgsvks/image/upload", {
-      method: "post",
-      body: formData,
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        // updateUsersAvatar(data.url);
-        setImagePrev(data.url);
-      })
-      .catch((err) => console.log(err));
-
-    event.target.value = null;
+    const imageLocation = URL.createObjectURL(fileObj);
+    setImagePrev(imageLocation);
+    handleImgName(fileObj.name);
+    const reader = new FileReader();
+    reader.readAsDataURL(fileObj);
+    reader.onload = () => {
+      const binaryStr = reader.result.replace(
+        /^data:image\/(png|jpg|jpeg);base64,/,
+        ""
+      );
+      binRef.current = binaryStr;
+    };
+  };
+  const handleMessage = () => {
+    toast({
+      title: "Image Uploaded Successfully",
+      duration: 5000,
+      isClosable: true,
+      status: "success",
+    });
+  };
+  const handleUpload = () => {
+    const final = {
+      fileName: `delivery/${imgName}`,
+      imageData: binRef.current,
+    };
+    dispatch(uploadImage(final, handleMessage));
   };
   return (
     <Layout>
@@ -103,14 +149,14 @@ export const AddDeliveryBoy = () => {
               >
                 <Stack gap={4}>
                   <Flex justifyContent={"space-between"}>
-                    <Stack>
+                    <Stack w={"100%"}>
                       <Text size={"18px"} fontWeight={"500"}>
                         Driver Boy Name{" "}
                       </Text>
                       <Input
-                        w="100%"
+                        width="100%"
                         type="text"
-                        placeholder="Enter Mobile Number"
+                        placeholder="Enter the driver name"
                         id="name"
                       />
                     </Stack>
@@ -125,7 +171,7 @@ export const AddDeliveryBoy = () => {
               >
                 <Stack gap={4}>
                   <Flex justifyContent={"space-between"}>
-                    <Stack>
+                    <Stack w={"100%"}>
                       <Text size={"18px"} fontWeight={"500"}>
                         Mobile Number{" "}
                       </Text>
@@ -133,7 +179,7 @@ export const AddDeliveryBoy = () => {
                         w="100%"
                         type="text"
                         placeholder="Enter Mobile Number"
-                        id="name"
+                        id="phone"
                       />
                     </Stack>
                   </Flex>
@@ -147,14 +193,14 @@ export const AddDeliveryBoy = () => {
               >
                 <Stack gap={4}>
                   <Flex justifyContent={"space-between"}>
-                    <Stack>
+                    <Stack w={"100%"}>
                       <Text size={"18px"} fontWeight={"500"}>
-                        Email Address{" "}
+                        Email Address
                       </Text>
                       <Input
                         type="text"
                         placeholder="Enter Email Address"
-                        id="name"
+                        id="email"
                       />
                     </Stack>
                   </Flex>
@@ -167,7 +213,59 @@ export const AddDeliveryBoy = () => {
                 py={"16px"}
                 bgColor={"brand.white"}
               >
-                <Flex justifyContent={"space-between"} height={"100%"} gap={7}>
+                <Flex justifyContent={"space-between"} height={"100%"}>
+                  <Stack>
+                    <Text>Driver Profile Picture</Text>
+                    <Button
+                      color={"brand.grey"}
+                      border={"1px solid"}
+                      borderColor={"brand.grey"}
+                      boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
+                      onClick={() => inputRef.current.click()}
+                    >
+                      <input
+                        style={{ display: "none" }}
+                        ref={inputRef}
+                        type="file"
+                        onChange={handleFileChange}
+                      />
+                      <Upload size={16} />
+                      <Text ml={2} fontSize={"14px"} fontWeight={"600"}>
+                        Upload Image
+                      </Text>
+                    </Button>
+                    <Button
+                      mt={4}
+                      color={"brand.grey"}
+                      border={"1px solid"}
+                      w={"fit-content"}
+                      borderColor={"brand.grey"}
+                      onClick={handleUpload}
+                      boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
+                    >
+                      Save
+                    </Button>
+                  </Stack>
+                  <Flex
+                    justifyContent={"center"}
+                    color={"brand.grey"}
+                    bgColor={"brand.grey100"}
+                    width={"60%"}
+                    alignItems={"center"}
+                  >
+                    {imagePrev ? (
+                      <img
+                        src={imagePrev}
+                        id="image"
+                        style={{ maxHeight: "inherit" }}
+                        alt="preview image"
+                      />
+                    ) : (
+                      "Image Preview"
+                    )}
+                  </Flex>
+                </Flex>
+                {/* <Flex justifyContent={"space-between"} height={"100%"} gap={7}>
                   <Stack gap={7}>
                     <Text>Driver Profile Picture</Text>
                     <Button
@@ -202,7 +300,7 @@ export const AddDeliveryBoy = () => {
                       "Image Preview"
                     )}
                   </Flex>
-                </Flex>{" "}
+                </Flex> */}
               </GridItem>
             </Grid>
             <FormButtons />
