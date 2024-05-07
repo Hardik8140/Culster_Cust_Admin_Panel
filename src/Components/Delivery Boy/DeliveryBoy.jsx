@@ -130,7 +130,7 @@ const DeliveryBoy = () => {
                   <td>#{el.id}</td>
                   <td>{el.name}</td>
                   <td>{el.phoneNumber}</td>
-                  <td>john@gmail.com</td>
+                  <td>{el.emailAddress}</td>
                   <td>
                     <Text
                       bgColor={

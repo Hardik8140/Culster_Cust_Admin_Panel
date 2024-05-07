@@ -52,7 +52,7 @@ export const saveOutletTimeSlots = (requestData) => {
     dispatch({ type: LOADING });
     try {
       const response = await axios.post(
-        `https://ec2-54-172-26-24.compute-1.amazonaws/api/outlet/save/time/slot`,
+        `https://ec2-54-172-26-24.compute-1.amazonaws.com:8443/api/outlet/save/time/slot`,
         requestData
       );
       dispatch({
