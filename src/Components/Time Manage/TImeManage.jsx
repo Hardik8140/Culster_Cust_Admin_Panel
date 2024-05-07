@@ -77,9 +77,13 @@ const TImeManage = () => {
         outletTimeId: i + 1,
         weekDay: day,
         isAllDayClose,
-        status: "open",
-        startTime: openingHour + ":" + openingMinute,
-        endTime: closingHour + ":" + closingMinute,
+        status: isAllDayClose ? "close" : "open",
+        startTime: isAllDayClose
+          ? ""
+          : openingHour.replace("H", "") + ":" + openingMinute.replace("M", ""),
+        endTime: isAllDayClose
+          ? ""
+          : closingHour.replace("H", "") + ":" + closingMinute.replace("M", ""),
       })
     );
 
@@ -88,11 +92,11 @@ const TImeManage = () => {
       timeSlots: timeSlots,
     };
 
-    // console.log(requestData);
-    // let id = ;
-
-    dispatch(saveOutletTimeSlots(requestData));
+    dispatch(saveOutletTimeSlots(requestData)).then(() => {
+      setEditMode(false);
+    });
   };
+
   return (
     <Layout>
       <Box p={2}>
