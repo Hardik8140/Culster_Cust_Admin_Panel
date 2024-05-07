@@ -11,6 +11,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CLEANUP } from "../../../Redux/actionType";
 import { HomeMadeDriskId } from "../../../data";
+import {
+  addNewDrinksCanPop,
+  updateDrinksCanPop,
+} from "../../../Redux/MenuItems/action";
 
 const links = [
   {
