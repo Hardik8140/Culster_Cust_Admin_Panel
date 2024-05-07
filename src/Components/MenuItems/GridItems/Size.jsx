@@ -16,23 +16,23 @@ const sized = [
   {
     title: "Medium (12 inches)",
     named: "Medium",
-    pizzaSizeId: 98,
+    pizzaSizeId: 106,
   },
 
   {
     title: "Large (14 inches)",
     named: "Large",
-    pizzaSizeId: 99,
+    pizzaSizeId: 107,
   },
   {
     title: "Extra Large (16 inches)",
     named: "Extra Large",
-    pizzaSizeId: 100,
+    pizzaSizeId: 108,
   },
   {
     title: "Party Size (15 x 21 inches)",
     named: "Party Size",
-    pizzaSizeId: 101,
+    pizzaSizeId: 109,
   },
 ];
 export const Size = ({ size = sized, itemValue = [] }) => {
@@ -44,11 +44,11 @@ export const Size = ({ size = sized, itemValue = [] }) => {
       handleChange();
       for (const obj of itemValue) {
         const checkbox = document.querySelector(
-          `#checkbox_size_${obj.pizzaSizeId}`
+          `#checkbox_size_${obj.size.split(" ")[0]}`
         );
         checkbox.checked = true;
         const pricebox = document.querySelector(
-          `#price_size_${obj.pizzaSizeId}`
+          `#price_size_${obj.size.split(" ")[0]}`
         );
         pricebox.value = obj.price;
       }
@@ -100,14 +100,14 @@ export const Size = ({ size = sized, itemValue = [] }) => {
                         <input
                           name={named}
                           type="checkbox"
-                          id={`checkbox_size_${pizzaSizeId}`}
+                          id={`checkbox_size_${named.split(" ")[0]}`}
                           className="checkbox_size"
                         />
                         <span className={style.checkmark}></span>
                       </label>
                     </Box>
                     <label
-                      htmlFor={`checkbox_size_${pizzaSizeId}`}
+                      htmlFor={`checkbox_size_${named.split(" ")[0]}`}
                       style={{ cursor: "pointer" }}
                     >
                       {title}
@@ -127,7 +127,7 @@ export const Size = ({ size = sized, itemValue = [] }) => {
                         w={"auto"}
                         placeholder="price"
                         className="price_size"
-                        id={`price_size_${pizzaSizeId}`}
+                        id={`price_size_${named.split(" ")[0]}`}
                       />
                     </InputGroup>
                   </Box>

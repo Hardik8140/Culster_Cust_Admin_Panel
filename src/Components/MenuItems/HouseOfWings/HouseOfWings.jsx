@@ -22,7 +22,7 @@ import {
   get_Ingrediants,
   updateHouseOfWings,
 } from "../../../Redux/MenuItems/action";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const links = [
   {
@@ -45,6 +45,7 @@ export const HouseOfWings = () => {
   const toast = useToast();
   const dispatch = useDispatch();
   const { housewingsParam } = useParams();
+  const navigate = useNavigate();
   const [link, setLink] = useState(links);
   const [houseWingsData, setHouseWingsData] = useState({});
   const [houseWingsItem, setHouseWingsItem] = useState({});
@@ -56,9 +57,7 @@ export const HouseOfWings = () => {
   const { hos } = useSelector((store) => store.get_all_menuitem_reducer);
 
   useEffect(() => {
-    if (items === undefined || Object.keys(items).length === 0) {
-      dispatch(get_Ingrediants(HouseWingsId));
-    }
+    dispatch(get_Ingrediants(HouseWingsId));
   }, []);
   useEffect(() => {
     if (housewingsParam) {
@@ -76,11 +75,23 @@ export const HouseOfWings = () => {
       });
       setLink(updated);
       currenthos = currenthos[0];
-      if (currenthos["pizzaId"]) {
+      if (currenthos.pizzaId) {
         let extra_items = currenthos["extraItems"];
         let typeofservings_item = [],
           sizeofwingbox_item = [],
           wingsSauces_item = [];
+        if (!currenthos["price"]) {
+          let sizes = currenthos["sizes"];
+          for (const obj of sizes) {
+            if (obj["size"] === "Medium") {
+              setHouseWingsData({
+                ...currenthos,
+                price: obj["price"],
+              });
+              break;
+            }
+          }
+        }
         for (const extra of extra_items) {
           switch (extra["extraItem"]["extraItemId"]) {
             case TypeOfServingId:
@@ -102,6 +113,8 @@ export const HouseOfWings = () => {
           sizeofwingbox: sizeofwingbox_item,
           wingsSauces: wingsSauces_item,
         });
+      } else {
+        navigate("/houseofwings");
       }
     }
   }, [housewingsParam]);
@@ -151,6 +164,10 @@ export const HouseOfWings = () => {
     }
     if (!description.value) {
       handleError("Please enter description");
+      return;
+    }
+    if (!price.value) {
+      handleError("Please enter price");
       return;
     }
     let data = {
@@ -231,18 +248,17 @@ export const HouseOfWings = () => {
       };
     }
 
-    if (houseWingsData?.pizzaId) {
-      dispatch(addNewHouseOfWings(data, handleNavigate));
-    } else {
+    if (housewingsParam) {
       dispatch(updateHouseOfWings(data, HouseWingsId, handleNavigate));
+    } else {
+      dispatch(addNewHouseOfWings(data, handleNavigate));
     }
   };
-
   return (
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
@@ -251,6 +267,7 @@ export const HouseOfWings = () => {
                 itemValue={{
                   name: houseWingsData?.name,
                   description: houseWingsData?.description,
+                  price: houseWingsData?.price,
                 }}
               />
               <Image

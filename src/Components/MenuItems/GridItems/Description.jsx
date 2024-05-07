@@ -1,8 +1,13 @@
 import { GridItem, Stack, Text, Textarea } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Description = ({ itemValue }) => {
   const [item, setItem] = useState(itemValue || "");
+  useEffect(() => {
+    if (itemValue) {
+      setItem(itemValue);
+    }
+  }, [itemValue]);
   return (
     <GridItem
       boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}

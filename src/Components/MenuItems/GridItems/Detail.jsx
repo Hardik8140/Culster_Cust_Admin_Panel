@@ -12,12 +12,14 @@ import {
 import { dollar } from "../../../assets";
 import { useEffect, useState } from "react";
 
-export const Detail = ({ itemValue = { name: "", description: "" } }) => {
+export const Detail = ({
+  itemValue = { name: "", description: "", price: 0 },
+}) => {
   const [state, setState] = useState({ ...itemValue });
   const handleChange = (event) => {
     setState({
-      [event.target.id]: event.target.value,
       ...state,
+      [event.target.id]: event.target.value,
     });
   };
   useEffect(() => {
@@ -64,6 +66,9 @@ export const Detail = ({ itemValue = { name: "", description: "" } }) => {
                   placeholder="price"
                   className="price_detail"
                   id={`price`}
+                  value={+state.price}
+                  name="price"
+                  onChange={handleChange}
                 />
               </InputGroup>
             </Box>

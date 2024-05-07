@@ -51,8 +51,22 @@ export const AddSides = () => {
   };
   useEffect(() => {
     if (sidesParam) {
-      const current = sides.filter((item) => item.pizzaId === +sidesParam);
-      setSideData(current[0]);
+      let current = sides.filter((item) => item.pizzaId === +sidesParam);
+      current = current[0];
+      setSideData(current);
+      if (!current["price"]) {
+        let sizes = current["sizes"];
+        for (const obj of sizes) {
+          if (obj["size"] === "Medium") {
+            setSideData({
+              ...current,
+              price: obj["price"],
+            });
+            break;
+          }
+        }
+      }
+
       let updated = link.map((item) => {
         if (item.title === "Add New Sides") {
           return {
@@ -95,7 +109,7 @@ export const AddSides = () => {
       items: [],
       pizzaSize: { Medium: +price.value },
     };
-    if (sidesData["pizzaId"]) {
+    if (sidesParam) {
       dispatch(updateSides(data, sidesData["pizzaId"], handleNavigate));
     } else {
       dispatch(addNewSides(data, handleNavigate));
@@ -105,7 +119,7 @@ export const AddSides = () => {
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
@@ -114,6 +128,7 @@ export const AddSides = () => {
                 itemValue={{
                   name: sidesData?.name,
                   description: sidesData?.description,
+                  price: sidesData?.price,
                 }}
               />
               <Image

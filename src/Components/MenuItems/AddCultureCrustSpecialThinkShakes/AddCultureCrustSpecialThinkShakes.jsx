@@ -52,10 +52,11 @@ export const AddCultureCrustSpecialThinkShakes = () => {
   );
   useEffect(() => {
     if (thickShakesParam && theek_shake.length > 0) {
-      const currentPizza = theek_shake.filter(
+      let currentPizza = theek_shake.filter(
         (item) => item.pizzaId === +thickShakesParam
       );
-      setThinkShakesData(currentPizza[0]);
+      currentPizza = currentPizza[0];
+      setThinkShakesData(currentPizza);
       let updated = link.map((item) => {
         if (item.title === "Add Culture Crust Special Think Shakes!!!") {
           return {
@@ -67,6 +68,18 @@ export const AddCultureCrustSpecialThinkShakes = () => {
         return item;
       });
       setLink(updated);
+      if (!currentPizza["price"]) {
+        let sizes = currentPizza["sizes"];
+        for (const obj of sizes) {
+          if (obj["size"] === "Medium") {
+            setThinkShakesData({
+              ...currentPizza,
+              price: obj["price"],
+            });
+            break;
+          }
+        }
+      }
     }
   }, [thickShakesParam]);
 
@@ -150,7 +163,7 @@ export const AddCultureCrustSpecialThinkShakes = () => {
       pizzaSize: { Medium: +price.value },
     };
 
-    if (thinkShakesData["pizzaId"]) {
+    if (thickShakesParam) {
       dispatch(
         updateThickShakes(data, thinkShakesData["pizzaId"], handleNavigate)
       );
@@ -172,6 +185,7 @@ export const AddCultureCrustSpecialThinkShakes = () => {
                 itemValue={{
                   name: thinkShakesData?.name,
                   description: thinkShakesData?.description,
+                  price: thinkShakesData?.price,
                 }}
               />
               <Image

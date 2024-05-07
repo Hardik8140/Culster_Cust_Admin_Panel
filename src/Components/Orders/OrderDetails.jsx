@@ -99,7 +99,7 @@ const OrderDetails = () => {
   // console.log(orderStatus.success);
 
   const { activeStep, setActiveStep } = useSteps({
-    index: 1,
+    index: 0,
     count: steps.length,
   });
 
@@ -397,12 +397,21 @@ const OrderDetails = () => {
                             border="none"
                           >
                             <StepIndicator
-                              bg={index === activeStep ? "green" : "gray"}
+                              bg={index === activeStep + 2 ? "green" : "gray"}
                               width="17px"
                               height="17px"
                               border="none"
                             >
-                              <StepStatus />
+                              <StepStatus
+                                complete={
+                                  <Box
+                                    bgColor={"green"}
+                                    p={2}
+                                    w={"inherit"}
+                                    rounded={"full"}
+                                  ></Box>
+                                }
+                              />
                             </StepIndicator>
 
                             <Text fontSize="16px">{step.description}</Text>

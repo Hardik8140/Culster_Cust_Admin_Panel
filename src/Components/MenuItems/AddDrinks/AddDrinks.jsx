@@ -11,10 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CLEANUP } from "../../../Redux/actionType";
 import { HomeMadeDriskId } from "../../../data";
-import {
-  addNewDrinksCanPop,
-  updateDrinksCanPop,
-} from "../../../Redux/MenuItems/action";
+import { addNewDrink, updateDrink } from "../../../Redux/MenuItems/action";
 
 const links = [
   {
@@ -50,8 +47,9 @@ export const AddDrinks = () => {
   }, []);
   useEffect(() => {
     if (drinksParam && home_made.length > 0) {
-      const current = home_made.filter((item) => item.pizzaId === +drinksParam);
-      setDrinksData(current[0]);
+      let current = home_made.filter((item) => item.pizzaId === +drinksParam);
+      current = current[0];
+      setDrinksData(current);
       let updated = link.map((item) => {
         if (item.title === "Add Drinks") {
           return {
@@ -63,6 +61,18 @@ export const AddDrinks = () => {
         return item;
       });
       setLink(updated);
+      if (!current["price"]) {
+        let sizes = current["sizes"];
+        for (const obj of sizes) {
+          if (obj["size"] === "Medium") {
+            setDrinksData({
+              ...current,
+              price: obj["price"],
+            });
+            break;
+          }
+        }
+      }
     }
   }, [drinksParam]);
   const handleImageName = (name) => {
@@ -124,17 +134,17 @@ export const AddDrinks = () => {
       pizzaSize: { Medium: +price.value },
     };
 
-    if (drinksData["pizzaId"]) {
-      dispatch(updateDrinksCanPop(data, drinksData["pizzaId"], handleNavigate));
+    if (drinksParam) {
+      dispatch(updateDrink(data, drinksData["pizzaId"], handleNavigate));
     } else {
-      dispatch(addNewDrinksCanPop(data, handleNavigate));
+      dispatch(addNewDrink(data, handleNavigate));
     }
   };
   return (
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
@@ -143,6 +153,7 @@ export const AddDrinks = () => {
                 itemValue={{
                   name: drinksData?.name,
                   description: drinksData?.description,
+                  price: drinksData?.price,
                 }}
               />
               <Image

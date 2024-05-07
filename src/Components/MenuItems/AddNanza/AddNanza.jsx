@@ -15,7 +15,7 @@ import {
 } from "../../../Redux/MenuItems/action";
 import { CLEANUP } from "../../../Redux/actionType";
 import { NanzaId, PannerChickenId } from "../../../data";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const links = [
   {
@@ -42,7 +42,7 @@ export const AddNanza = () => {
   const [nanzaData, setNanzaData] = useState({});
   const [nanzaItem, setNanzaItem] = useState([]);
   const [imgName, setImgName] = useState("");
-
+  const navigate = useNavigate();
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
@@ -51,10 +51,10 @@ export const AddNanza = () => {
   useEffect(() => {
     dispatch(get_Ingrediants(NanzaId));
   }, []);
-  console.log(nanzaData);
   useEffect(() => {
     if (nanzaParam) {
       const currentNanza = nanza.filter((item) => item.pizzaId === +nanzaParam);
+      handleImageName(currentNanza[0]?.imageUrl);
       setNanzaData(currentNanza[0]);
       let updated = link.map((item) => {
         if (item.title === "Add New Nanza") {
@@ -71,6 +71,18 @@ export const AddNanza = () => {
   }, [nanzaParam]);
   useEffect(() => {
     if (nanzaData["pizzaId"]) {
+      if (!nanzaData["price"]) {
+        let sizes = nanzaData["sizes"];
+        for (const obj of sizes) {
+          if (obj["size"] === "Medium") {
+            setNanzaData({
+              ...nanzaData,
+              price: obj["price"],
+            });
+            break;
+          }
+        }
+      }
       let extra_items = nanzaData["extraItems"];
       let paneer_chicken_items = [];
       for (const extra of extra_items) {
@@ -131,13 +143,17 @@ export const AddNanza = () => {
       handleError("Please enter description");
       return;
     }
+    if (!price.value) {
+      handleError("Please enter price");
+      return;
+    }
     let data = {
       pizzaName: name.value,
       // price: +price.value,
       pizzaSize: { Medium: +price.value },
       description: description.value,
       imageName: NanzaId + "/" + imgName,
-      categoryId: newPizzaId,
+      categoryId: NanzaId,
       items: [],
     };
 
@@ -196,8 +212,7 @@ export const AddNanza = () => {
     //   }
     // }
 
-    console.log(data);
-    if (nanzaData["pizzaId"]) {
+    if (nanzaParam) {
       dispatch(updateNanza(data, nanzaData["pizzaId"], handleNavigate));
     } else {
       dispatch(addNewNanza(data, handleNavigate));
@@ -205,13 +220,13 @@ export const AddNanza = () => {
   };
 
   const handleImageName = (name) => {
-    setImageName(name);
+    setImgName(name);
   };
   return (
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
@@ -220,6 +235,7 @@ export const AddNanza = () => {
                 itemValue={{
                   name: nanzaData?.name,
                   description: nanzaData?.description,
+                  price: nanzaData?.price,
                 }}
               />
               <Image

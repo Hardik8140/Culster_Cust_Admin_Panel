@@ -8,10 +8,15 @@ import { PastaModifier } from "../GridItems/PastaModifier";
 import { Toppings } from "../GridItems/Toppings";
 import { FormButtons } from "../../FormButtons";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { get_Ingrediants } from "../../../Redux/MenuItems/action";
+import { useEffect, useState } from "react";
+import {
+  addNewPasta,
+  get_Ingrediants,
+  updatePasta,
+} from "../../../Redux/MenuItems/action";
 import { CLEANUP } from "../../../Redux/actionType";
-import { pastaId } from "../../../data";
+import { PastaModifierId, ToppingsId, pastaId } from "../../../data";
+import { useNavigate, useParams } from "react-router-dom";
 
 const links = [
   {
@@ -21,7 +26,7 @@ const links = [
   },
   {
     title: "Pastas",
-    link: "#",
+    link: "/pasta",
     isCurrent: false,
   },
   {
@@ -36,12 +41,73 @@ export const AddPastas = () => {
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
+  const navigate = useNavigate();
+  const { pastaParam } = useParams();
+  const [pastaData, setPastaData] = useState({});
+  const [pastaItem, setPastaItem] = useState({});
+  const [imgName, setImgName] = useState("");
+  const { pasta } = useSelector((store) => store.get_all_menuitem_reducer);
+
+  const [link, setLink] = useState(links);
   useEffect(() => {
-    if (items === undefined || Object.keys(items).length === 0) {
-      dispatch(get_Ingrediants(pastaId));
-    }
+    dispatch(get_Ingrediants(pastaId));
   }, []);
 
+  useEffect(() => {
+    if (pastaParam && pasta.length > 0) {
+      let current = pasta.filter((item) => item.pizzaId === +pastaParam);
+      setPastaData(current[0]);
+      let updated = link.map((item) => {
+        if (item.title === "Add Pastas") {
+          return {
+            title: "Edit Pastas",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
+      current = current[0];
+      if (current["pizzaId"]) {
+        let extra_items = current["extraItems"];
+        let pastamodifier_item = [],
+          toppings_items = [];
+
+        if (!current["price"]) {
+          let sizes = current["sizes"];
+          for (const obj of sizes) {
+            if (obj["size"] === "Medium") {
+              setPastaData({
+                ...current,
+                price: obj["price"],
+              });
+              break;
+            }
+          }
+        }
+        for (const extra of extra_items) {
+          switch (extra["extraItem"]["extraItemId"]) {
+            case PastaModifierId:
+              pastamodifier_item.push(extra["extraItemId"]);
+              break;
+            case ToppingsId:
+              toppings_items.push(extra["extraItemId"]);
+              break;
+            default:
+              break;
+          }
+        }
+
+        setPastaItem({
+          pastamodifier: pastamodifier_item,
+          toppings: toppings_items,
+        });
+      } else {
+        navigate("/pasta");
+      }
+    }
+  }, [pastaParam]);
   useEffect(() => {
     if (!isLoading && error) {
       toast({
@@ -55,6 +121,27 @@ export const AddPastas = () => {
       dispatch({ type: CLEANUP });
     };
   }, [isLoading, error, toast]);
+
+  const handleNavigate = (msg) => {
+    toast({
+      title: msg,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/pasta");
+  };
+  const handleImageName = (name) => {
+    setImgName(name);
+  };
+  const handleError = (error) => {
+    toast({
+      title: error,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  };
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -66,66 +153,100 @@ export const AddPastas = () => {
     const finalToppings = [];
     const pastamodifier = form.querySelector("#checkbox_pastamodifier");
     const finalPastaModifier = [];
+
+    if (!name.value) {
+      handleError("Please enter name");
+      return;
+    }
+    if (!description.value) {
+      handleError("Please enter description");
+      return;
+    }
+
+    if (!price.value) {
+      handleError("Please enter price");
+      return;
+    }
+    let data = {
+      items: [],
+      pizzaName: name.value,
+      description: description.value,
+      categoryId: pastaId,
+      imageName: pastaId + "/" + imgName,
+      pizzaSize: { Medium: +price.value },
+    };
     if (pastamodifier.checked) {
       // get all values of pastamodifier
       const pastamodifierCheckboxTrue = form.querySelectorAll(
-        ".checkbox_pastamodifier_price_true"
+        ".checkbox_pastamodifier"
       );
-      const pastamodifierPrice = form.querySelectorAll(".price_pastamodifier");
+      // const pastamodifierPrice = form.querySelectorAll(".price_pastamodifier");
       for (let i = 0; i < pastamodifierCheckboxTrue.length; i++) {
         if (pastamodifierCheckboxTrue[i].checked) {
-          finalPastaModifier.push({
-            title: pastamodifierCheckboxTrue[i].name,
-            price: +pastamodifierPrice[i].value,
-          });
+          finalPastaModifier.push(+pastamodifierCheckboxTrue[i].name);
+          // finalPastaModifier.push({
+          //   title: pastamodifierCheckboxTrue[i].name,
+          //   price: +pastamodifierPrice[i].value,
+          // });
         }
       }
-
-      const pastamodifierCheckboxFalse = form.querySelectorAll(
-        ".checkbox_pastamodifier_price_false"
-      );
-      for (let i = 0; i < pastamodifierCheckboxFalse.length; i++) {
-        if (pastamodifierCheckboxFalse[i].checked) {
-          finalPastaModifier.push({
-            title: pastamodifierCheckboxFalse[i].name,
-          });
-        }
-      }
+      data = { ...data, items: [...data.items, ...finalPastaModifier] };
+      // const pastamodifierCheckboxFalse = form.querySelectorAll(
+      //   ".checkbox_pastamodifier_price_false"
+      // );
+      // for (let i = 0; i < pastamodifierCheckboxFalse.length; i++) {
+      //   if (pastamodifierCheckboxFalse[i].checked) {
+      //     finalPastaModifier.push({
+      //       title: pastamodifierCheckboxFalse[i].name,
+      //     });
+      //   }
+      // }
     }
     if (toppings.checked) {
       // get all values of toppings
       const toppingsCheckbox = form.querySelectorAll(".checkbox_toppings");
       for (let i = 0; i < toppingsCheckbox.length; i++) {
         if (toppingsCheckbox[i].checked) {
-          finalToppings.push(toppingsCheckbox[i].name);
+          finalToppings.push(+toppingsCheckbox[i].name);
         }
       }
+      data = { ...data, items: [...data.items, ...finalToppings] };
     }
-
-    const data = {
-      name: name.value,
-      price: +price.value,
-      description: description.value,
-      image: image ? image.src : "",
-      toppings: finalToppings,
-      pastamodifier: finalPastaModifier,
-    };
-
-    console.log(data);
+    if (pastaParam) {
+      dispatch(updatePasta(data, pastaData["pizzaId"], handleNavigate));
+    } else {
+      dispatch(addNewPasta(data, handleNavigate));
+    }
   };
   return (
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail />
-              <Image />
-              <PastaModifier />
-              <Toppings />
+              <Detail
+                itemValue={{
+                  name: pastaData?.name,
+                  description: pastaData?.description,
+                  price: pastaData?.price,
+                }}
+              />
+              <Image
+                handleImageName={handleImageName}
+                categoryId={pastaId}
+                name={imgName}
+              />
+              <PastaModifier
+                values={items?.items?.["Pasta Modifier"]}
+                itemValue={pastaItem?.pastamodifier}
+              />
+              <Toppings
+                values={items?.items?.Toppings}
+                itemValue={pastaItem?.toppings}
+              />
             </Grid>
             <FormButtons />
           </form>

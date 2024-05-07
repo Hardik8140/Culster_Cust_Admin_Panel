@@ -51,10 +51,11 @@ export const AddDrinksCanPop = () => {
   }, []);
   useEffect(() => {
     if (drinkscanParam && drinks_can_pop.length > 0) {
-      const current = drinks_can_pop.filter(
+      let current = drinks_can_pop.filter(
         (item) => item.pizzaId === +drinkscanParam
       );
-      setDrinksCanPopData(current[0]);
+      current = current[0];
+      setDrinksCanPopData(current);
       let updated = link.map((item) => {
         if (item.title === "Add Drinks-can pop") {
           return {
@@ -66,6 +67,18 @@ export const AddDrinksCanPop = () => {
         return item;
       });
       setLink(updated);
+      if (!current["price"]) {
+        let sizes = current["sizes"];
+        for (const obj of sizes) {
+          if (obj["size"] === "Medium") {
+            setDrinksCanPopData({
+              ...current,
+              price: obj["price"],
+            });
+            break;
+          }
+        }
+      }
     }
   }, [drinkscanParam]);
   const handleImageName = (name) => {
@@ -127,7 +140,7 @@ export const AddDrinksCanPop = () => {
       pizzaSize: { Medium: +price.value },
     };
 
-    if (drinksCanPopData["pizzaId"]) {
+    if (drinkscanParam) {
       dispatch(
         updateDrinksCanPop(data, drinksCanPopData["pizzaId"], handleNavigate)
       );
@@ -148,6 +161,7 @@ export const AddDrinksCanPop = () => {
                 itemValue={{
                   name: drinksCanPopData?.name,
                   description: drinksCanPopData?.description,
+                  price: drinksCanPopData?.price,
                 }}
               />
               <Image

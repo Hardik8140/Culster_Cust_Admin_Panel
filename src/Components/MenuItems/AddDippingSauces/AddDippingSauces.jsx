@@ -51,10 +51,11 @@ export const AddDippingSauces = () => {
   }, []);
   useEffect(() => {
     if (dippingSaucesParam && deeping_sauce.length > 0) {
-      const current = deeping_sauce.filter(
+      let current = deeping_sauce.filter(
         (item) => item.pizzaId === +dippingSaucesParam
       );
-      setDippingSaucesData(current[0]);
+      current = current[0];
+      setDippingSaucesData(current);
       let updated = link.map((item) => {
         if (item.title === "Add Dipping Sauces") {
           return {
@@ -66,6 +67,18 @@ export const AddDippingSauces = () => {
         return item;
       });
       setLink(updated);
+      if (!current["price"]) {
+        let sizes = current["sizes"];
+        for (const obj of sizes) {
+          if (obj["size"] === "Medium") {
+            setDippingSaucesData({
+              ...current,
+              price: obj["price"],
+            });
+            break;
+          }
+        }
+      }
     }
   }, [dippingSaucesParam]);
   const handleImageName = (name) => {
@@ -127,7 +140,7 @@ export const AddDippingSauces = () => {
       pizzaSize: { Medium: +price.value },
     };
 
-    if (dippingSaucesData["pizzaId"]) {
+    if (dippingSaucesParam) {
       dispatch(
         updateDippingSauces(data, dippingSaucesData["pizzaId"], handleNavigate)
       );
@@ -149,6 +162,7 @@ export const AddDippingSauces = () => {
                 itemValue={{
                   name: dippingSaucesData?.name,
                   description: dippingSaucesData?.description,
+                  price: dippingSaucesData?.price,
                 }}
               />
               <Image

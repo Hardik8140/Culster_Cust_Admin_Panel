@@ -13,10 +13,22 @@ import { FormButtons } from "../../FormButtons";
 import { Detail } from "../GridItems/Detail";
 import { Seasonings } from "../GridItems/Seasonings";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { CheesyFunId } from "../../../data";
-import { get_Ingrediants } from "../../../Redux/MenuItems/action";
+import { useEffect, useState } from "react";
+import {
+  CheesyFunId,
+  DrizzleitupId,
+  ExtraCheeseId,
+  ExtraMeatToppingId,
+  SeasoningsId,
+  ToppingsId,
+} from "../../../data";
+import {
+  addNewCheesyFun,
+  get_Ingrediants,
+  updateCheesyFun,
+} from "../../../Redux/MenuItems/action";
 import { CLEANUP } from "../../../Redux/actionType";
+import { useNavigate, useParams } from "react-router-dom";
 
 const links = [
   {
@@ -26,7 +38,7 @@ const links = [
   },
   {
     title: "Cheesy Fun",
-    link: "#",
+    link: "/cheesyfun",
     isCurrent: false,
   },
   {
@@ -38,6 +50,12 @@ const links = [
 export const AddCheesyFun = () => {
   const dispatch = useDispatch();
   const toast = useToast();
+  const navigate = useNavigate();
+  const { cheesyfunParam } = useParams();
+  const [link, setLink] = useState(links);
+  const [imgName, setImgName] = useState();
+  const [cheesyfunData, setCheesyFunData] = useState({});
+  const [cheesyfunItem, setCheesyFunItem] = useState({});
   const { isLoading, error, items } = useSelector(
     (store) => store.menuItemsReducer
   );
@@ -45,7 +63,81 @@ export const AddCheesyFun = () => {
   useEffect(() => {
     dispatch(get_Ingrediants(CheesyFunId));
   }, []);
-  console.log(items);
+
+  const { cheesy } = useSelector((store) => store.get_all_menuitem_reducer);
+
+  const handleImageName = (name) => {
+    setImgName(name);
+  };
+  useEffect(() => {
+    if (cheesyfunParam && cheesy.length > 0) {
+      let current = cheesy.filter((item) => item.pizzaId === +cheesyfunParam);
+      setCheesyFunData(current[0]);
+      setImgName(current[0].imageUrl);
+      current = current[0];
+      let updated = link.map((item) => {
+        if (item.title === "Add Cheesy Fun") {
+          return {
+            title: "Edit Cheesy Fun",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
+      if (current["pizzaId"]) {
+        if (!current["price"]) {
+          let sizes = current["sizes"];
+          for (const obj of sizes) {
+            if (obj["size"] === "Medium") {
+              setCheesyFunData({
+                ...current,
+                price: obj["price"],
+              });
+              break;
+            }
+          }
+        }
+        let extra_items = current["extraItems"];
+        let toppings_items = [],
+          extra_meat_toppings_items = [],
+          extra_cheese_items = [],
+          drizzle_items = [],
+          seasonings_items = [];
+
+        for (const extra of extra_items) {
+          switch (extra["extraItem"]["extraItemId"]) {
+            case ToppingsId:
+              toppings_items.push(extra["extraItemId"]);
+              break;
+            case ExtraMeatToppingId:
+              extra_meat_toppings_items.push(extra["extraItemId"]);
+              break;
+            case ExtraCheeseId:
+              extra_cheese_items.push(extra["extraItemId"]);
+              break;
+            case DrizzleitupId:
+              drizzle_items.push(extra["extraItemId"]);
+              break;
+            case SeasoningsId:
+              seasonings_items.push(extra["extraItemId"]);
+              break;
+            default:
+              break;
+          }
+        }
+
+        setCheesyFunItem({
+          toppings: toppings_items,
+          extra_meat_toppings: extra_meat_toppings_items,
+          extra_cheese: extra_cheese_items,
+          drizzle: drizzle_items,
+          seasonings: seasonings_items,
+        });
+      }
+    }
+  }, [cheesyfunParam]);
   useEffect(() => {
     if (!isLoading && error) {
       toast({
@@ -59,14 +151,31 @@ export const AddCheesyFun = () => {
       dispatch({ type: CLEANUP });
     };
   }, [isLoading, error, toast]);
+  const handleNavigate = (msg) => {
+    toast({
+      title: msg,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    navigate("/cheesyfun");
+  };
+  const handleError = (error) => {
+    toast({
+      title: error,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  };
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
+    const price = form.querySelector("#price");
+
     const name = form.querySelector("#name");
     const description = form.querySelector("#description");
-    const price = form.querySelector("#price");
     const image = form.querySelector("#image");
-
     const cheese = form.querySelector("#checkbox_cheese");
     const finalCheese = [];
     const toppings = form.querySelector("#checkbox_toppings");
@@ -77,18 +186,45 @@ export const AddCheesyFun = () => {
     const finalMeatToppings = [];
     const seasonings = form.querySelector("#checkbox_seasonings");
     const finalSeasonings = [];
+    if (!price.value) {
+      handleError("Please enter price");
+      return;
+    }
+    if (!name.value) {
+      handleError("Please enter name");
+      return;
+    }
+    if (!description.value) {
+      handleError("Please enter description");
+      return;
+    }
+    let data = {
+      pizzaName: name.value,
+      description: description.value,
+      categoryId: CheesyFunId,
+      imageName: CheesyFunId + "/" + imgName,
+      items: [],
+      pizzaSize: { Medium: +price.value },
+    };
+
     if (cheese.checked) {
       // get all values of cheese
       const cheeseCheckbox = form.querySelectorAll(".checkbox_cheese");
-      const cheesePrice = form.querySelectorAll(".price_cheese");
+      // const cheesePrice = form.querySelectorAll(".price_cheese");
       for (let i = 0; i < cheeseCheckbox.length; i++) {
         if (cheeseCheckbox[i].checked) {
-          finalCheese.push({
-            title: cheeseCheckbox[i].name,
-            price: +cheesePrice[i].value,
-          });
+          finalCheese.push(+cheeseCheckbox[i].name);
+
+          // finalCheese.push(+{
+          //   title: cheeseCheckbox[i].name,
+          //   price: +cheesePrice[i].value,
+          // });
         }
       }
+      data = {
+        ...data,
+        items: [...data.items, ...finalCheese],
+      };
     }
 
     if (toppings.checked) {
@@ -96,9 +232,13 @@ export const AddCheesyFun = () => {
       const toppingsCheckbox = form.querySelectorAll(".checkbox_toppings");
       for (let i = 0; i < toppingsCheckbox.length; i++) {
         if (toppingsCheckbox[i].checked) {
-          finalToppings.push(toppingsCheckbox[i].name);
+          finalToppings.push(+toppingsCheckbox[i].name);
         }
       }
+      data = {
+        ...data,
+        items: [...data.items, ...finalToppings],
+      };
     }
 
     if (drizzle.checked) {
@@ -106,21 +246,29 @@ export const AddCheesyFun = () => {
       const drizzleCheckbox = form.querySelectorAll(".checkbox_drizzle");
       for (let i = 0; i < drizzleCheckbox.length; i++) {
         if (drizzleCheckbox[i].checked) {
-          finalDrizzle.push(drizzleCheckbox[i].name);
+          finalDrizzle.push(+drizzleCheckbox[i].name);
         }
       }
+      data = {
+        ...data,
+        items: [...data.items, ...finalDrizzle],
+      };
     }
 
     if (meatToppings.checked) {
       // get all values of meatToppings
       const meatToppingsCheckbox = form.querySelectorAll(
-        ".checkbox_meatToppings"
+        ".checkbox_meattoppings"
       );
       for (let i = 0; i < meatToppingsCheckbox.length; i++) {
         if (meatToppingsCheckbox[i].checked) {
-          finalMeatToppings.push(meatToppingsCheckbox[i].name);
+          finalMeatToppings.push(+meatToppingsCheckbox[i].name);
         }
       }
+      data = {
+        ...data,
+        items: [...data.items, ...finalMeatToppings],
+      };
     }
 
     if (seasonings.checked) {
@@ -128,40 +276,63 @@ export const AddCheesyFun = () => {
       const seasoningsCheckbox = form.querySelectorAll(".checkbox_seasonings");
       for (let i = 0; i < seasoningsCheckbox.length; i++) {
         if (seasoningsCheckbox[i].checked) {
-          finalSeasonings.push(seasoningsCheckbox[i].name);
+          finalSeasonings.push(+seasoningsCheckbox[i].name);
         }
       }
+      data = {
+        ...data,
+        items: [...data.items, ...finalSeasonings],
+      };
     }
-    const data = {
-      price: price.value,
-      name: name.value,
-      description: description.value,
-      image: image ? image.src : "",
-      extracheese: finalCheese,
-      toppings: finalToppings,
-      drizzle: finalDrizzle,
-      meatToppings: finalMeatToppings,
-      seasonings: finalSeasonings,
-    };
+    if (cheesyfunParam) {
+      dispatch(updateCheesyFun(data, cheesyfunData["pizzaId"], handleNavigate));
+    } else {
+      dispatch(addNewCheesyFun(data, handleNavigate));
+    }
   };
   return (
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         {Object.keys(items).length > 0 && (
           <DIV>
             <form onSubmit={handleForm}>
               <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-                <Detail />
-                <Image />
-                <Toppings values={items?.items?.Topping} />
-                <Drizzle values={items?.items["Drizzle It Up!"]} />
-                <MeatToppings values={items?.items["Extra Meal Topping"]} />
-                <ExtraCheese values={items?.items["Extra Cheese"]} />
+                <Detail
+                  itemValue={{
+                    name: cheesyfunData?.name,
+                    description: cheesyfunData?.description,
+                    price: +cheesyfunData?.price,
+                  }}
+                />
+                <Image
+                  handleImageName={handleImageName}
+                  categoryId={CheesyFunId}
+                  name={imgName}
+                />
+                <Toppings
+                  values={items?.items?.Toppings}
+                  itemValue={cheesyfunItem?.toppings}
+                />
+                <Drizzle
+                  values={items?.items["Drizzle It Up!"]}
+                  itemValue={cheesyfunItem?.drizzle}
+                />
+                <MeatToppings
+                  values={items?.items?.["Extra Meat Topping"]}
+                  itemValue={cheesyfunItem?.extra_meat_toppings}
+                />
+                <ExtraCheese
+                  values={items?.items?.["Extra Cheese"]}
+                  itemValue={cheesyfunItem?.extra_cheese}
+                />
                 <GridItem colSpan={2}>
-                  <Seasonings values={items?.items["Seasonings"]} />
+                  <Seasonings
+                    values={items?.items?.["Seasonings"]}
+                    itemValue={cheesyfunItem?.seasonings}
+                  />
                 </GridItem>
               </Grid>
 
