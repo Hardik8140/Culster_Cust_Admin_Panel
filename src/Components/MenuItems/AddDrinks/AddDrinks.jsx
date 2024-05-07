@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CLEANUP } from "../../../Redux/actionType";
 import { HomeMadeDriskId } from "../../../data";
+import { addNewDrink, updateDrink } from "../../../Redux/MenuItems/action";
 
 const links = [
   {
@@ -46,8 +47,9 @@ export const AddDrinks = () => {
   }, []);
   useEffect(() => {
     if (drinksParam && home_made.length > 0) {
-      const current = home_made.filter((item) => item.pizzaId === +drinksParam);
-      setDrinksData(current[0]);
+      let current = home_made.filter((item) => item.pizzaId === +drinksParam);
+      current = current[0];
+      setDrinksData(current);
       let updated = link.map((item) => {
         if (item.title === "Add Drinks") {
           return {
@@ -59,6 +61,18 @@ export const AddDrinks = () => {
         return item;
       });
       setLink(updated);
+      if (!current["price"]) {
+        let sizes = current["sizes"];
+        for (const obj of sizes) {
+          if (obj["size"] === "Medium") {
+            setDrinksData({
+              ...current,
+              price: obj["price"],
+            });
+            break;
+          }
+        }
+      }
     }
   }, [drinksParam]);
   const handleImageName = (name) => {
@@ -121,9 +135,9 @@ export const AddDrinks = () => {
     };
 
     if (drinksParam) {
-      dispatch(updateDrinksCanPop(data, drinksData["pizzaId"], handleNavigate));
+      dispatch(updateDrink(data, drinksData["pizzaId"], handleNavigate));
     } else {
-      dispatch(addNewDrinksCanPop(data, handleNavigate));
+      dispatch(addNewDrink(data, handleNavigate));
     }
   };
   return (
@@ -139,6 +153,7 @@ export const AddDrinks = () => {
                 itemValue={{
                   name: drinksData?.name,
                   description: drinksData?.description,
+                  price: drinksData?.price,
                 }}
               />
               <Image

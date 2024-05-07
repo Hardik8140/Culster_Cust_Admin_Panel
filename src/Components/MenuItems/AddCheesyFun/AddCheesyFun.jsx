@@ -87,8 +87,18 @@ export const AddCheesyFun = () => {
       });
       setLink(updated);
       if (current["pizzaId"]) {
-        console.log(current["extraItems"]);
-
+        if (!current["price"]) {
+          let sizes = current["sizes"];
+          for (const obj of sizes) {
+            if (obj["size"] === "Medium") {
+              setCheesyFunData({
+                ...current,
+                price: obj["price"],
+              });
+              break;
+            }
+          }
+        }
         let extra_items = current["extraItems"];
         let toppings_items = [],
           extra_meat_toppings_items = [],
@@ -294,6 +304,7 @@ export const AddCheesyFun = () => {
                   itemValue={{
                     name: cheesyfunData?.name,
                     description: cheesyfunData?.description,
+                    price: +cheesyfunData?.price,
                   }}
                 />
                 <Image
