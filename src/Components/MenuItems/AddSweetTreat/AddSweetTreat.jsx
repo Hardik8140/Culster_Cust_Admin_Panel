@@ -136,7 +136,7 @@ export const AddSweetTreat = () => {
       pizzaSize: { Medium: +price.value },
     };
 
-    if (SweetTreatId) {
+    if (sweetTreatParam) {
       dispatch(
         updateSweetTreat(data, sweetTreatData["pizzaId"], handleNavigate)
       );
