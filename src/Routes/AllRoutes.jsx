@@ -126,6 +126,7 @@ const AllRoutes = () => {
         element={<AddDrinksCanPop />}
       />
       <Route path="/edit/drinks/:drinksParam" element={<AddDrinks />} />
+      <Route path="/edit/boy/:boyParam" element={<AddDeliveryBoy />} />
 
       {/* ExtraItems */}
       <Route path="/toppings" element={<ShowToppings />} />
