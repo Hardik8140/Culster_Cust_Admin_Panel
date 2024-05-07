@@ -521,3 +521,40 @@ export const updateSalads =
       dispatch({ type: ERROR, payload: error.message });
     }
   };
+
+//  drinks action
+export const addNewDrink = (drinkData, handleNavigate) => async (dispatch) => {
+  dispatch({ type: LOADING });
+  try {
+    let res = await axios.post(`${backendAPI}admin/add/item`, drinkData);
+    res = await res.data;
+    if (res.success) {
+      dispatch({ type: CLEANUP });
+      handleNavigate("New Drinks  added successfully!");
+    } else {
+      dispatch({ type: ERROR, payload: res.message });
+    }
+  } catch (error) {
+    dispatch({ type: ERROR, payload: error.message });
+  }
+};
+
+export const updateDrink =
+  (drinkData, drinkId, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.post(
+        `${backendAPI}admin/updateitem?itemId=${drinkId}`,
+        drinkData
+      );
+      res = await res.data;
+      if (res.success) {
+        handleNavigate("Drinks  updated successfully!");
+        dispatch({ type: CLEANUP });
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
+    }
+  };

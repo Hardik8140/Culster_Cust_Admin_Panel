@@ -51,10 +51,11 @@ export const AddSweetTreat = () => {
   }, []);
   useEffect(() => {
     if (sweetTreatParam && sweet_treet.length > 0) {
-      const current = sweet_treet.filter(
+      let current = sweet_treet.filter(
         (item) => item.pizzaId === +sweetTreatParam
       );
-      setSweetTreatData(current[0]);
+      current = current[0];
+      setSweetTreatData(current);
       let updated = link.map((item) => {
         if (item.title === "Add New Sweet Treat") {
           return {
@@ -66,6 +67,18 @@ export const AddSweetTreat = () => {
         return item;
       });
       setLink(updated);
+      if (!current["price"]) {
+        let sizes = current["sizes"];
+        for (const obj of sizes) {
+          if (obj["size"] === "Medium") {
+            setSweetTreatData({
+              ...current,
+              price: obj["price"],
+            });
+            break;
+          }
+        }
+      }
     }
   }, [sweetTreatParam]);
   const handleImageName = (name) => {
@@ -123,14 +136,13 @@ export const AddSweetTreat = () => {
       pizzaSize: { Medium: +price.value },
     };
 
-    if (SweetTreatId) {
+    if (sweetTreatParam) {
       dispatch(
         updateSweetTreat(data, sweetTreatData["pizzaId"], handleNavigate)
       );
     } else {
       dispatch(addNewSweetTreat(data, handleNavigate));
     }
-    console.log(data);
   };
   return (
     <Layout>
@@ -145,6 +157,7 @@ export const AddSweetTreat = () => {
                 itemValue={{
                   name: sweetTreatData?.name,
                   description: sweetTreatData?.description,
+                  price: sweetTreatData?.price,
                 }}
               />
               <Image

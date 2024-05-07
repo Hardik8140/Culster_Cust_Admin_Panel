@@ -131,6 +131,11 @@ export const AddNewBurger = () => {
       handleError("Please enter description");
       return;
     }
+
+    if (!price.value) {
+      handleError("Please enter price");
+      return;
+    }
     let data = {
       items: [],
       pizzaName: name.value,
@@ -190,6 +195,18 @@ export const AddNewBurger = () => {
   };
   useEffect(() => {
     if (burgerData["pizzaId"]) {
+      if (!burgerData["price"]) {
+        let sizes = burgerData["sizes"];
+        for (const obj of sizes) {
+          if (obj["size"] === "Medium") {
+            setBurgerData({
+              ...burgerData,
+              price: obj["price"],
+            });
+            break;
+          }
+        }
+      }
       let extra_items = burgerData["extraItems"];
       let burger_flavor_items = [],
         extra_cheese_items = [],
@@ -217,7 +234,6 @@ export const AddNewBurger = () => {
       });
     }
   }, [burgerData]);
-
   return (
     <Layout>
       <Box minH={"100vh"}>
@@ -232,6 +248,7 @@ export const AddNewBurger = () => {
                   itemValue={{
                     name: burgerData?.name,
                     description: burgerData?.description,
+                    price: burgerData?.price,
                   }}
                 />
 

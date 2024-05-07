@@ -1,4 +1,16 @@
-import { Box, Grid, GridItem, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  GridItem,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  Stack,
+  Text,
+  useToast,
+  Flex,
+  Textarea,
+} from "@chakra-ui/react";
 import Layout from "../../Layout/Layout";
 import styled from "styled-components";
 import { Image } from "../GridItems/Image";
@@ -16,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SaladId, SaladToppingsId } from "../../../data";
 import { useNavigate, useParams } from "react-router-dom";
 import { CLEANUP } from "../../../Redux/actionType";
+import { dollar } from "../../../assets";
 
 const links = [
   {
@@ -55,7 +68,8 @@ export const AddSalads = () => {
   useEffect(() => {
     if (saladParam && salads.length > 0) {
       let current = salads.filter((item) => item.pizzaId === +saladParam);
-      setSaladData(current[0]);
+      current = current[0];
+
       let updated = link.map((item) => {
         if (item.title === "Add Salads") {
           return {
@@ -67,8 +81,22 @@ export const AddSalads = () => {
         return item;
       });
       setLink(updated);
-      current = current[0];
+      setSaladData(current);
+
       if (current["pizzaId"]) {
+        if (!current["price"]) {
+          let sizes = current["sizes"];
+          for (const obj of sizes) {
+            if (obj["size"] === "Medium") {
+              setSaladData({
+                ...current,
+                price: obj["price"],
+              });
+              break;
+            }
+          }
+        }
+
         let extra_items = current["extraItems"];
         let salad_topping_item = [];
         for (const extra of extra_items) {
@@ -163,13 +191,20 @@ export const AddSalads = () => {
         }
       }
     }
-    console.log(data);
 
     if (saladParam) {
       dispatch(updateSalads(data, saladData["pizzaId"], handleNavigate));
     } else {
       dispatch(addNewSalads(data, handleNavigate));
     }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setSaladData({
+      ...saladData,
+      [name]: value,
+    });
   };
   return (
     <Layout>
@@ -180,12 +215,68 @@ export const AddSalads = () => {
         <DIV>
           <form onSubmit={handleForm}>
             <Grid my={8} w={"100%"} templateColumns="repeat(2, 1fr)" gap={1}>
-              <Detail
-                itemValues={{
-                  name: saladData?.name,
-                  description: saladData?.description,
-                }}
-              />
+              <GridItem
+                boxShadow={"rgba(0, 0, 0, 0.16) 0px 1px 4px"}
+                px={"20px"}
+                py={"16px"}
+                bgColor={"brand.white"}
+              >
+                <Stack gap={4}>
+                  <Flex justifyContent={"space-between"}>
+                    <Stack>
+                      <Text size={"18px"} fontWeight={"500"}>
+                        NAME
+                      </Text>
+                      <Input
+                        type="text"
+                        placeholder="Enter food name"
+                        id="name"
+                        value={saladData.name}
+                        onChange={handleChange}
+                      />
+                    </Stack>
+                    <Stack>
+                      <Text size={"18px"} fontWeight={"500"}>
+                        PRICE
+                      </Text>
+                      <Box justifySelf={"flex-end"}>
+                        <InputGroup size={"sm"}>
+                          <InputLeftAddon
+                            borderRadius={"10px 0 0 10px"}
+                            bgColor={"brand.grey"}
+                          >
+                            <img src={dollar} />
+                          </InputLeftAddon>
+                          <Input
+                            borderRadius={"0px 10px 10px 0px"}
+                            type="number"
+                            w={"auto"}
+                            placeholder="price"
+                            className="price_detail"
+                            id={`price`}
+                            value={+saladData.price}
+                            name="price"
+                            onChange={handleChange}
+                          />
+                        </InputGroup>
+                      </Box>
+                    </Stack>
+                  </Flex>
+                  <Box>
+                    <Text size={"18px"} fontWeight={"500"}>
+                      DESCRIPTION
+                    </Text>
+                    <Textarea
+                      rows={5}
+                      type="text"
+                      placeholder="Enter the description"
+                      id="description"
+                      value={saladData.description}
+                      onChange={handleChange}
+                    />
+                  </Box>
+                </Stack>
+              </GridItem>
               <Image
                 handleImageName={handleImageName}
                 categoryId={SaladId}

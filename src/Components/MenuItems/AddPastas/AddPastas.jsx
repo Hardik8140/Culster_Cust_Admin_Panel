@@ -73,6 +73,19 @@ export const AddPastas = () => {
         let extra_items = current["extraItems"];
         let pastamodifier_item = [],
           toppings_items = [];
+
+        if (!current["price"]) {
+          let sizes = current["sizes"];
+          for (const obj of sizes) {
+            if (obj["size"] === "Medium") {
+              setPastaData({
+                ...current,
+                price: obj["price"],
+              });
+              break;
+            }
+          }
+        }
         for (const extra of extra_items) {
           switch (extra["extraItem"]["extraItemId"]) {
             case PastaModifierId:
@@ -218,6 +231,7 @@ export const AddPastas = () => {
                 itemValue={{
                   name: pastaData?.name,
                   description: pastaData?.description,
+                  price: pastaData?.price,
                 }}
               />
               <Image

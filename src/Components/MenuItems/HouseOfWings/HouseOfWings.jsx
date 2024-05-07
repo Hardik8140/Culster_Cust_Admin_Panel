@@ -80,6 +80,18 @@ export const HouseOfWings = () => {
         let typeofservings_item = [],
           sizeofwingbox_item = [],
           wingsSauces_item = [];
+        if (!currenthos["price"]) {
+          let sizes = currenthos["sizes"];
+          for (const obj of sizes) {
+            if (obj["size"] === "Medium") {
+              setHouseWingsData({
+                ...currenthos,
+                price: obj["price"],
+              });
+              break;
+            }
+          }
+        }
         for (const extra of extra_items) {
           switch (extra["extraItem"]["extraItemId"]) {
             case TypeOfServingId:
@@ -152,6 +164,10 @@ export const HouseOfWings = () => {
     }
     if (!description.value) {
       handleError("Please enter description");
+      return;
+    }
+    if (!price.value) {
+      handleError("Please enter price");
       return;
     }
     let data = {
@@ -251,6 +267,7 @@ export const HouseOfWings = () => {
                 itemValue={{
                   name: houseWingsData?.name,
                   description: houseWingsData?.description,
+                  price: houseWingsData?.price,
                 }}
               />
               <Image

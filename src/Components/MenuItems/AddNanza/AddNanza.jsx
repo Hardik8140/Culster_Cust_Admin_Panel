@@ -71,6 +71,18 @@ export const AddNanza = () => {
   }, [nanzaParam]);
   useEffect(() => {
     if (nanzaData["pizzaId"]) {
+      if (!nanzaData["price"]) {
+        let sizes = nanzaData["sizes"];
+        for (const obj of sizes) {
+          if (obj["size"] === "Medium") {
+            setNanzaData({
+              ...nanzaData,
+              price: obj["price"],
+            });
+            break;
+          }
+        }
+      }
       let extra_items = nanzaData["extraItems"];
       let paneer_chicken_items = [];
       for (const extra of extra_items) {
@@ -129,6 +141,10 @@ export const AddNanza = () => {
     }
     if (!description.value) {
       handleError("Please enter description");
+      return;
+    }
+    if (!price.value) {
+      handleError("Please enter price");
       return;
     }
     let data = {
@@ -219,6 +235,7 @@ export const AddNanza = () => {
                 itemValue={{
                   name: nanzaData?.name,
                   description: nanzaData?.description,
+                  price: nanzaData?.price,
                 }}
               />
               <Image
