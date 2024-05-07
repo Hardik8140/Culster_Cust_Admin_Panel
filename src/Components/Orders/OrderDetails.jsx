@@ -183,6 +183,8 @@ const OrderDetails = () => {
                     w="30%"
                     display="flex"
                     justifyContent="space-between"
+                    position={"relative"}
+                    zIndex={1111}
                   >
                     <Button bg="lightgray">Print Recipe</Button>
                     <Menu>
