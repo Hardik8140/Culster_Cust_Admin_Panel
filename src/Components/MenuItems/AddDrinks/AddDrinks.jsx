@@ -45,6 +45,14 @@ export const AddDrinks = () => {
   useEffect(() => {
     // dispatch(get_Ingrediants(HomeMadeDriskId));
   }, []);
+  const handleError = (msg) => {
+    toast({
+      title: msg,
+      status: "error",
+      isClosable: true,
+      duration: 5000,
+    });
+  };
   useEffect(() => {
     if (drinksParam && home_made.length > 0) {
       let current = home_made.filter((item) => item.pizzaId === +drinksParam);
@@ -140,6 +148,7 @@ export const AddDrinks = () => {
       dispatch(addNewDrink(data, handleNavigate));
     }
   };
+  console.log(drinksData);
   return (
     <Layout>
       <Box>

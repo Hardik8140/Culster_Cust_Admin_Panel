@@ -151,7 +151,7 @@ const DeliveryBoy = () => {
                   <td>
                     <Center>
                       <Flex gap={8}>
-                        <Link to={``}>
+                        <Link to={`/edit/boy/${el.id}`}>
                           <img src={edit} alt="edit icon" />
                         </Link>
                         <Link to={``}>

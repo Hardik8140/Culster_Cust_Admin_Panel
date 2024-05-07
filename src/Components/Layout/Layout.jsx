@@ -16,7 +16,8 @@ const Layout = ({ children }) => {
         ></Box>
         <Box
           bgColor={"brand.background"}
-          width={"82vw"}
+          minW={"82vw"}
+          w={"100%"}
           px={10}
           py={8}
           minH={"90vh"}
