@@ -40,7 +40,7 @@ import {
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { logo, updown } from "../../assets";
 import styled from "styled-components";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { accept_Orders, get_Details_Orders } from "../../Redux/Orders/action";
 import { array } from "i/lib/util";
@@ -50,7 +50,7 @@ import {
 } from "../../Redux/Delivery Boy/action";
 import Cookies from "js-cookie";
 
-const steps = [
+const TotalSteps = [
   { title: "First", description: "Order Accepted" },
   { title: "Second", description: "Order Preparing" },
   { title: "Third", description: "Delivery Boy Assign" },
@@ -64,7 +64,7 @@ const OrderDetails = () => {
   const { id } = useParams();
   const [delivery, setDelivery] = useState("");
   const dispatch = useDispatch();
-
+  const naivgate = useNavigate();
   const { loading, error, detailOrders, orderStatus } = useSelector(
     (store) => store.orderReducer
   );
@@ -100,23 +100,23 @@ const OrderDetails = () => {
 
   const { activeStep, setActiveStep } = useSteps({
     index: 0,
-    count: steps.length,
+    count: TotalSteps.length,
   });
 
   useEffect(() => {
     const timer = setInterval(() => {
       if (orderAccepted) {
-        if (activeStep < steps.length - 1) {
+        if (activeStep < TotalSteps.length - 1) {
           setActiveStep((prevStep) => prevStep + 1);
         }
       }
     }, 12000); // 2 minutes interval
     return () => clearInterval(timer);
   }, [activeStep, orderAccepted, setActiveStep]);
-  const activeStepText = steps[activeStep].description;
+  const activeStepText = TotalSteps[activeStep].description;
 
-  const max = steps.length - 1;
-  const progressPercent = (activeStep / (steps.length - 1)) * 100;
+  const max = TotalSteps.length - 1;
+  const progressPercent = (activeStep / (TotalSteps.length - 1)) * 100;
 
   return (
     <Layout>
@@ -184,7 +184,12 @@ const OrderDetails = () => {
                     display="flex"
                     justifyContent="space-between"
                   >
-                    <Button bg="lightgray">Print Recipe</Button>
+                    <Button
+                      bg="lightgray"
+                      onClick={naivgate(`/orders/${el.orderId}/print`)}
+                    >
+                      Print Recipe
+                    </Button>
                     <Menu>
                       <MenuButton
                         as={Button}
@@ -389,7 +394,7 @@ const OrderDetails = () => {
                         height="150px"
                         gap="0"
                       >
-                        {steps.map((step, index) => (
+                        {TotalSteps.map((step, index) => (
                           <Step
                             key={index}
                             textAlign="center"
@@ -397,7 +402,7 @@ const OrderDetails = () => {
                             border="none"
                           >
                             <StepIndicator
-                              bg={index === activeStep + 2 ? "green" : "gray"}
+                              bg={index < activeStep ? "green" : "gray"}
                               width="17px"
                               height="17px"
                               border="none"
@@ -418,6 +423,39 @@ const OrderDetails = () => {
                           </Step>
                         ))}
                       </Stepper>
+                      {/* <Stepper
+                        index={activeStep}
+                        orientation="vertical"
+                        height="150px"
+                        gap="0"
+                      >
+                        {TotalSteps.map((step, index) => (
+                          <Step
+                            key={index}
+                            textAlign="center"
+                            zIndex={1}
+                            border="none"
+                          >
+                            <StepIndicator bg={"grey"}>
+                              <StepStatus
+                                complete={
+                                  <Box bgColor={"red"}>
+                                    <StepIcon />
+                                  </Box>
+                                }
+                                incomplete={<StepNumber />}
+                                active={<StepNumber />}
+                              />
+                            </StepIndicator>
+
+                            <Box flexShrink="0">
+                              <Text fontSize="16px">{step.description}</Text>
+                            </Box>
+
+                            <StepSeparator />
+                          </Step>
+                        ))}
+                      </Stepper> */}
                     </Box>
                     <Progress
                       orientation="vertical"

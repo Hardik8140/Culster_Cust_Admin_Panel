@@ -19,13 +19,16 @@ import { useEffect, useRef, useState } from "react";
 import { Upload } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewDeliveryBoy } from "../../Redux/Delivery Boy/action";
+import {
+  addNewDeliveryBoy,
+  updateDeliveryBoy,
+} from "../../Redux/Delivery Boy/action";
 import { uploadImage } from "../../Redux/MenuItems/action";
 
 const links = [
   {
     title: "Delivery Boy",
-    link: "#",
+    link: "/boy",
     isCurrent: false,
   },
   {
@@ -41,8 +44,16 @@ export const AddDeliveryBoy = () => {
   const toast = useToast();
   const { boyParam } = useParams();
   const binRef = useRef("");
+  const [link, setLink] = useState(links);
   const { delivery_boy } = useSelector((store) => store.delivery_boyReducer);
   const dispatch = useDispatch();
+  const [boyData, setBoyData] = useState({
+    name: "",
+    emailAddress: "",
+    phoneNumber: "",
+    image: "",
+  });
+
   const navigate = useNavigate();
   const handleError = (msg) => {
     toast({
@@ -64,16 +75,32 @@ export const AddDeliveryBoy = () => {
   const handleImgName = (name) => {
     setImgName(name);
   };
+
   useEffect(() => {
     if (boyParam && delivery_boy.length > 0) {
+      let current = delivery_boy.filter((item) => item.id === +boyParam);
+      current = current[0];
+      setBoyData(current);
+      setImagePrev(current["profileUrl"]);
+      const updated = links.map((item) => {
+        if (item["title"] === "Add New Driver") {
+          return {
+            title: "Edit Driver",
+            link: "#",
+            isCurrent: true,
+          };
+        }
+        return item;
+      });
+      setLink(updated);
     }
   }, [boyParam]);
   const handleForm = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.querySelector("#name");
-    const email = form.querySelector("#email");
-    const phone = form.querySelector("#phone");
+    const email = form.querySelector("#emailAddress");
+    const phoneNumber = form.querySelector("#phoneNumber");
     const image = form.querySelector("#image");
 
     if (!name.value) {
@@ -84,21 +111,33 @@ export const AddDeliveryBoy = () => {
       handleError("please enter driver email");
       return;
     }
-    if (!phone.value) {
-      handleError("please enter driver phone");
+    if (!phoneNumber.value) {
+      handleError("please enter driver phone number");
       return;
     }
-    const data = {
+    let data = {
       username: name.value,
       email: email.value,
-      mobilenumber: phone.value,
-      image: "delivery/" + imgName,
+      mobilenumber: phoneNumber.value,
     };
+    if (imgName) {
+      data = {
+        ...data,
+        image: "delivery/" + imgName,
+      };
+    }
 
     // console.log(data);
-    dispatch(addNewDeliveryBoy(data, handleNavigate));
+    if (boyParam) {
+      data = {
+        ...data,
+        userId: +boyParam,
+      };
+      dispatch(updateDeliveryBoy(data, +boyParam, handleNavigate));
+    } else {
+      dispatch(addNewDeliveryBoy(data, handleNavigate));
+    }
   };
-
   const handleFileChange = (event) => {
     const fileObj = event.target.files[0];
     if (!fileObj) {
@@ -136,7 +175,7 @@ export const AddDeliveryBoy = () => {
     <Layout>
       <Box>
         <Box>
-          <Breadcrumber links={links} />
+          <Breadcrumber links={link} />
         </Box>
         <DIV>
           <form onSubmit={handleForm}>
@@ -158,6 +197,10 @@ export const AddDeliveryBoy = () => {
                         type="text"
                         placeholder="Enter the driver name"
                         id="name"
+                        value={boyData?.name}
+                        onChange={(event) =>
+                          setBoyData({ ...boyData, name: event.target.value })
+                        }
                       />
                     </Stack>
                   </Flex>
@@ -179,7 +222,14 @@ export const AddDeliveryBoy = () => {
                         w="100%"
                         type="text"
                         placeholder="Enter Mobile Number"
-                        id="phone"
+                        id="phoneNumber"
+                        value={boyData?.phoneNumber}
+                        onChange={(event) =>
+                          setBoyData({
+                            ...boyData,
+                            phoneNumber: event.target.value,
+                          })
+                        }
                       />
                     </Stack>
                   </Flex>
@@ -200,7 +250,14 @@ export const AddDeliveryBoy = () => {
                       <Input
                         type="text"
                         placeholder="Enter Email Address"
-                        id="email"
+                        id="emailAddress"
+                        value={boyData?.emailAddress}
+                        onChange={(event) =>
+                          setBoyData({
+                            ...boyData,
+                            emailAddress: event.target.value,
+                          })
+                        }
                       />
                     </Stack>
                   </Flex>
