@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   ASSIGN_DELIVERY_BOY,
+  DELIVERY_BOY_UPDATED,
   ERROR,
   GET_DELIVERY_BOY,
   LOADING,
@@ -45,12 +46,13 @@ export const addNewDeliveryBoy = (data, handleNavigate) => async (dispatch) => {
   dispatch({ type: LOADING });
   try {
     let res = await axios.post(
-      `https://ec2-54-172-26-24.compute-1.amazonaws.com:8443/auth/deliveryboy/signup`,
+      `https://ec2-54-172-26-24.compute-1.amazonaws.com:8443/api/auth/deliveryboy/signup`,
       data
     );
     res = await res.data;
     if (res.success) {
-      dispatch({ type: NEW_DELIVERY_BOY_ADDED, payload: res });
+      handleNavigate("Delivery boy added successfully");
+      dispatch({ type: NEW_DELIVERY_BOY_ADDED, payload: res.data });
     } else {
       dispatch({ type: ERROR, payload: res.message });
     }
@@ -58,3 +60,23 @@ export const addNewDeliveryBoy = (data, handleNavigate) => async (dispatch) => {
     dispatch({ type: ERROR, payload: error.message });
   }
 };
+
+export const updateDeliveryBoy =
+  (data, id, handleNavigate) => async (dispatch) => {
+    dispatch({ type: LOADING });
+    try {
+      let res = await axios.post(
+        `https://ec2-54-172-26-24.compute-1.amazonaws.com:8443/api/auth/deliveryboy`,
+        data
+      );
+      res = await res.data;
+      if (res.success) {
+        handleNavigate("Delivery boy updated successfully");
+        dispatch({ type: DELIVERY_BOY_UPDATED, payload: res.data });
+      } else {
+        dispatch({ type: ERROR, payload: res.message });
+      }
+    } catch (error) {
+      dispatch({ type: ERROR, payload: error.message });
+    }
+  };

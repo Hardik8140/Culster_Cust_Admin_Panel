@@ -48,6 +48,7 @@ import ShowDizzleitUp from "../Components/ExtraItems/ShowDizzleitUp.jsx";
 import CustomerSupport from "../Components/Customer Support/CustomerSupport.jsx";
 import Notification from "../Components/Notification/Notification.jsx";
 import { AddDeliveryBoy } from "../Components/Delivery Boy/AddDeliveryBoy.jsx";
+import PdfGenerator from "../Components/Orders/PdfGenerator.jsx";
 
 const AllRoutes = () => {
   return (
@@ -127,7 +128,6 @@ const AllRoutes = () => {
       />
       <Route path="/edit/drinks/:drinksParam" element={<AddDrinks />} />
       <Route path="/edit/boy/:boyParam" element={<AddDeliveryBoy />} />
-
       {/* ExtraItems */}
       <Route path="/toppings" element={<ShowToppings />} />
       <Route path="/drizzles" element={<ShowDizzleitUp />} />
@@ -142,6 +142,7 @@ const AllRoutes = () => {
       <Route path="/adddelivery" element={<AddDeliveryBoy />} />
       <Route path="/orders" element={<Orders />} />
       <Route path="/orders/:id" element={<OrderDetails />} />
+      <Route path="/orders/:id/print" element={<PdfGenerator />} />
       <Route path="/time" element={<TImeManage />} />
       <Route path="/table" element={<TableReservation />} />
       <Route path="/customer" element={<CustomerReview />} />
