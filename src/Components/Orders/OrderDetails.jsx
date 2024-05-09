@@ -64,7 +64,7 @@ const OrderDetails = () => {
   const { id } = useParams();
   const [delivery, setDelivery] = useState("");
   const dispatch = useDispatch();
-  const naivgate = useNavigate();
+  const navigate = useNavigate();
   const { loading, error, detailOrders, orderStatus } = useSelector(
     (store) => store.orderReducer
   );
@@ -117,6 +117,11 @@ const OrderDetails = () => {
 
   const max = TotalSteps.length - 1;
   const progressPercent = (activeStep / (TotalSteps.length - 1)) * 100;
+
+  const handlePrint = (e, orderId) => {
+    e.preventDefault();
+    navigate(`/orders/${orderId}/print`);
+  };
 
   return (
     <Layout>
@@ -188,7 +193,8 @@ const OrderDetails = () => {
                   >
                     <Button
                       bg="lightgray"
-                      onClick={naivgate(`/orders/${el.orderId}/print`)}
+                      // onClick={naivgate(`/orders/${el.orderId}/print`)}
+                      onClick={(e) => handlePrint(e, el.orderId)}
                     >
                       Print Recipe
                     </Button>
@@ -373,8 +379,8 @@ const OrderDetails = () => {
                   </DIV>
                   <Box>
                     <Text>Special Instruction</Text>
-                    {el.orderDetail.map((spec) => (
-                      <Text key={i}>{spec.specialInstructions}</Text>
+                    {el.orderDetail.map((spec, j) => (
+                      <Text key={j}>{spec.specialInstructions}</Text>
                     ))}
                   </Box>
                 </Box>

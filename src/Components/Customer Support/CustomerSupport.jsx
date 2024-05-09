@@ -94,7 +94,7 @@ const CustomerSupport = () => {
               <tr key={index}>
                 <td style={{ textAlign: "center" }}>{item.customerName}</td>
                 <td style={{ textAlign: "center" }}>{item.customerEmail}</td>
-                <td style={{ textAlign: "center" }}>{item.message}</td>
+                <td>{item.message}</td>
               </tr>
             ))}
           </tbody>

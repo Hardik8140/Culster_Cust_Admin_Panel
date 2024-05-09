@@ -7,6 +7,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Switch,
   Text,
 } from "@chakra-ui/react";
 import { SearchIcon } from "lucide-react";
@@ -24,6 +25,9 @@ import ReactPaginate from "react-paginate";
 const Pizza = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
+  const [sortBy, setSortBy] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
+
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
@@ -38,7 +42,7 @@ const Pizza = () => {
     dispatch(get_Added_Pizza());
   }, [dispatch]);
 
-  const handleDelete = (id) => {
+  const handleDelete = (id, newStatus) => {
     dispatch(delete_Added_Pizza(id));
   };
 
@@ -58,7 +62,28 @@ const Pizza = () => {
 
   const handleOrderPrice = () => {};
 
-  const handleOrderStatus = () => {};
+  const handleOrderStatus = () => {
+    // Toggle sorting order
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    // Set the column to sort by
+    setSortBy("status");
+  };
+
+  const sortedPizza = [...pizza].sort((a, b) => {
+    if (sortBy === "status") {
+      // Sort by status
+      const statusA = a.isDeleted === null ? "Out of stock" : "In stock";
+      const statusB = b.isDeleted === null ? "Out of stock" : "In stock";
+      return sortOrder === "asc"
+        ? statusA.localeCompare(statusB)
+        : statusB.localeCompare(statusA);
+    } else {
+      // Default sorting by ID
+      return sortOrder === "asc"
+        ? a.pizzaId - b.pizzaId
+        : b.pizzaId - a.pizzaId;
+    }
+  });
   return (
     <Layout>
       <Box>
@@ -167,11 +192,17 @@ const Pizza = () => {
                   </td>
                   <td>{el.subCategory.itemTypeName}</td>
                   <td>
-                    <Text
+                    <Switch
+                      size="md"
+                      isChecked={!el.isDeleted}
+                      onChange={(e) =>
+                        handleDelete(el.pizzaId, !e.target.checked)
+                      }
+                      colorScheme={el.isDeleted ? "red" : "green"}
+                    />
+                    {/* <Text
                       bgColor={
-                        el.isDeleted === null
-                          ? "brand.outofstock"
-                          : "brand.stock"
+                        el.isDeleted ? "brand.outofstock" : "brand.stock"
                       }
                       p={"4px 2px"}
                       textAlign={"center"}
@@ -180,8 +211,8 @@ const Pizza = () => {
                       fontSize={"14px"}
                       color={"brand.white"}
                     >
-                      {el.isDeleted === null ? "Out of stock" : "In stock"}{" "}
-                    </Text>
+                      {el.isDeleted ? "Out of stock" : "In stock"}{" "}
+                    </Text> */}
                   </td>
                   <td>
                     <Center>
@@ -189,9 +220,9 @@ const Pizza = () => {
                         <Link to={`/edit/pizza/${el.pizzaId}`}>
                           <img src={edit} alt="edit icon" />
                         </Link>
-                        <Link onClick={() => handleDelete(el.pizzaId)}>
+                        {/* <Link>
                           <img src={deleteOutline} alt="delete icon" />
-                        </Link>
+                        </Link> */}
                       </Flex>
                     </Center>
                   </td>

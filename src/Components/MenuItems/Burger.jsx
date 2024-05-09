@@ -7,6 +7,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Switch,
   Text,
 } from "@chakra-ui/react";
 import { SearchIcon } from "lucide-react";
@@ -139,7 +140,15 @@ const Burger = () => {
                       : "N/A"}
                   </td>
                   <td>
-                    <Text
+                    <Switch
+                      size="md"
+                      isChecked={!el.isDeleted}
+                      onChange={(e) =>
+                        handleDelete(el.pizzaId, !e.target.checked)
+                      }
+                      colorScheme={el.isDeleted ? "red" : "green"}
+                    />
+                    {/* <Text
                       bgColor={
                         el.isDeleted === null
                           ? "brand.outofstock"
@@ -154,7 +163,7 @@ const Burger = () => {
                       w="fit-content"
                     >
                       {el.isDeleted === null ? "Out of stock" : "In stock"}{" "}
-                    </Text>
+                    </Text> */}
                   </td>
                   <td>
                     <Center>
@@ -162,9 +171,9 @@ const Burger = () => {
                         <Link to={`/edit/burger/${el.pizzaId}`}>
                           <img src={edit} alt="edit icon" />
                         </Link>
-                        <Link onClick={() => handleDelete(el.pizzaId)}>
+                        {/* <Link onClick={() => handleDelete(el.pizzaId)}>
                           <img src={deleteOutline} alt="delete icon" />
-                        </Link>
+                        </Link> */}
                       </Flex>
                     </Center>
                   </td>

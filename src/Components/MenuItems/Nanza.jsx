@@ -7,6 +7,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Switch,
   Text,
 } from "@chakra-ui/react";
 import { SearchIcon } from "lucide-react";
@@ -140,11 +141,17 @@ const Nanza = () => {
                       : "N/A"}
                   </td>
                   <td>
-                    <Text
+                    <Switch
+                      size="md"
+                      isChecked={!el.isDeleted}
+                      onChange={(e) =>
+                        handleDelete(el.pizzaId, !e.target.checked)
+                      }
+                      colorScheme={el.isDeleted ? "red" : "green"}
+                    />
+                    {/* <Text
                       bgColor={
-                        el.isDeleted === null
-                          ? "brand.outofstock"
-                          : "brand.stock"
+                        el.isDeleted ? "brand.outofstock" : "brand.stock"
                       }
                       w={"fit-content"}
                       p={"4px 8px"}
@@ -154,8 +161,8 @@ const Nanza = () => {
                       fontSize={"14px"}
                       color={"brand.white"}
                     >
-                      {el.isDeleted === null ? "Out of stock" : "In stock"}{" "}
-                    </Text>
+                      {el.isDeleted ? "Out of stock" : "In stock"}{" "}
+                    </Text> */}
                   </td>
                   <td>
                     <Center>
@@ -163,9 +170,9 @@ const Nanza = () => {
                         <Link to={`/edit/nanza/${el.pizzaId}`}>
                           <img src={edit} alt="edit icon" />
                         </Link>
-                        <Link onClick={() => handleDelete(el.pizzaId)}>
+                        {/* <Link onClick={() => handleDelete(el.pizzaId)}>
                           <img src={deleteOutline} alt="delete icon" />
-                        </Link>
+                        </Link> */}
                       </Flex>
                     </Center>
                   </td>

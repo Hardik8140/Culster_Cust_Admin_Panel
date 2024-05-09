@@ -9,6 +9,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Switch,
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
@@ -29,6 +30,9 @@ import ReactPaginate from "react-paginate";
 
 const Sweet = () => {
   const [search, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc"); // Ascending order by default
+  const [sortBy, setSortBy] = useState("");
+
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
@@ -65,6 +69,43 @@ const Sweet = () => {
   const offset = currentPage * itemsPerPage;
   const pageCount = Math.ceil(sweet_treet.length / itemsPerPage);
   const currentPageData = sweet_treet.slice(offset, offset + itemsPerPage);
+
+  const handleSort = (sortByField) => {
+    // Toggle the sort order if the same field is clicked again
+    if (sortBy === sortByField) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(sortByField);
+      setSortOrder("asc"); // Default to ascending order when a new field is selected
+    }
+  };
+
+  const sortedData = currentPageData.sort((a, b) => {
+    if (sortBy) {
+      if (sortBy === "id") {
+        return sortOrder === "asc"
+          ? a.pizzaId - b.pizzaId
+          : b.pizzaId - a.pizzaId;
+      } else if (sortBy === "name") {
+        return sortOrder === "asc"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+      } else if (sortBy === "price") {
+        const priceA = a.sizes.find((siz) => siz.size === "Medium")?.price || 0;
+        const priceB = b.sizes.find((siz) => siz.size === "Medium")?.price || 0;
+        return sortOrder === "asc" ? priceA - priceB : priceB - priceA;
+      } else if (sortBy === "status") {
+        return sortOrder === "asc"
+          ? a.isDeleted
+            ? -1
+            : 1
+          : a.isDeleted
+          ? 1
+          : -1;
+      }
+    }
+    return 0; // No sorting applied
+  });
 
   return (
     <Layout>
@@ -117,9 +158,15 @@ const Sweet = () => {
                 </Flex>
               </th>
               <th>
-                <Flex gap={1}>
+                <Flex gap={1} onClick={() => handleSort("price")}>
                   <Text>Price</Text>
-                  <img src={updown} onClick={handleOrderPrice} />
+                  <img
+                    src={updown}
+                    style={{
+                      transform:
+                        sortOrder === "asc" ? "rotate(180deg)" : "none",
+                    }}
+                  />
                 </Flex>
               </th>
               <th>
@@ -132,8 +179,8 @@ const Sweet = () => {
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(currentPageData) &&
-              currentPageData.map((el, i) => (
+            {Array.isArray(sortedData) &&
+              sortedData.map((el, i) => (
                 <tr key={i}>
                   <td>{el.pizzaId}</td>
                   <td>{el.name}</td>
@@ -144,11 +191,17 @@ const Sweet = () => {
                       : "N/A"}
                   </td>
                   <td>
-                    <Text
+                    <Switch
+                      size="md"
+                      isChecked={!el.isDeleted}
+                      onChange={(e) =>
+                        handleDelete(el.pizzaId, !e.target.checked)
+                      }
+                      colorScheme={el.isDeleted ? "red" : "green"}
+                    />
+                    {/* <Text
                       bgColor={
-                        el.isDeleted === null
-                          ? "brand.outofstock"
-                          : "brand.stock"
+                        el.isDeleted ? "brand.outofstock" : "brand.stock"
                       }
                       w={"fit-content"}
                       p={"4px 8px"}
@@ -158,8 +211,8 @@ const Sweet = () => {
                       fontSize={"14px"}
                       color={"brand.white"}
                     >
-                      {el.isDeleted === null ? "Out of stock" : "In stock"}{" "}
-                    </Text>
+                      {el.isDeleted ? "Out of stock" : "In stock"}{" "}
+                    </Text> */}
                   </td>
                   <td>
                     <Center>
@@ -167,9 +220,9 @@ const Sweet = () => {
                         <Link to={`/edit/sweettreat/${el.pizzaId}`}>
                           <img src={edit} alt="edit icon" />
                         </Link>
-                        <Link onClick={() => handleDelete(el.pizzaId)}>
+                        {/* <Link onClick={() => handleDelete(el.pizzaId)}>
                           <img src={deleteOutline} alt="delete icon" />
-                        </Link>
+                        </Link> */}
                       </Flex>
                     </Center>
                   </td>

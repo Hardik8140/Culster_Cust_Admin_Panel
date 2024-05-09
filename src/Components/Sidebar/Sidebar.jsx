@@ -48,6 +48,10 @@ const SidebarMenu = () => {
     setActiveMenu(menuName);
   };
 
+  const handleSubMenuOpen = (menuName) => {
+    setActiveMenu(menuName);
+  };
+
   useEffect(() => {
     let currentLocation = href;
     currentLocation = currentLocation.split("/");
@@ -143,14 +147,18 @@ const SidebarMenu = () => {
           <SubMenu
             // defaultOpen={isMenuItemOpen}
             className="subMenuItem"
-            onOpenChange={(open) => {
-              if (open) setActiveMenu("pizza");
-            }}
+            open={activeMenu === "pizza" ? true : false}
+            // active={true}
+            // onOpenChange={(open) => {
+            //   if (open) setActiveMenu("pizza");
+            // }}
+            // active={activeMenu === "pizza"}
+            // style={{
+            //   ...linkStyle,
+            //   color: activeMenu === "dashboard" && "black",
+            // }}
+            onOpenChange={(open) => handleSubMenuOpen(open ? "pizza" : "")}
             active={activeMenu === "pizza"}
-            style={{
-              ...linkStyle,
-              color: activeMenu === "dashboard" && "black",
-            }}
             icon={
               <Utensils
                 size={"22px"}
