@@ -50,7 +50,6 @@ const PdfGenerator = () => {
           <View
             style={{
               display: "flex",
-              flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
               padding: "10px 5px",
@@ -58,11 +57,11 @@ const PdfGenerator = () => {
           >
             <View>
               <Text>New accepted order</Text>
+              <Text>Total</Text>
               <Text>PICKUP</Text>
               <Text>27 minutes</Text>
             </View>
             <View>
-              <Text>Total</Text>
               <Text>$38.39</Text>
               <Text>CARD AT PICKUP COUNTER</Text>
             </View>

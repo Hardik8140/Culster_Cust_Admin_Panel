@@ -13,7 +13,7 @@ import {
   MdOutlineReviews,
   MdTableBar,
 } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   TicketPercent,
   Utensils,
@@ -31,12 +31,28 @@ const SidebarMenu = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard");
   const [isMenuItemOpen, setIsMenuItemOpen] = useState(false);
   const [subMenuItem, setSubMenuItem] = useState("");
+  const [activity, setActivity] = useState({
+    menuItem: false,
+    extraItem: false,
+  });
   const { menuItem, loading, error } = useSelector(
     (store) => store.menuItemsReducer
   );
   const href = window.location.href;
-  // console.log(menuItem);
-
+  console.log(activeMenu);
+  useEffect(() => {
+    if (activeMenu === "pizza") {
+      setActivity({
+        ...activity,
+        menuItem: true,
+      });
+    } else {
+      setActivity({
+        ...activity,
+        menuItem: false,
+      });
+    }
+  }, [activeMenu]);
   const dispatch = useDispatch();
   useEffect(() => {
     if (menuItem.length === 0) {
@@ -71,6 +87,7 @@ const SidebarMenu = () => {
   //   navigate(path);
   //   setActiveMenu("pizza");
   // };
+  console.log(activeMenu);
   return (
     <DIV>
       <Sidebar
@@ -143,8 +160,14 @@ const SidebarMenu = () => {
           <SubMenu
             // defaultOpen={isMenuItemOpen}
             className="subMenuItem"
+            open={activity["menuItem"]}
             onOpenChange={(open) => {
-              if (open) setActiveMenu("pizza");
+              if (open) {
+                setActivity({ ...activity, menuItem: true });
+                setActiveMenu("pizza");
+              } else {
+                setActivity({ ...activity, menuItem: false });
+              }
             }}
             active={activeMenu === "pizza"}
             style={{
