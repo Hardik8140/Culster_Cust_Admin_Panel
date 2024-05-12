@@ -71,24 +71,39 @@ const OrderDetails = () => {
   const { delivery_boy, assign_boy } = useSelector(
     (store) => store.delivery_boyReducer
   );
-
+  const { activeStep, setActiveStep } = useSteps({
+    index: 0,
+    count: TotalSteps.length,
+  });
   useEffect(() => {
     dispatch(get_Details_Orders(id));
     dispatch(get_delivery_boy());
   }, [dispatch, id]);
-
   const handleAcceptOrder = (id, status, e) => {
     e.preventDefault();
-    console.log(status);
     dispatch(accept_Orders(id, status));
     setOrderAccepted(true);
     Cookies.set(`orderStatus_${id}`, orderStatus);
   };
+  useEffect(() => {
+    let val = detailOrders[0];
+    console.log(val);
+    if (val) {
+      if (val["status"] === "ACCEPTED") {
+        setActiveStep(1);
+      } else if (val["status"] === "ON_THE_WAY") {
+        setActiveStep(4);
+      } else if (val["status"] === "DELIVERED") {
+        setActiveStep(5);
+      }
+    }
+
+    setActiveStep(4);
+  }, [detailOrders]);
 
   useEffect(() => {
     const newOrderStatus = Cookies.get(`orderStatus_${id}`);
     setOrderAccepted(newOrderStatus);
-    console.log(newOrderStatus);
   }, [id, orderStatus]);
 
   const handleAssign = () => {
@@ -97,11 +112,6 @@ const OrderDetails = () => {
   };
 
   // console.log(orderStatus.success);
-
-  const { activeStep, setActiveStep } = useSteps({
-    index: 0,
-    count: TotalSteps.length,
-  });
 
   useEffect(() => {
     const timer = setInterval(() => {

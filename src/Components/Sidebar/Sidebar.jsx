@@ -52,6 +52,19 @@ const SidebarMenu = () => {
         menuItem: false,
       });
     }
+
+    console.log(activeMenu);
+    // if (activeMenu === "extraItem") {
+    //   setActivity({
+    //     ...activity,
+    //     extraItem: true,
+    //   });
+    // } else {
+    //   setActivity({
+    //     ...activity,
+    //     extraItem: false,
+    //   });
+    // }
   }, [activeMenu]);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -212,10 +225,25 @@ const SidebarMenu = () => {
               ))}
           </SubMenu>
           <SubMenu
+            className="subMenuItem"
+            active={activeMenu === "extraItem"}
+            open={activity["extraItem"]}
+            style={{
+              ...linkStyle,
+              color: activeMenu === "dashboard" && "black",
+            }}
+            onOpenChange={(open) => {
+              if (open) {
+                setActivity({ ...activity, extraItem: true });
+                setActiveMenu("extraItem");
+              } else {
+                setActivity({ ...activity, extraItem: false });
+              }
+            }}
             icon={
               <Utensils
                 size={"22px"}
-                color={activeMenu !== "extraitems" ? "#4a4a4b" : "white"}
+                color={activeMenu !== "extraItem" ? "#4a4a4b" : "white"}
               />
             }
             label="Extra Items"
@@ -229,12 +257,28 @@ const SidebarMenu = () => {
             >
               <UnorderedList>
                 <ListItem pt={2} pb={2}>
-                  <Link style={linkStyle} to="/toppings">
+                  <Link
+                    style={linkStyle}
+                    to="/toppings"
+                    color={
+                      subMenuItem === "Toppings"
+                        ? "brand.primary"
+                        : "brand.black"
+                    }
+                  >
                     Toppings
                   </Link>
                 </ListItem>
                 <ListItem pt={2} pb={2}>
-                  <Link style={linkStyle} to="/drizzles">
+                  <Link
+                    style={linkStyle}
+                    to="/drizzles"
+                    color={
+                      subMenuItem === "Drizzle it up!"
+                        ? "brand.primary"
+                        : "brand.black"
+                    }
+                  >
                     Drizzle it up!
                   </Link>
                 </ListItem>
