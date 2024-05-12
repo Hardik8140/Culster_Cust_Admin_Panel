@@ -463,7 +463,7 @@ export const AddNewPizza = () => {
               )}
             </Box>
 
-            <FormButtons />
+            <FormButtons canceling={"/pizza"} />
           </form>
         </DIV>
       </Box>

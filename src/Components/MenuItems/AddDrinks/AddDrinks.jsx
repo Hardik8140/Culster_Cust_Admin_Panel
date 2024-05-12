@@ -175,7 +175,7 @@ export const AddDrinks = () => {
                 <RegMasala />
               </GridItem>
             </Grid>
-            <FormButtons />
+            <FormButtons canceling="/homemadedrinks" />
           </form>
         </DIV>
       </Box>

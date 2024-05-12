@@ -84,7 +84,7 @@ export const Drizzle = () => {
                 />
               </GridItem>
             </Grid>
-            <FormButtons />
+            <FormButtons canceling="/drizzles" />
           </form>
         </DIV>
       </Box>

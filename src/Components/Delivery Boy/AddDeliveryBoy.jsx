@@ -360,7 +360,7 @@ export const AddDeliveryBoy = () => {
                 </Flex> */}
               </GridItem>
             </Grid>
-            <FormButtons />
+            <FormButtons canceling="/boy" />
           </form>
         </DIV>
       </Box>

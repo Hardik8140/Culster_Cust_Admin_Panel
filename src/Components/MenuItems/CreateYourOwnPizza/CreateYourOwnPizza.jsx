@@ -219,7 +219,7 @@ export const CreateYourOwnPizza = () => {
               <Dippings />
             </Grid>
 
-            <FormButtons />
+            <FormButtons canceling="/createownpizza" />
           </form>
         </DIV>
       </Box>

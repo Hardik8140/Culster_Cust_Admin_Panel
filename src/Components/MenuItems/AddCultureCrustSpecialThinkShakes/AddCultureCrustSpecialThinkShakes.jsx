@@ -195,7 +195,7 @@ export const AddCultureCrustSpecialThinkShakes = () => {
                 categoryId={ThickShakesId}
               />
             </Grid>
-            <FormButtons />
+            <FormButtons canceling="/culturecurstspecialthickshakes!!!" />
           </form>
         </DIV>
       </Box>

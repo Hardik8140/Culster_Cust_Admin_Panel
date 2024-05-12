@@ -286,7 +286,7 @@ export const AddSalads = () => {
                 <SaladToppings itemValues={saladItem?.salad_toppings} />
               </GridItem>
             </Grid>
-            <FormButtons />
+            <FormButtons canceling="/salads" />
           </form>
         </DIV>
       </Box>

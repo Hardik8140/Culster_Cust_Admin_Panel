@@ -101,7 +101,7 @@ export const Toppings = () => {
                 />
               </GridItem>
             </Grid>
-            <FormButtons />
+            <FormButtons canceling="/toppings" />
           </form>
         </DIV>
       </Box>

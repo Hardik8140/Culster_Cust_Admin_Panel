@@ -251,7 +251,7 @@ export const AddNanza = () => {
                 />
               </GridItem>
             </Grid>
-            <FormButtons />
+            <FormButtons canceling={"/nanza"} />
           </form>
         </DIV>
       </Box>
