@@ -282,7 +282,6 @@ export const AddSalads = () => {
                 categoryId={SaladId}
                 name={imgName}
               />
-
               <GridItem colSpan={2}>
                 <SaladToppings itemValues={saladItem?.salad_toppings} />
               </GridItem>
