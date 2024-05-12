@@ -336,7 +336,7 @@ export const AddCheesyFun = () => {
                 </GridItem>
               </Grid>
 
-              <FormButtons />
+              <FormButtons canceling="/cheesyfun" />
             </form>
           </DIV>
         )}

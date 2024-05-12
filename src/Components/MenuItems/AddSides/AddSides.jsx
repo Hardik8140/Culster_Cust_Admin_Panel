@@ -138,7 +138,7 @@ export const AddSides = () => {
                 itemValue={sidesData?.imageUrl}
               />
             </Grid>
-            <FormButtons />
+            <FormButtons canceling="/sides" />
           </form>
         </DIV>
       </Box>

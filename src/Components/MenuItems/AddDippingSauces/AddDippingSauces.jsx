@@ -172,7 +172,7 @@ export const AddDippingSauces = () => {
                 name={imgName}
               />
             </Grid>
-            <FormButtons />
+            <FormButtons canceling="/dippingsauces" />
           </form>
         </DIV>
       </Box>

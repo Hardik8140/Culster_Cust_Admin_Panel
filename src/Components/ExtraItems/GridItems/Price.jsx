@@ -36,8 +36,21 @@ export const Price = ({ name = "Price" }) => {
             </InputLeftAddon>
             <Input
               borderRadius={"0px 10px 10px 0px"}
-              type="number"
+              type="text"
               w={"auto"}
+              onKeyDown={(e) => {
+                if (
+                  (e.key >= "0" && e.key <= "9") ||
+                  e.key === "Backspace" ||
+                  e.key === "Delete" ||
+                  e.key === "ArrowLeft" ||
+                  e.key === "ArrowRight" ||
+                  e.key === "Tab"
+                ) {
+                } else {
+                  e.preventDefault();
+                }
+              }}
               fontSize={"16px"}
               placeholder="price"
               className="price_extra"

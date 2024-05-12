@@ -61,7 +61,7 @@ const DeliveryBoy = () => {
   return (
     <Layout>
       <Box>
-        <CustomeFoodItes />
+        <CustomeFoodItes title={"Delivery Boy"} />
 
         <Flex my={6} justifyContent={"space-between"}>
           <InputGroup bgColor={"white"} borderRadius={"10px"} w={"fit-content"}>

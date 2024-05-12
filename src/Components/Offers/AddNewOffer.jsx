@@ -102,7 +102,7 @@ export const AddNewOffer = () => {
               </GridItem>
             </Grid>
 
-            <FormButtons />
+            <FormButtons canceling="/offers" />
           </form>
         </DIV>
       </Box>

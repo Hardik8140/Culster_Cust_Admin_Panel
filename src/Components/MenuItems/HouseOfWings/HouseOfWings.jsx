@@ -290,7 +290,7 @@ export const HouseOfWings = () => {
               </GridItem>
             </Grid>
 
-            <FormButtons />
+            <FormButtons canceling={"/houseofwings"} />
           </form>
         </DIV>
       </Box>

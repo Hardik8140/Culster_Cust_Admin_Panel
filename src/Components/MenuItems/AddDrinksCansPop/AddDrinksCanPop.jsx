@@ -171,7 +171,7 @@ export const AddDrinksCanPop = () => {
                 name={imgName}
               />
             </Grid>
-            <FormButtons />
+            <FormButtons canceling="/drinks-canpop" />
           </form>
         </DIV>
       </Box>

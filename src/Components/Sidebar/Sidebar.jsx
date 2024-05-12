@@ -13,7 +13,7 @@ import {
   MdOutlineReviews,
   MdTableBar,
 } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   TicketPercent,
   Utensils,
@@ -31,12 +31,41 @@ const SidebarMenu = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard");
   const [isMenuItemOpen, setIsMenuItemOpen] = useState(false);
   const [subMenuItem, setSubMenuItem] = useState("");
+  const [activity, setActivity] = useState({
+    menuItem: false,
+    extraItem: false,
+  });
   const { menuItem, loading, error } = useSelector(
     (store) => store.menuItemsReducer
   );
   const href = window.location.href;
-  // console.log(menuItem);
+  console.log(activeMenu);
+  useEffect(() => {
+    if (activeMenu === "pizza") {
+      setActivity({
+        ...activity,
+        menuItem: true,
+      });
+    } else {
+      setActivity({
+        ...activity,
+        menuItem: false,
+      });
+    }
 
+    console.log(activeMenu);
+    // if (activeMenu === "extraItem") {
+    //   setActivity({
+    //     ...activity,
+    //     extraItem: true,
+    //   });
+    // } else {
+    //   setActivity({
+    //     ...activity,
+    //     extraItem: false,
+    //   });
+    // }
+  }, [activeMenu]);
   const dispatch = useDispatch();
   useEffect(() => {
     if (menuItem.length === 0) {
@@ -71,6 +100,7 @@ const SidebarMenu = () => {
   //   navigate(path);
   //   setActiveMenu("pizza");
   // };
+  console.log(activeMenu);
   return (
     <DIV>
       <Sidebar
@@ -143,8 +173,14 @@ const SidebarMenu = () => {
           <SubMenu
             // defaultOpen={isMenuItemOpen}
             className="subMenuItem"
+            open={activity["menuItem"]}
             onOpenChange={(open) => {
-              if (open) setActiveMenu("pizza");
+              if (open) {
+                setActivity({ ...activity, menuItem: true });
+                setActiveMenu("pizza");
+              } else {
+                setActivity({ ...activity, menuItem: false });
+              }
             }}
             active={activeMenu === "pizza"}
             style={{
@@ -189,10 +225,25 @@ const SidebarMenu = () => {
               ))}
           </SubMenu>
           <SubMenu
+            className="subMenuItem"
+            active={activeMenu === "extraItem"}
+            open={activity["extraItem"]}
+            style={{
+              ...linkStyle,
+              color: activeMenu === "dashboard" && "black",
+            }}
+            onOpenChange={(open) => {
+              if (open) {
+                setActivity({ ...activity, extraItem: true });
+                setActiveMenu("extraItem");
+              } else {
+                setActivity({ ...activity, extraItem: false });
+              }
+            }}
             icon={
               <Utensils
                 size={"22px"}
-                color={activeMenu !== "extraitems" ? "#4a4a4b" : "white"}
+                color={activeMenu !== "extraItem" ? "#4a4a4b" : "white"}
               />
             }
             label="Extra Items"
@@ -206,12 +257,28 @@ const SidebarMenu = () => {
             >
               <UnorderedList>
                 <ListItem pt={2} pb={2}>
-                  <Link style={linkStyle} to="/toppings">
+                  <Link
+                    style={linkStyle}
+                    to="/toppings"
+                    color={
+                      subMenuItem === "Toppings"
+                        ? "brand.primary"
+                        : "brand.black"
+                    }
+                  >
                     Toppings
                   </Link>
                 </ListItem>
                 <ListItem pt={2} pb={2}>
-                  <Link style={linkStyle} to="/drizzles">
+                  <Link
+                    style={linkStyle}
+                    to="/drizzles"
+                    color={
+                      subMenuItem === "Drizzle it up!"
+                        ? "brand.primary"
+                        : "brand.black"
+                    }
+                  >
                     Drizzle it up!
                   </Link>
                 </ListItem>

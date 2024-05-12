@@ -13,7 +13,7 @@ import { dollar } from "../../../assets";
 import { useEffect, useState } from "react";
 
 export const Detail = ({
-  itemValue = { name: "", description: "", price: 0 },
+  itemValue = { name: "", description: "", price: "" },
 }) => {
   const [state, setState] = useState({ ...itemValue });
   const handleChange = (event) => {
@@ -61,12 +61,25 @@ export const Detail = ({
                 </InputLeftAddon>
                 <Input
                   borderRadius={"0px 10px 10px 0px"}
-                  type="number"
+                  type="text"
                   w={"auto"}
+                  onKeyDown={(e) => {
+                    if (
+                      (e.key >= "0" && e.key <= "9") ||
+                      e.key === "Backspace" ||
+                      e.key === "Delete" ||
+                      e.key === "ArrowLeft" ||
+                      e.key === "ArrowRight" ||
+                      e.key === "Tab"
+                    ) {
+                    } else {
+                      e.preventDefault();
+                    }
+                  }}
                   placeholder="price"
                   className="price_detail"
                   id={`price`}
-                  value={+state.price}
+                  value={state.price}
                   name="price"
                   onChange={handleChange}
                 />

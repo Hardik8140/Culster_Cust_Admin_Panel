@@ -307,7 +307,7 @@ export const AddDeliveryBoy = () => {
                     justifyContent={"center"}
                     color={"brand.grey"}
                     bgColor={"brand.grey100"}
-                    width={"60%"}
+                    width={"40%"}
                     alignItems={"center"}
                   >
                     {imagePrev ? (
@@ -360,7 +360,7 @@ export const AddDeliveryBoy = () => {
                 </Flex> */}
               </GridItem>
             </Grid>
-            <FormButtons />
+            <FormButtons canceling="/boy" />
           </form>
         </DIV>
       </Box>

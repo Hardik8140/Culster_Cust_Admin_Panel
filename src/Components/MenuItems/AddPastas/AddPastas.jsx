@@ -248,7 +248,7 @@ export const AddPastas = () => {
                 itemValue={pastaItem?.toppings}
               />
             </Grid>
-            <FormButtons />
+            <FormButtons canceling={"/pasta"} />
           </form>
         </DIV>
       </Box>

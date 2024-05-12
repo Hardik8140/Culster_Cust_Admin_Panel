@@ -166,7 +166,7 @@ export const AddSweetTreat = () => {
                 itemValue={sweetTreatData?.imageUrl}
               />
             </Grid>
-            <FormButtons />
+            <FormButtons canceling="/sweettreat" />
           </form>
         </DIV>
       </Box>
